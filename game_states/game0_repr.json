@@ -1,6 +1,7 @@
 {
   "rooms": {
     "#room_entrance": {
+      "description": "Entrance room, there is a table in the middle.",
       "directions": {
         "west": {
           "room_id": "#room_arena"
@@ -10,7 +11,7 @@
         "#item_envelope",
         "#item_steel_sword"
       ],
-      "description": "Entrance room, there is a table in the middle."
+      "creature": []
     },
     "#room_arena": {
       "description": "A big round arena.",
@@ -24,14 +25,19 @@
         }
       },
       "items": [],
-      "npc": "#npc_dragon"
+      "creature": [
+        "#creature_dragon"
+      ]
     },
     "#room_exit": {
-      "description": "Congratulations."
+      "description": "Congratulations.",
+      "directions": {},
+      "items": [],
+      "creature": []
     }
   },
-  "npcs": {
-    "#npc_dragon": {
+  "creatures": {
+    "#creature_dragon": {
       "alias": [
         "dragon"
       ],
@@ -44,14 +50,6 @@
     }
   },
   "items": {
-    "#item_steel_sword": {
-      "type": "weapon",
-      "alias": [
-        "sword"
-      ],
-      "damage": 30,
-      "description": "Simple sword for fighting"
-    },
     "#item_envelope": {
       "description": "OPEN to get letter from inside",
       "alias": [
@@ -80,6 +78,15 @@
         "key"
       ],
       "actions": {}
+    }
+  },
+  "equipment": {
+    "#equipment_steel_sword": {
+      "alias": [
+        "sword"
+      ],
+      "damage": 30,
+      "description": "Simple sword for fighting"
     }
   },
   "environment_objects": {
