@@ -1,0 +1,112 @@
+{
+  "rooms": {
+    "#room_entrance": {
+      "directions": {
+        "west": {
+          "room_id": "#room_arena"
+        }
+      },
+      "items": [
+        "#item_envelope",
+        "#item_steel_sword"
+      ],
+      "description": "Entrance room, there is a table in the middle."
+    },
+    "#room_arena": {
+      "description": "A big round arena.",
+      "directions": {
+        "east": {
+          "room_id": "#room_entrance"
+        },
+        "north": {
+          "room_id": "#room_exit",
+          "env_obj_id": "#env_door_exit"
+        }
+      },
+      "items": [],
+      "npc": "#npc_dragon"
+    },
+    "#room_exit": {
+      "description": "Congratulations."
+    }
+  },
+  "npcs": {
+    "#npc_dragon": {
+      "alias": [
+        "dragon"
+      ],
+      "health": 60,
+      "damage": 10,
+      "drops": [
+        "#item_doorkey_exit"
+      ],
+      "description": "Big green dragon"
+    }
+  },
+  "items": {
+    "#item_steel_sword": {
+      "type": "weapon",
+      "alias": [
+        "sword"
+      ],
+      "damage": 30,
+      "description": "Simple sword for fighting"
+    },
+    "#item_envelope": {
+      "description": "OPEN to get letter from inside",
+      "alias": [
+        "envelope"
+      ],
+      "actions": {
+        "open": {
+          "command_spawn_item": "#item_letter"
+        }
+      }
+    },
+    "#item_letter": {
+      "description": "READ to read content",
+      "alias": [
+        "letter"
+      ],
+      "actions": {
+        "read": {
+          "command_display": "Welcome, take sword and kill that dragon"
+        }
+      }
+    },
+    "#item_doorkey_exit": {
+      "description": "Use this key to unlock the door",
+      "alias": [
+        "key"
+      ],
+      "actions": {}
+    }
+  },
+  "environment_objects": {
+    "#env_door_exit": {
+      "alias": [
+        "door"
+      ],
+      "unlocked": false,
+      "description": "Locked, you need key",
+      "actions": {
+        "unlock": {
+          "command_required_item": "#item_doorkey_exit",
+          "command_set_unlocked": true,
+          "command_set_description": "Unlocked, you can leave."
+        }
+      }
+    }
+  },
+  "hero": {
+    "health": 100,
+    "location": "#room_entrance",
+    "actions": {
+      "examine": "display item.description",
+      "look": "display room.description, room.directions ...",
+      "go": "move_to currentRoom.direction['']",
+      "take": "item_take #item_id",
+      "attack": "..."
+    }
+  }
+}
