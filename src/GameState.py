@@ -6,6 +6,7 @@ from src.Item import Item
 from src.Creature import Creature
 from src.Hero import Hero
 from src.Room import Room
+from src.EnvironmentObject import EnvironmentObject
 
 
 class GameState:
@@ -17,6 +18,7 @@ class GameState:
         self.creatures = self.create_dict(Creature, 'creatures')
         self.items = self.create_dict(Item, 'items')
         self.equipment = self.create_dict(Equipment, 'equipment')
+        self.environment_objects = self.create_dict(EnvironmentObject, "environment_objects")
         self.hero = self.create_hero()
 
     def create_dict(self, type, key_name) -> Dict[str, any]:

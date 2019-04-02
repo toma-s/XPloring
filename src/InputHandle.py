@@ -58,7 +58,17 @@ class InputHandle:
                 if com[1] == "direction":
                     if target in self.gs.rooms[self.gs.hero.location].directions:
                         room_id = self.gs.rooms[self.gs.hero.location].directions[target]["room_id"]
-                        self.move_to(room_id)
+
+                        my_direction = self.gs.rooms[self.gs.hero.location].directions[target]
+
+                        if "env_obj_id" in my_direction:
+                            env_obj = self.gs.environment_objects[my_direction["env_obj_id"]]
+                            if not env_obj.unlocked:
+                                print(env_obj.description)
+                            else:
+                                self.move_to(room_id)
+                        else:
+                            self.move_to(room_id)
                     else:
                         print("You cant go there.")
 
@@ -128,6 +138,7 @@ class InputHandle:
 
     def move_to(self, room_id):
         self.gs.hero.location = room_id
+
         print(f"You entered: {self.gs.rooms[room_id].description}")
 
     def run_internal_command(self, commands):
