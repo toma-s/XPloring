@@ -78,6 +78,19 @@ class InputHandle:
                     if item:
                         print(f"Taking {target} with me.")
 
+            elif com[0] == "hit":
+                if com[1] == "creature":
+                    cr = None
+                    for creature in self.gs.rooms[self.gs.hero.location].creature:
+                        if target in self.gs.creatures[creature].alias:
+                            cr = self.gs.creatures[creature]
+                            break
+
+                    if cr:
+                        print(f"You hit {target}!")
+                    else:
+                        print(f"There's no such thing as {target}.")
+
         else:
             int_commands = None
             for it in self.gs.items:
