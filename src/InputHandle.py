@@ -1,5 +1,5 @@
 from src.GameState import GameState
-from src.Commands import commands_directions, commands_actions
+from src.Commands import commands_directions, commands_actions, words_ignore
 from src.Room import Room
 from src.Item import Item
 
@@ -61,6 +61,23 @@ class InputHandle:
                         self.move_to(room_id)
                     else:
                         print("You cant go there.")
+
+            elif com[0] == "item_take":
+                if com[1] == "item":
+                    item = None
+                    for it in self.gs.items:
+                        if target in self.gs.items[it].alias:
+                            item = self.gs.items[it]
+                            break
+
+                    if not item:
+                        for it in self.gs.equipment:
+                            if target in self.gs.equipment[it].alias:
+                                item = self.gs.equipment[it]
+                                break
+                    if item:
+                        print(f"Taking {target} with me.")
+
         else:
             int_commands = None
             for it in self.gs.items:
@@ -71,6 +88,7 @@ class InputHandle:
                 self.run_internal_command(int_commands)
 
     def run_commands(self, commands):
+        commands = [x for x in commands if x not in words_ignore]
         if len(commands) == 1:
             self.single_command(commands[0])
         elif len(commands) == 2:
@@ -83,6 +101,8 @@ class InputHandle:
         for i in room.items:
             if i in self.gs.items:
                 print(f"There is {self.gs.items[i].alias[0]} {self.gs.items[i].description}")
+            elif i in self.gs.equipment:
+                print(f"There is {self.gs.equipment[i].alias[0]} {self.gs.equipment[i].description}")
 
         # entities in room
         if not room.creature:
@@ -111,6 +131,7 @@ class InputHandle:
         print(f"You entered: {self.gs.rooms[room_id].description}")
 
     def run_internal_command(self, commands):
+        print(f"[DEBUG] running internal - {commands}")
         for c in commands:
             if c == "command_spawn_item":
                 self.spawn_item(commands[c])

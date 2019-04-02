@@ -16,6 +16,9 @@ class Game:
             print(">>> ", end="")
             inp = input()
 
+            if inp == "q":
+                return
+
             commands_to_run = self.input_handle.parse_user_input(inp)
 
             self.input_handle.run_commands(commands_to_run)

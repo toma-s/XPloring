@@ -19,4 +19,6 @@ command_rules = {
     "go": (1, commands_directions.keys()),
 }
 
+words_ignore = ["the", "on", "a", "an", "this", "that"]
+
 

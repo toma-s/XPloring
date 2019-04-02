@@ -9,7 +9,7 @@
       },
       "items": [
         "#item_envelope",
-        "#item_steel_sword"
+        "#equipment_steel_sword"
       ],
       "creature": []
     },
@@ -113,7 +113,8 @@
       "look": "display room",
       "go": "move_to direction",
       "take": "item_take item",
-      "attack": "hit creature"
+      "attack": "hit creature",
+      "inventory": "display inventory"
     }
   }
 }
