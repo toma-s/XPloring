@@ -8,7 +8,7 @@ commands_directions = {
 commands_actions = {
     "use": {"accept", "apply", "handle"},
     "eat": {"drink", "feed", "chew"},
-    "attack": {"hit", "kill"},
+    "attack": {"hit", "kill", "destroy"},
     "open": {"release"},
     "go": {"run", "move"},
     "take": {"pick", "lift", "get"},
