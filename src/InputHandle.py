@@ -1,26 +1,23 @@
 from src.GameState import GameState
 from src.Commands import commands_directions, commands_actions
+from src.Room import Room
+from src.Item import Item
 
 
 class InputHandle:
 
-    def __init__(self, GameState):
-        self.gs = GameState
+    def __init__(self, map: GameState):
+        self.gs = map
 
     def parse_user_input(self, input):
-        res = []
-
         x = input.strip().split(" ")
-        for word in x:
-            word = word.lower()
-            tmp = self.check_word(word)
+
+        for i in range(len(x)):
+            tmp = self.check_word(x[i])
             if tmp:
-                res.append(tmp)
+                x[i] = tmp
 
-        if self.check_commands(res):
-            return res
-
-        return []
+        return x
 
     def check_word(self, word):
         if word in commands_actions or word in commands_directions:
@@ -32,33 +29,98 @@ class InputHandle:
 
         return None
 
-    def check_commands(self, commands):
-        i = 0
-        last_command = ""
-        for command in commands:
+    # ==============================================================================
 
-            if i == 0 and command not in commands_actions:
-                return False
-            elif i == 0:
-                last_command = command
-                i += 1
-                continue
+    def single_command(self, command):
+        if command in self.gs.hero.actions:
+            com = self.gs.hero.actions[command].replace(",", '').split(" ")
+            if com[0] == "display":
+                if com[1] == "room":
+                    self.display(self.gs.rooms[self.gs.hero.location])
+                    return
 
-            if i == 1:
-                # ak go -> direction
-                if last_command == "go":
-                    if command not in commands_directions:
-                        return False
+        print("You are unsure about yourself. (wrong command)")
+
+    def double_command(self, action, target):
+        if action in self.gs.hero.actions:
+            com = self.gs.hero.actions[action].replace(",", '').split(" ")
+            if com[0] == "display":
+                if com[1] == "item":
+                    item = None
+                    for it in self.gs.items:
+                        if target in self.gs.items[it].alias:
+                            item = self.gs.items[it]
+                            break
+                    if item:
+                        self.display(item)
+
+            elif com[0] == "move_to":
+                if com[1] == "direction":
+                    if target in self.gs.rooms[self.gs.hero.location].directions:
+                        room_id = self.gs.rooms[self.gs.hero.location].directions[target]["room_id"]
+                        self.move_to(room_id)
                     else:
-                        i += 1
-                        continue
-
-                # ak "eat" -> "item:food" ?
-
-
-        return True
-
+                        print("You cant go there.")
+        else:
+            int_commands = None
+            for it in self.gs.items:
+                if target in self.gs.items[it].alias and action in self.gs.items[it].actions:
+                    int_commands = self.gs.items[it].actions[action]
+                    break
+            if int_commands:
+                self.run_internal_command(int_commands)
 
     def run_commands(self, commands):
-        ...
+        if len(commands) == 1:
+            self.single_command(commands[0])
+        elif len(commands) == 2:
+            self.double_command(commands[0], commands[1])
 
+    def discover_room(self):
+        room = self.gs.rooms[self.gs.hero.location]
+
+        # items in room
+        for i in room.items:
+            if i in self.gs.items:
+                print(f"There is {self.gs.items[i].alias[0]} {self.gs.items[i].description}")
+
+        # entities in room
+        if not room.creature:
+            print("Nothing scary here")
+        else:
+            for c in room.creature:
+                print(f"There is a {self.gs.creatures[c].alias[0]} here. {self.gs.creatures[c].description}")
+
+        # direction from room
+        for d in room.directions:
+            print(f"You can go {d.upper()}")
+
+    def examine_item(self, item):
+        print(f"{item.description}")
+
+    def display(self, obj):
+        if isinstance(obj, Room):
+            self.discover_room()
+        elif isinstance(obj, Item):
+            self.examine_item(obj)
+        else:
+            print(obj)
+
+    def move_to(self, room_id):
+        self.gs.hero.location = room_id
+        print(f"You entered: {self.gs.rooms[room_id].description}")
+
+    def run_internal_command(self, commands):
+        for c in commands:
+            if c == "command_spawn_item":
+                self.spawn_item(commands[c])
+            if c == "command_display":
+                self.display(commands[c])
+
+    def spawn_item(self, item_id):
+        room = self.gs.rooms[self.gs.hero.location]
+        if item_id not in room.items:
+            print(f"You found {self.gs.items[item_id].alias[0]} - {self.gs.items[item_id].description}")
+            room.items.append(item_id)
+        else:
+            print(f"You already did this")
