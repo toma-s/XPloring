@@ -18,7 +18,3 @@ commands_actions = {
 command_rules = {
     "go": (1, commands_directions.keys()),
 }
-
-
-
-
