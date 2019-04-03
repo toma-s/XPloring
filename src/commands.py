@@ -12,7 +12,7 @@ commands_actions = {
     "open": {"release"},
     "go": {"run", "move"},
     "take": {"pick", "lift", "get"},
-    "look": {"check"}
+    "look": {"check", "observe"}
 }
 
 command_rules = {
