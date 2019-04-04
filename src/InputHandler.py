@@ -1,5 +1,6 @@
 from src.commands import commands_directions, commands_actions
 
+
 class InputHandler:
 
     def __init__(self):

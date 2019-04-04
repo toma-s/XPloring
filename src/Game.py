@@ -17,7 +17,7 @@ class Game:
         # mainloop
         room = self.game_state.rooms[self.game_state.hero.location]
 
-        print("Welcome warrior!")
+        print("Welcome, warrior!")
         print(f"You entered the {room.description.lower()}")
         print("What is your next step?")
         print('\n' + '\n'.join(self.navigation))
