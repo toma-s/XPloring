@@ -9,7 +9,7 @@
       },
       "items": [
         "#item_envelope",
-        "#item_steel_sword"
+        "#equipment_steel_sword"
       ],
       "creature": []
     },
@@ -109,11 +109,12 @@
     "health": 100,
     "location": "#room_entrance",
     "actions": {
-      "examine": "display item.description",
-      "look": "display room.description, room.directions ...",
-      "go": "move_to currentRoom.direction['']",
-      "take": "item_take #item_id",
-      "attack": "..."
+      "examine": "display item",
+      "look": "display room",
+      "go": "move_to direction",
+      "take": "item_take item",
+      "attack": "hit creature",
+      "inventory": "display inventory"
     }
   }
 }
