@@ -22,36 +22,39 @@ class CommandRunner:
         print("I don't understand. Try again.")
 
     def double_command(self, action, target):
-
-        hero = self.game_state.hero
-
-        if action in hero.actions:
-            verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
-            if verb == "display":
-                if noun == "item":
-                    self._display_item(target)
-
-            elif verb == "move_to":
-                if noun == "direction":
-                    self._move_to_direction(target)
-
-            elif verb == "item_take":
-                if noun == "item":
-                    self._item_take(target)
-
-            elif verb == "hit":
-                if noun == "creature":
-                    self._hit_creature(target)
-
+        if action in self.game_state.hero.actions:
+            self._hero_action(action, target)
         else:
-            int_commands = None
-            for it in self.game_state.rooms[self.game_state.hero.location].items:
-                if it in self.game_state.items and target in self.game_state.items[it].alias and action in \
-                        self.game_state.items[it].actions:
-                    int_commands = self.game_state.items[it].actions[action]
-                    break
-            if int_commands:
-                self.run_internal_command(int_commands)
+            self._item_action(action, target)
+
+    def _hero_action(self, action, target):
+        hero = self.game_state.hero
+        verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
+        if verb == "display":
+            if noun == "item":
+                self._display_item(target)
+
+        elif verb == "move_to":
+            if noun == "direction":
+                self._move_to_direction(target)
+
+        elif verb == "item_take":
+            if noun == "item":
+                self._item_take(target)
+
+        elif verb == "hit":
+            if noun == "creature":
+                self._hit_creature(target)
+
+    def _item_action(self, action, target):
+        int_commands = None
+        for it in self.game_state.rooms[self.game_state.hero.location].items:
+            if it in self.game_state.items and target in self.game_state.items[it].alias and action in \
+                    self.game_state.items[it].actions:
+                int_commands = self.game_state.items[it].actions[action]
+                break
+        if int_commands:
+            self.run_internal_command(int_commands)
 
     def _display_item(self, target):
         items = self.game_state.items
