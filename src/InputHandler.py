@@ -7,7 +7,7 @@ class InputHandler:
         pass
 
     def parse_user_input(self, user_input):
-        user_input_words = user_input.strip().split(" ")
+        user_input_words = user_input.strip().lower().split(" ")
 
         for i in range(len(user_input_words)):
             checked_word = self.check_word(user_input_words[i])

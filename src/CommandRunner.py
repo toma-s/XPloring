@@ -176,7 +176,7 @@ class CommandRunner:
             if hero.right_hand != "none":
                 damage = self.game_state.equipment[hero.right_hand].damage
             spotted_creature.health -= damage
-            print(f"You hit the {target}! {target} lost {damage} health.")
+            print(f"You hit the {target}! {target} lost {damage} health points.")
             if spotted_creature.health <= 0:
                 print(f"{target} is DEAD!")
                 for loot in spotted_creature.drops:
@@ -184,11 +184,43 @@ class CommandRunner:
             # ak ešte žije
             # todo: vsetky prisery v miestnosti su na rade s utokom ?
             if spotted_creature.health > 0:
-                # todo: damage reduction ak ma ableceny armor
-                hero.health -= spotted_creature.damage
-                print(f"{target} had hit you! You lose {spotted_creature.damage} health.")
+                total_damage = self._count_total_hero_damage(spotted_creature)
+                hero.health -= total_damage
+                print(f"{target} had hit you! You lose {total_damage} health points.")
         else:
             print(f"There's no such thing as {target}.")
+
+    def _count_total_hero_damage(self, creature):
+        hero = self.game_state.hero
+        total_armor_resist = 0
+        # todo: shield do left hand?
+        for armor in hero.head, hero.chest, hero.legs:
+            if armor != "none":
+                self.game_state.equipment[armor].durability -= creature.damage // 2
+                if self.game_state.equipment[armor].durability  <= 0:
+                    self._drop_item(armor)
+                total_armor_resist += self.game_state.equipment[armor].resistance
+        total_damage = creature.damage - total_armor_resist
+        return total_damage
+
+    def _drop_item(self, target):
+        hero = self.game_state.hero
+        equipment = self.game_state.equipment
+
+        item = equipment[target]
+
+        if item.slot == "hand":
+            hero.right_hand = "none"
+        elif item.slot == "head":
+            hero.head = "none"
+        elif item.slot == "chest":
+            hero.chest = "none"
+        elif item.slot == "legs":
+            hero.legs = "none"
+
+        item.in_use = False
+        hero.inventory.remove(target)
+        print(f"You've dropped {item.alias[0]}")
 
     def _equip_item(self, target):
         hero = self.game_state.hero

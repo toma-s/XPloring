@@ -12,7 +12,9 @@
         "#equipment_steel_sword",
         "#item_small_healing_potion",
         "#equipment_steel_helmet",
-        "#item_small_poison_potion"
+        "#item_small_poison_potion",
+        "#equipment_steel_helmet",
+        "#equipment_golden_chestplate"
       ],
       "creature": []
     },
@@ -81,8 +83,7 @@
         "alias": [
           "key"
         ],
-        "actions": {
-        }
+        "actions": {}
       }
     },
     "consumable": {
@@ -133,9 +134,20 @@
           "helmet"
         ],
         "slot": "head",
-        "resistance": 5,
+        "resistance": 2,
+        "durability": 12,
         "in_use": false,
         "description": "Good ol' steel helmet"
+      },
+      "#equipment_golden_chestplate": {
+        "alias":[
+          "chestplate"
+        ],
+        "slot": "chest",
+        "resistance": 3,
+        "durability": 18,
+        "in_use": false,
+        "description": "Lannister's army chestplate"
       }
     }
   },
