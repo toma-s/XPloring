@@ -399,28 +399,28 @@ class CommandRunner:
         if hero.right_hand != "none":
             it = self.game_state.equipment[hero.right_hand]
             tmp = it.description
-            tmp += f" {it.damage}ATK"
+            tmp += f" {it.damage} ATK"
         print(f"Right hand: {tmp}")
         tmp = "none"
         if hero.head != "none":
             it = self.game_state.equipment[hero.head]
             tmp = it.description
             tmp += f" {it.resistance} DEF"
-            # tmp += " "+it.durability
+            tmp += f" {it.durability} Durability"
         print(f"Head: {tmp}")
         tmp = "none"
         if hero.chest != "none":
             it = self.game_state.equipment[hero.chest]
             tmp = it.description
             tmp += f" {it.resistance} DEF"
-            # tmp += " "+it.durability
+            tmp += f" {it.durability} Durability"
         print(f"Chest: {tmp}")
         tmp = "none"
         if hero.legs != "none":
             it = self.game_state.equipment[hero.legs]
             tmp = it.description
             tmp += " {it.resistance} DEF"
-            # tmp += " "+it.durability
+            tmp += f" {it.durability} Durability"
         print(f"Leg: {tmp}")
         tmp = "none"
         print(f"For inventory detail type INV")
