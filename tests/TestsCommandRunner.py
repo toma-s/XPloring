@@ -45,3 +45,72 @@ class TestCommandRunner(TestCase):
         self.assertEqual("#room_arena", self.game_state.hero.location)
         self.cr.execute(["go", "north"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
+
+    def testTakeItemCheckInventory(self):
+        self.cr.execute(["take", "sword"])
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        self.assertIn("#equipment_steel_sword", self.game_state.hero.inventory)
+
+    def testEquipItemNotInInventory(self):
+        self.cr.execute(["equip", "sword"])
+        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if
+                 "sword" in self.game_state.equipment[item].alias]
+        self.assertGreaterEqual(1, len(sword))
+        self.assertFalse(sword[0].in_use)
+        self.assertEqual("none", self.game_state.hero.right_hand)
+
+    def testEquipItemInInventory(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if "sword" in self.game_state.equipment[item].alias]
+        self.assertGreaterEqual(1, len(sword))
+        self.assertTrue(sword[0].in_use)
+        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
+
+    def testEquipSameItemTwice(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+        self.cr.execute(["equip", "sword"])
+        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if
+                 "sword" in self.game_state.equipment[item].alias]
+        self.assertGreaterEqual(1, len(sword))
+        self.assertTrue(sword[0].in_use)
+        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
+
+    def testHitCreatureWithFist(self):
+        self.cr.execute(["go", "west"])
+        self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(100, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(59, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+
+    def testHitCreatureWithFistThanWithSword(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["go", "west"])
+        self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(100, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(59, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+        self.cr.execute(["equip", "sword"])
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(29, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(80, self.game_state.hero.health)
+
+    def testKillCreature(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+        self.cr.execute(["go", "west"])
+        self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(100, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(30, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+        self.assertIn("#item_doorkey_exit", self.game_state.rooms[self.game_state.hero.location].items)
+
+
+

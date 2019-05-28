@@ -9,7 +9,9 @@
       },
       "items": [
         "#item_envelope",
-        "#equipment_steel_sword"
+        "#equipment_steel_sword",
+        "#item_small_healing_potion",
+        "#equipment_steel_helmet"
       ],
       "creature": []
     },
@@ -50,43 +52,70 @@
     }
   },
   "items": {
-    "#item_envelope": {
-      "description": "OPEN to get letter from inside",
-      "alias": [
-        "envelope"
-      ],
-      "actions": {
-        "open": {
-          "command_spawn_item": "#item_letter"
+    "regular": {
+      "#item_envelope": {
+        "description": "OPEN to get letter from inside",
+        "alias": [
+          "envelope"
+        ],
+        "actions": {
+          "open": {
+            "command_spawn_item": "#item_letter"
+          }
         }
+      },
+      "#item_letter": {
+        "description": "READ to read content",
+        "alias": [
+          "letter"
+        ],
+        "actions": {
+          "read": {
+            "command_display": "Welcome, take sword and kill that dragon"
+          }
+        }
+      },
+      "#item_doorkey_exit": {
+        "description": "Use this key to unlock the door",
+        "alias": [
+          "key"
+        ],
+        "actions": {}
       }
     },
-    "#item_letter": {
-      "description": "READ to read content",
-      "alias": [
-        "letter"
-      ],
-      "actions": {
-        "read": {
-          "command_display": "Welcome, take sword and kill that dragon"
-        }
+    "consumable": {
+      "#item_small_healing_potion": {
+        "description": "Small healing potion. USE it to heal yourself",
+        "value": 25,
+        "alias": [
+          "potion"
+        ],
+        "actions": {}
       }
-    },
-    "#item_doorkey_exit": {
-      "description": "Use this key to unlock the door",
-      "alias": [
-        "key"
-      ],
-      "actions": {}
     }
   },
   "equipment": {
-    "#equipment_steel_sword": {
-      "alias": [
-        "sword"
-      ],
-      "damage": 30,
-      "description": "Simple sword for fighting"
+    "weapons": {
+      "#equipment_steel_sword": {
+        "alias": [
+          "sword"
+        ],
+        "slot": "hand",
+        "in_use": false,
+        "damage": 30,
+        "description": "Simple sword for fighting"
+      }
+    },
+    "armour": {
+      "#equipment_steel_helmet": {
+        "alias":[
+          "helmet"
+        ],
+        "slot": "head",
+        "resistance": 5,
+        "in_use": false,
+        "description": "Good ol' steel helmet"
+      }
     }
   },
   "environment_objects": {
@@ -100,7 +129,8 @@
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
           "command_set_unlocked": true,
-          "command_set_description": "Unlocked, you can leave."
+          "command_set_description": "Unlocked, you can leave.",
+          "command_display": "Unlocked, you can leave."
         }
       }
     }
@@ -108,13 +138,20 @@
   "hero": {
     "health": 100,
     "location": "#room_entrance",
+    "right_hand": "none",
+    "left_hand": "none",
+    "head": "none",
+    "chest": "none",
+    "legs": "none",
     "actions": {
       "examine": "display item",
       "look": "display room",
       "go": "move_to direction",
       "take": "item_take item",
       "attack": "hit creature",
-      "inventory": "display inventory"
-    }
+      "inventory": "display inventory",
+      "equip": "equip item"
+    },
+    "inventory": []
   }
 }
