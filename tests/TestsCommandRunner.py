@@ -112,5 +112,13 @@ class TestCommandRunner(TestCase):
         self.assertEqual(90, self.game_state.hero.health)
         self.assertIn("#item_doorkey_exit", self.game_state.rooms[self.game_state.hero.location].items)
 
-
+    def testKillCreatureHelmetBreak(self):
+        self.cr.execute(["take", "helmet"])
+        self.cr.execute(["equip", "helmet"])
+        self.cr.execute(["take", "chestplate"])
+        self.cr.execute(["equip", "chestplate"])
+        self.cr.execute(["go", "west"])
+        for i in range(5):
+            self.cr.execute(["attack", "dragon"])
+        self.assertTrue(self.game_state.equipment["#equipment_steel_helmet"].durability <= 0)
 
