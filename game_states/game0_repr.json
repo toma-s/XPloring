@@ -11,7 +11,8 @@
         "#item_envelope",
         "#equipment_steel_sword",
         "#item_small_healing_potion",
-        "#equipment_steel_helmet"
+        "#equipment_steel_helmet",
+        "#item_small_poison_potion"
       ],
       "creature": []
     },
@@ -80,7 +81,8 @@
         "alias": [
           "key"
         ],
-        "actions": {}
+        "actions": {
+        }
       }
     },
     "consumable": {
@@ -90,7 +92,26 @@
         "alias": [
           "potion"
         ],
-        "actions": {}
+        "actions": {
+          "use": {
+            "command_required_item": "#item_small_healing_potion",
+            "command_use_item": true
+          }
+        }
+      },
+      "#item_small_poison_potion": {
+        "description": "Small mystery potion. USE it to see what it does!",
+        "value": -75,
+        "alias": [
+          "mystery"
+        ],
+        "actions": {
+          "use": {
+            "command_required_item": "#item_small_poison_potion",
+            "command_use_item": true,
+            "command_display": "Hahahahahaha you fool :P"
+          }
+        }
       }
     }
   },
@@ -108,7 +129,7 @@
     },
     "armour": {
       "#equipment_steel_helmet": {
-        "alias":[
+        "alias": [
           "helmet"
         ],
         "slot": "head",
@@ -150,7 +171,9 @@
       "take": "item_take item",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "equip": "equip item"
+      "equip": "equip item",
+      "heal": "heal self",
+      "status": "display self"
     },
     "inventory": []
   }

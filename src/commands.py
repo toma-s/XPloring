@@ -12,7 +12,8 @@ commands_actions = {
     "open": {"release"},
     "go": {"run", "move"},
     "take": {"pick", "lift", "get"},
-    "look": {"check", "observe"}
+    "look": {"check", "observe"},
+    "inventory": {"inv"}
 }
 
 command_rules = {

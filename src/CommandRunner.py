@@ -1,6 +1,10 @@
 from src.GameState import GameState
 from src.Room import Room
 from src.Item import Item
+from src.Consumable import Consumable
+from src.Equipment import Equipment
+from src.Weapon import Weapon
+from src.Armour import Armour
 from random import randrange as rr
 
 
@@ -20,7 +24,14 @@ class CommandRunner:
                     self.display(rooms[hero.location])
                     return
                 if noun == "inventory":
-                    self.display(hero.inventory)
+                    self.display("inventory")
+                    return
+                if noun == "self":
+                    self.display("status")
+                    return
+            elif verb == "heal":
+                if noun == "self":
+                    self.heal()
                     return
 
         print("I don't understand. Try again.")
@@ -67,6 +78,13 @@ class CommandRunner:
                 int_commands = self.game_state.items[it].actions[action]
                 item_id = it
                 break
+        if not int_commands:
+            for it in self.game_state.items:
+                if it in self.game_state.hero.inventory and target in self.game_state.items[it].alias and action in \
+                        self.game_state.items[it].actions:
+                    int_commands = self.game_state.items[it].actions[action]
+                    item_id = it
+                    break
         if int_commands:
             self.run_internal_command(int_commands, item_id)
 
@@ -258,6 +276,11 @@ class CommandRunner:
             self.discover_room()
         elif isinstance(obj, Item):
             self.examine_item(obj)
+        elif isinstance(obj, str):
+            if obj == "inventory":
+                self.show_inventory()
+            elif obj == "status":
+                self.show_status()
         else:
             print(obj)
 
@@ -278,11 +301,13 @@ class CommandRunner:
                 if not self.check_inventory_for_item(commands[c]):
                     print(f"You do not have item required to do this action.")
                     return
+                continue
             elif c == "command_set_unlocked":
                 self.game_state.environment_objects[node].unlocked = commands[c]
             elif c == "command_set_description":
                 self.game_state.environment_objects[node].description = commands[c]
-
+            elif c == "command_use_item":
+                self.use_item(node)
 
     def spawn_item(self, item_id):
         items = self.game_state.items
@@ -300,3 +325,88 @@ class CommandRunner:
 
     def check_inventory_for_item(self, item_id):
         return item_id in self.game_state.hero.inventory
+
+    def use_item(self, item_id):
+        item = self.game_state.items[item_id]
+        hero = self.game_state.hero
+
+        if item.value > 0 and hero.health == 100:
+            print(f"You are fully healed, you don't need healing.")
+            return
+        if item.value < 0:
+            will_heal = item.value
+        else:
+            need_heal = 100 - hero.health
+            if need_heal >= item.value:
+                will_heal = item.value
+            else:
+                will_heal = need_heal
+
+        hero.health += will_heal
+        sign = "+"
+        if will_heal < 0:
+            sign = ""
+        print(f"You used {item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        hero.inventory.remove(item_id)
+
+    def heal(self):
+        hero = self.game_state.hero
+
+        for item in hero.inventory:
+            if item in self.game_state.items and isinstance(self.game_state.items[item], Consumable):
+                if self.game_state.items[item].value > 0:
+                    self.use_item(item)
+                    return
+        print(f"You don't have anything you could use for healing in your inventory")
+
+    def show_status(self):
+        hero = self.game_state.hero
+        print(f"----- HERO STATUS -----")
+        print(f"Health: {hero.health}HP")
+        tmp = "none"
+        if hero.right_hand != "none":
+            it = self.game_state.equipment[hero.right_hand]
+            tmp = it.description
+            tmp += f" {it.damage}ATK"
+        print(f"Right hand: {tmp}")
+        tmp = "none"
+        if hero.head != "none":
+            it = self.game_state.equipment[hero.head]
+            tmp = it.description
+            tmp += f" {it.resistance} DEF"
+            # tmp += " "+it.durability
+        print(f"Head: {tmp}")
+        tmp = "none"
+        if hero.chest != "none":
+            it = self.game_state.equipment[hero.chest]
+            tmp = it.description
+            tmp += f" {it.resistance} DEF"
+            # tmp += " "+it.durability
+        print(f"Chest: {tmp}")
+        tmp = "none"
+        if hero.legs != "none":
+            it = self.game_state.equipment[hero.legs]
+            tmp = it.description
+            tmp += " {it.resistance} DEF"
+            # tmp += " "+it.durability
+        print(f"Leg: {tmp}")
+        tmp = "none"
+        print(f"For inventory detail type INV")
+        print(f"-----------------------")
+
+    def show_inventory(self):
+        hero = self.game_state.hero
+        if len(hero.inventory) == 0:
+            print(f"Your inventory is empty")
+            return
+
+        for item in hero.inventory:
+            if item in self.game_state.items:
+                it = self.game_state.items[item]
+            else:
+                it = self.game_state.equipment[item]
+            res = it.description
+            if isinstance(it, Armour) or isinstance(it, Weapon):
+                if it.in_use:
+                    res += " [EQUIPPED]"
+            print(res)
