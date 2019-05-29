@@ -25,8 +25,8 @@
           "room_id": "#room_entrance"
         },
         "north": {
-          "room_id": "#room_exit",
-          "env_obj_id": "#env_door_exit"
+          "env_obj_id": "#env_door_exit",
+          "room_id": "#room_exit"
         }
       },
       "items": [],
@@ -162,6 +162,7 @@
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
           "command_set_unlocked": true,
+          "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "Unlocked, you can leave.",
           "command_display": "Unlocked, you can leave."
         }

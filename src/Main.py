@@ -20,7 +20,7 @@ if __name__ == '__main__':
             testtest
         ]
     )
-    unittest.TextTestRunner(verbosity=2).run(testy)
+    # unittest.TextTestRunner(verbosity=2).run(testy)
 
     map0 = '../game_states/game0_repr.json'
     game_state = GameState(map0)

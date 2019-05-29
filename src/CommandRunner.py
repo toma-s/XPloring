@@ -40,10 +40,11 @@ class CommandRunner:
         if action in self.game_state.hero.actions:
             self._hero_action(action, target)
         else:
-            # for env_obj in self.game_state.environment_objects:
-            #     if env_obj in self.game_state.rooms[self.game_state.hero.location].action in self.game_state.environment_objects[env_obj].actions:
-            #         self._env_object_action(action, target)
-            #         return
+            for direction in self.game_state.rooms[self.game_state.hero.location].directions:
+                if "env_obj_id" in self.game_state.rooms[self.game_state.hero.location].directions[direction]:
+                    # print(self.game_state.rooms[self.game_state.hero.location].directions[direction]["env_obj_id"])
+                    self._env_object_action(action, self.game_state.rooms[self.game_state.hero.location].directions[direction]["env_obj_id"])
+                    return
             self._item_action(action, target)
 
     def _hero_action(self, action, target):
@@ -89,16 +90,13 @@ class CommandRunner:
             self.run_internal_command(int_commands, item_id)
 
     def _env_object_action(self, action, target):
-        int_commands = None
-        obj_id = None
-        for it in self.game_state.rooms[self.game_state.hero.location].items:
-            if it in self.game_state.environment_objects and target in self.game_state.environment_objects[it].alias \
-                    and action in self.game_state.environment_objects[it].actions:
-                int_commands = self.game_state.items[it].actions[action]
-                obj_id = it
-                break
+        obj = self.game_state.environment_objects[target]
+        if action == "unlock" and obj.unlocked:
+            print(f"Already unlocked.")
+            return
+        int_commands = obj.actions[action]
         if int_commands:
-            self.run_internal_command(int_commands, obj_id)
+            self.run_internal_command(int_commands, target)
 
     def _display_item(self, target):
         items = self.game_state.items
@@ -336,10 +334,16 @@ class CommandRunner:
                 continue
             elif c == "command_set_unlocked":
                 self.game_state.environment_objects[node].unlocked = commands[c]
+                print(f"Unlocked.")
             elif c == "command_set_description":
                 self.game_state.environment_objects[node].description = commands[c]
             elif c == "command_use_item":
                 self.use_item(node)
+            elif c == "command_remove_item_from_inventory":
+                self.game_state.hero.inventory.remove(commands[c])
+            else:
+                print(f"Unknown internal command {c}")
+                return
 
     def spawn_item(self, item_id):
         items = self.game_state.items
