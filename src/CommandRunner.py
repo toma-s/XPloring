@@ -311,6 +311,8 @@ class CommandRunner:
                 self.show_inventory()
             elif obj == "status":
                 self.show_status()
+            else:
+                print(obj)
         else:
             print(obj)
 
@@ -318,6 +320,8 @@ class CommandRunner:
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
         print(f"You entered {rooms[room_id].description.lower()}")
+        if rooms[room_id].auto_commands is not None:
+            self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
     def run_internal_command(self, commands, node=None):
         # print(f"[DEBUG] running internal - {commands}")
@@ -334,13 +338,14 @@ class CommandRunner:
                 continue
             elif c == "command_set_unlocked":
                 self.game_state.environment_objects[node].unlocked = commands[c]
-                print(f"Unlocked.")
             elif c == "command_set_description":
                 self.game_state.environment_objects[node].description = commands[c]
             elif c == "command_use_item":
                 self.use_item(node)
             elif c == "command_remove_item_from_inventory":
                 self.game_state.hero.inventory.remove(commands[c])
+            elif c == "command_end_game":
+                exit(1)
             else:
                 print(f"Unknown internal command {c}")
                 return

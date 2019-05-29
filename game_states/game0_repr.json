@@ -35,10 +35,14 @@
       ]
     },
     "#room_exit": {
-      "description": "Congratulations.",
+      "description": "The matrix",
       "directions": {},
       "items": [],
-      "creature": []
+      "creature": [],
+      "auto_commands": {
+        "command_display": "Congratulations Hero. You reached the last room. Unfortunately for you, this was all a simulation and everything you experienced was a big lie. Wish you a nice day ^_^",
+        "command_end_game": true
+      }
     }
   },
   "creatures": {
@@ -171,7 +175,7 @@
   },
   "hero": {
     "health": 100,
-    "location": "#room_entrance",
+    "location": "#room_arena",
     "right_hand": "none",
     "left_hand": "none",
     "head": "none",
@@ -188,6 +192,6 @@
       "heal": "heal self",
       "status": "display self"
     },
-    "inventory": []
+    "inventory": ["#item_doorkey_exit"]
   }
 }
