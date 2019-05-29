@@ -2,10 +2,8 @@ from src.GameState import GameState
 from src.Room import Room
 from src.Item import Item
 from src.Consumable import Consumable
-from src.Equipment import Equipment
 from src.Weapon import Weapon
 from src.Armour import Armour
-from random import randrange as rr
 
 
 class CommandRunner:
@@ -174,7 +172,7 @@ class CommandRunner:
             if hero.right_hand != "none":
                 damage = self.game_state.equipment[hero.right_hand].damage
             spotted_creature.health -= damage
-            print(f"You hit the {target}! {target} lost {damage} health points.")
+            print(f"You hit the {target}! {target} lost {damage} HP.")
             if spotted_creature.health <= 0:
                 print(f"{target} is DEAD!")
                 for loot in spotted_creature.drops:
@@ -184,7 +182,7 @@ class CommandRunner:
             if spotted_creature.health > 0:
                 total_damage = self._count_total_hero_damage(spotted_creature)
                 hero.health -= total_damage
-                print(f"{target} had hit you! You lose {total_damage} health points.")
+                print(f"{target} had hit you! You lose {total_damage} HP.")
         else:
             print(f"There's no such thing as {target}.")
 
@@ -218,6 +216,7 @@ class CommandRunner:
 
         item.in_use = False
         hero.inventory.remove(target)
+        print(f"Ouch! {item.alias[0]} has been destroyed!")
         print(f"You've dropped {item.alias[0]}")
 
     def _equip_item(self, target):

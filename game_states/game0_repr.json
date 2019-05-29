@@ -175,7 +175,7 @@
   },
   "hero": {
     "health": 100,
-    "location": "#room_arena",
+    "location": "#room_entrance",
     "right_hand": "none",
     "left_hand": "none",
     "head": "none",
@@ -192,6 +192,6 @@
       "heal": "heal self",
       "status": "display self"
     },
-    "inventory": ["#item_doorkey_exit"]
+    "inventory": []
   }
 }
