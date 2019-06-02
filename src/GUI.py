@@ -11,12 +11,15 @@ class GUI:
         self.window.title("X-Ploring game")
         self.window.bind('<Return>',self.enterPressed)
 
-        self.text_output = tkinter.Text(self.window)
+        self.main_frame = tkinter.Frame(self.window)
+        self.main_frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
+
+        self.text_output = tkinter.Text(self.main_frame)
         self.text_output.insert(tkinter.END,"This is yes!")
         self.text_output.configure(state='disabled')
         self.text_output.grid(column=0, row=0)
 
-        self.text_input = tkinter.Text(self.window,height=1, width=80)
+        self.text_input = tkinter.Text(self.main_frame,height=1, width=80)
         self.text_input.insert(tkinter.END, "Input here!")
         self.text_input.grid(column=0, row=1)
 
