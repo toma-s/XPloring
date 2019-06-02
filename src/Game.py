@@ -11,7 +11,8 @@ from contextlib import redirect_stdout
 class Game:
 
     navigation = ["Type LOOK for more information about the environment.",
-                  "Type QUIT or Q to quit game."] # ...
+                  "Type QUIT or Q to quit game.",
+                  "Press Enter to commit input."] # ...
 
     def __init__(self, map: GameState):
         self.GUI = GUI(self)
@@ -30,7 +31,7 @@ class Game:
             print("What is your next step?")
             print('\n' + '\n'.join(self.navigation))
 
-            print(">>> ", end="")
+            print(">>> ")
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)

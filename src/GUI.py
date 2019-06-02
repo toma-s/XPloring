@@ -30,9 +30,10 @@ class GUI:
 
     def setOutput(self, text):
         self.text_output.configure(state='normal')
-        self.text_output.delete('1.0', tkinter.END)
+        #self.text_output.delete('1.0', tkinter.END)
         self.text_output.insert(tkinter.INSERT, text)
         self.text_output.configure(state='disabled')
+        self.text_output.see("end")
 
     def enterPressed(self,e):
         self.game.react_to_input(self.getInput())
