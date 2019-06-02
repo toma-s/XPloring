@@ -13,7 +13,7 @@ class Game:
                   "Type QUIT or Q to quit game."] # ...
 
     def __init__(self, map: GameState):
-        self.GUI = GUI()
+        self.GUI = GUI(self)
         self.game_state = map
         self.input_handler = InputHandler()
         self.command_runner = CommandRunner(self.game_state)
@@ -30,16 +30,6 @@ class Game:
             print('\n' + '\n'.join(self.navigation))
 
             print(">>> ", end="")
-
-            # while True:
-            #     print(">>> ", end="")
-            #     user_input = input()
-            #
-            #     if re.match("q|Q|quit|QUIT", user_input):
-            #         return
-            #
-            #     commands_to_run = self.input_handler.parse_user_input(user_input)
-            #     self.command_runner.execute(commands_to_run)
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)
