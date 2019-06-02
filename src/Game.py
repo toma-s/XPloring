@@ -3,6 +3,7 @@ from src.InputHandler import InputHandler
 from src.CommandRunner import CommandRunner
 from src.GUI import GUI
 import re
+import sys
 
 import io
 from contextlib import redirect_stdout
@@ -38,7 +39,7 @@ class Game:
         buffer = io.StringIO()
         with redirect_stdout(buffer):
             if re.match("q|Q|quit|QUIT", user_input):
-                return
+                sys.exit(0)
 
             commands_to_run = self.input_handler.parse_user_input(user_input)
             self.command_runner.execute(commands_to_run)
