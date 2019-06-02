@@ -3,6 +3,9 @@ from typing import Dict
 
 from src.Equipment import Equipment
 from src.Item import Item
+from src.Consumable import Consumable
+from src.Weapon import Weapon
+from src.Armour import Armour
 from src.Creature import Creature
 from src.Hero import Hero
 from src.Room import Room
@@ -23,10 +26,29 @@ class GameState:
 
     def create_dict(self, type, key_name) -> Dict[str, any]:
         objects = dict()
-        rooms_data = self.game_data[key_name]
-        for key, value in rooms_data.items():
-            object = type(value)
-            objects[key] = object
+        if type is Item:
+            data = self.game_data[key_name]["regular"]
+            for key in data:
+                object = Item(data[key])
+                objects[key] = object
+            data = self.game_data[key_name]["consumable"]
+            for key in data:
+                object = Consumable(data[key])
+                objects[key] = object
+        elif type is Equipment:
+            data = self.game_data[key_name]["weapons"]
+            for key in data:
+                object = Weapon(data[key])
+                objects[key] = object
+            data = self.game_data[key_name]["armour"]
+            for key in data:
+                object = Armour(data[key])
+                objects[key] = object
+        else:
+            rooms_data = self.game_data[key_name]
+            for key, value in rooms_data.items():
+                object = type(value)
+                objects[key] = object
         return objects
 
     def create_hero(self) -> Hero:
