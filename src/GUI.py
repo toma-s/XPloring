@@ -14,7 +14,7 @@ class GUI:
         self.text_output.configure(state='disabled')
         self.text_output.grid(column=0, row=0);
 
-        self.text_input = tkinter.Text(self.window,height=1, width=10)
+        self.text_input = tkinter.Text(self.window,height=1, width=80)
         self.text_input.insert(tkinter.END, "Input here!")
         self.text_input.grid(column=0, row=1);
 
