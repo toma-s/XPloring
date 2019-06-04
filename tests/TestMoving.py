@@ -1,10 +1,10 @@
-from unittest import TestCase
+import unittest
 
 from src.GameState import GameState
 from src.CommandRunner import CommandRunner
 
 
-class TestMoving(TestCase):
+class TestMoving(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -27,3 +27,6 @@ class TestMoving(TestCase):
         self.cr.execute(["go", "west"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
         self.cr.execute(["go", "east"])
+
+if __name__ == '__main__':
+    unittest.main()

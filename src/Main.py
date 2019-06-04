@@ -9,23 +9,6 @@ from tests.TestMoving import TestMoving
 import unittest
 
 if __name__ == '__main__':
-    testLoader = unittest.TestLoader()
-
-    test_input_handler = testLoader.loadTestsFromTestCase(TestInputHandler)
-    test_moving = testLoader.loadTestsFromTestCase(TestMoving)
-    test_combat = testLoader.loadTestsFromTestCase(TestCombat)
-    test_items = testLoader.loadTestsFromTestCase(TestItems)
-
-    testy = unittest.TestSuite(
-        [
-            test_input_handler,
-            test_moving,
-            test_combat,
-            test_items
-        ]
-    )
-    # unittest.TextTestRunner(verbosity=2).run(testy)
-
 
     map0 = '../game_states/game0_repr.json'
     game_state = GameState(map0)
