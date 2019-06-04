@@ -1,4 +1,4 @@
-from Equipment import Equipment
+from src.Equipment import Equipment
 
 
 class Weapon(Equipment):

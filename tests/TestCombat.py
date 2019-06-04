@@ -1,10 +1,10 @@
-from unittest import TestCase
+import unittest
 
 from src.GameState import GameState
 from src.CommandRunner import CommandRunner
 
 
-class TestCombat(TestCase):
+class TestCombat(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -109,4 +109,5 @@ class TestCombat(TestCase):
         self.assertEqual("#room_arena", self.game_state.hero.location)
 
 
-
+if __name__ == '__main__':
+    unittest.main()

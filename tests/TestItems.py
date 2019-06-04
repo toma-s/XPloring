@@ -1,10 +1,10 @@
-from unittest import TestCase
+import unittest
 
 from src.GameState import GameState
 from src.CommandRunner import CommandRunner
 
 
-class TestItems(TestCase):
+class TestItems(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -80,4 +80,5 @@ class TestItems(TestCase):
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
 
 
-
+if __name__ == '__main__':
+    unittest.main()

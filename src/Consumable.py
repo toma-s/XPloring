@@ -1,4 +1,4 @@
-from Item import Item
+from src.Item import Item
 
 
 class Consumable(Item):
