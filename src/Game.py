@@ -35,7 +35,7 @@ class Game:
             print(">>> ", end="")
             user_input = input()
 
-            if re.match("q|Q|quit|QUIT", user_input):
+            if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 return
 
             commands_to_run = self.input_handler.parse_user_input(user_input)
@@ -59,7 +59,7 @@ class Game:
     def react_to_input(self, user_input):
         buffer = io.StringIO()
         with redirect_stdout(buffer):
-            if re.match("q|Q|quit|QUIT", user_input):
+            if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 sys.exit(0)
 
             commands_to_run = self.input_handler.parse_user_input(user_input)
