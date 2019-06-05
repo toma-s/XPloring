@@ -172,7 +172,7 @@ class CommandRunner:
             if hero.right_hand != "none":
                 damage = self.game_state.equipment[hero.right_hand].damage
             spotted_creature.health -= damage
-            print(f"You hit the {target}! {target} lost {damage} HP.")
+            print(f"You hit the {target} for {damage} damage! {target} has {spotted_creature.health} HP left.")
             if spotted_creature.health <= 0:
                 print(f"{target} is DEAD!")
                 for loot in spotted_creature.drops:
@@ -182,7 +182,7 @@ class CommandRunner:
             if spotted_creature.health > 0:
                 total_damage = self._count_total_hero_damage(spotted_creature)
                 hero.health -= total_damage
-                print(f"{target} had hit you! You lose {total_damage} HP.")
+                print(f"{target} hit you for {total_damage} damage! You have {hero.health} HP left.")
         else:
             print(f"There's no such thing as {target}.")
 
@@ -445,7 +445,7 @@ class CommandRunner:
                 it = self.game_state.items[item]
             else:
                 it = self.game_state.equipment[item]
-            res = it.description
+            res = f"{it.alias[0]} - {it.description}"
             if isinstance(it, Armour) or isinstance(it, Weapon):
                 if it.in_use:
                     res += " [EQUIPPED]"
