@@ -1,11 +1,23 @@
 from os import listdir
 from os.path import isfile, join
 
+from exceptions.GameStateFileException import GameStateFileException
 from src.Game import Game
 from src.GameState import GameState
 
 
-parent_path = '../game_states'
+parent_path = '..\\game_states'
+
+
+def run():
+    try:
+        config_files = get_config_files()
+        game_config = let_user_pick(config_files, "the game")
+        game_state = GameState(join(parent_path, game_config))
+        game = Game(game_state)
+        game.run_console()
+    except GameStateFileException as e:
+        print(f"Failed to read game configuration file: {e}")
 
 
 def get_config_files():
@@ -38,8 +50,4 @@ def valid_choice(choice, max_limit):
 
 
 if __name__ == '__main__':
-    config_files = get_config_files()
-    game_config = let_user_pick(config_files, "the game")
-    game_state = GameState(join(parent_path, game_config))
-    game = Game(game_state)
-    game.run_console()
+    run()

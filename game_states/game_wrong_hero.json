@@ -1,0 +1,40 @@
+{
+  "rooms": {
+    "#room_dummy": {
+      "description": "Dummy room.",
+      "directions": {
+      },
+      "items": [
+      ],
+      "creature": []
+    }
+  },
+  "creatures": {
+  },
+  "items": {
+    "regular": {
+    },
+    "consumable": {
+    }
+  },
+  "equipment": {
+    "weapons": {
+    },
+    "armour": {
+    }
+  },
+  "environment_objects": {
+  },
+  "hero": {
+    "health": 100,
+    "location_BUG": "#room_dummy",
+    "right_hand": "none",
+    "left_hand": "none",
+    "head": "none",
+    "chest": "none",
+    "legs": "none",
+    "actions": {
+    },
+    "inventory": []
+  }
+}
