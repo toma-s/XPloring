@@ -21,15 +21,20 @@ def let_user_pick(options, item_name):
         print("Please choose %s:" % item_name)
         for idx, element in enumerate(options):
             print("{}) {}".format(idx + 1, element))
-        i = input("Enter number: ")
-        if not i.isdigit():
-            print("Not a number\n")
+        chosen_i = input("Enter number: ")
+        if not valid_choice(chosen_i, len(options)):
             continue
-        if 0 >= int(i) or int(i) > len(options):
-            print("Number out of range\n")
-            continue
-        return options[int(i) - 1]
+        return options[int(chosen_i) - 1]
 
+
+def valid_choice(choice, max_limit):
+    if not choice.isdigit():
+        print("Not a number\n")
+        return False
+    if 0 >= int(choice) or int(choice) > max_limit:
+        print("Number out of range\n")
+        return False
+    return True
 
 
 if __name__ == '__main__':
