@@ -9,4 +9,3 @@ if __name__ == '__main__':
     game = Game(game_state)
     game.run()
     game.GUI.window.mainloop()
-
