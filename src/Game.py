@@ -12,8 +12,7 @@ from contextlib import redirect_stdout
 
 class Game:
 
-    navigation = ["Type LOOK for more information about the environment.",
-                  "Type QUIT or Q to quit game.",
+    navigation = ["Type HELP for manual.",
                   "Press Enter to commit input."]
 
     def __init__(self, map: GameState):
@@ -34,6 +33,9 @@ class Game:
         while True:
             print(">>> ", end="")
             user_input = input()
+
+            if re.match("^help$|^HELP$", user_input):
+                print_help()
 
             if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 return
@@ -67,3 +69,11 @@ class Game:
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)
+
+
+def print_help():
+    print("HELP:")
+    print("Type LOOK for more information about the environment.")
+    print("Type INVENTORY to check out the collected items.")
+    print("Type EXAMINE <item name> to learn more about an item.")
+    print("Type QUIT or Q to quit game.")
