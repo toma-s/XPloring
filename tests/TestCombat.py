@@ -1,4 +1,6 @@
 import unittest
+import contextlib
+import io
 
 from src.GameState import GameState
 from src.CommandRunner import CommandRunner
@@ -22,6 +24,22 @@ class TestCombat(unittest.TestCase):
         self.cr.execute(["attack", "dragon"])
         self.assertEqual(59, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
+
+    def testDeadHero(self):
+        self.cr.execute(["go", "west"])
+        for i in range(9):
+            self.cr.execute(["attack", "dragon"])
+
+        self.assertEqual(51, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(10, self.game_state.hero.health)
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "dragon"])
+        result_output = stdout.getvalue()
+        expected_output = "Game over\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual(50, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(0, self.game_state.hero.health)
 
     def testHitCreatureWithFistThanWithSword(self):
         self.cr.execute(["take", "sword"])

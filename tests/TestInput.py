@@ -1,7 +1,6 @@
 import unittest
 import contextlib
 import io
-import sys
 
 
 from CommandRunner import CommandRunner
