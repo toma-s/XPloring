@@ -36,6 +36,7 @@ class Game:
 
             if re.match("^help$|^HELP$", user_input):
                 print_help()
+                continue
 
             if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 return
@@ -61,19 +62,25 @@ class Game:
     def react_to_input(self, user_input):
         buffer = io.StringIO()
         with redirect_stdout(buffer):
-            if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
+            if re.match("^help$|^HELP$", user_input):
+                print_help()
+
+            elif re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 sys.exit(0)
 
-            commands_to_run = self.input_handler.parse_user_input(user_input)
-            self.command_runner.execute(commands_to_run)
+            else:
+                commands_to_run = self.input_handler.parse_user_input(user_input)
+                self.command_runner.execute(commands_to_run)
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)
 
 
 def print_help():
-    print("HELP:")
+    print("Basic commands:")
     print("Type LOOK for more information about the environment.")
     print("Type INVENTORY to check out the collected items.")
+    print("Type EQUIP to try on an item from the inventory.")
+    print("Type STATUS to print out you current Hero status.")
     print("Type EXAMINE <item name> to learn more about an item.")
     print("Type QUIT or Q to quit game.")
