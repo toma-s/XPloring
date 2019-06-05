@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from os import listdir
 from os.path import isfile, join
 
@@ -23,9 +22,14 @@ def let_user_pick(options, item_name):
         for idx, element in enumerate(options):
             print("{}) {}".format(idx + 1, element))
         i = input("Enter number: ")
-        if 0 < int(i) <= len(options):
-            return options[int(i) - 1]
-        print("Number out of range\n")
+        if not i.isdigit():
+            print("Not a number\n")
+            continue
+        if 0 >= int(i) or int(i) > len(options):
+            print("Number out of range\n")
+            continue
+        return options[int(i) - 1]
+
 
 
 if __name__ == '__main__':
