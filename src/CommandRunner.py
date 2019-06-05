@@ -1,9 +1,9 @@
 from src.GameState import GameState
-from src.Room import Room
-from src.Item import Item
-from src.Consumable import Consumable
-from src.Weapon import Weapon
-from src.Armour import Armour
+from game_item.Room import Room
+from game_item.Item import Item
+from game_item.Consumable import Consumable
+from game_item.Weapon import Weapon
+from game_item.Armour import Armour
 
 
 class CommandRunner:
@@ -49,7 +49,7 @@ class CommandRunner:
         hero = self.game_state.hero
         verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
         if verb == "display":
-            if noun == "item":
+            if noun == "game_item":
                 self._display_item(target)
 
         elif verb == "move_to":
@@ -57,7 +57,7 @@ class CommandRunner:
                 self._move_to_direction(target)
 
         elif verb == "item_take":
-            if noun == "item":
+            if noun == "game_item":
                 self._item_take(target)
 
         elif verb == "hit":
@@ -65,7 +65,7 @@ class CommandRunner:
                 self._hit_creature(target)
 
         elif verb == "equip":
-            if noun == "item":
+            if noun == "game_item":
                 self._equip_item(target)
 
     def _item_action(self, action, target):
@@ -216,8 +216,8 @@ class CommandRunner:
 
         item.in_use = False
         hero.inventory.remove(target)
-        print(f"Ouch! {item.alias[0]} has been destroyed!")
-        print(f"You've dropped {item.alias[0]}")
+        print(f"Ouch! {game_item.alias[0]} has been destroyed!")
+        print(f"You've dropped {game_item.alias[0]}")
 
     def _equip_item(self, target):
         hero = self.game_state.hero
@@ -298,7 +298,7 @@ class CommandRunner:
             print(f"You can GO {d.upper()}.")
 
     def examine_item(self, item):
-        print(f"{item.description}")
+        print(f"{game_item.description}")
 
     def display(self, obj):
         if isinstance(obj, Room):
@@ -332,7 +332,7 @@ class CommandRunner:
                 self.display(commands[c])
             elif c == "command_required_item":
                 if not self.check_inventory_for_item(commands[c]):
-                    print(f"You do not have item required to do this action.")
+                    print(f"You do not have game_item required to do this action.")
                     return
                 continue
             elif c == "command_set_unlocked":
@@ -386,7 +386,7 @@ class CommandRunner:
         sign = "+"
         if will_heal < 0:
             sign = ""
-        print(f"You used {item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        print(f"You used {game_item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
         hero.inventory.remove(item_id)
 
     def heal(self):

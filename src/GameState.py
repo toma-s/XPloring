@@ -1,15 +1,15 @@
 import json
 from typing import Dict
 
-from src.Equipment import Equipment
-from src.Item import Item
-from src.Consumable import Consumable
-from src.Weapon import Weapon
-from src.Armour import Armour
-from src.Creature import Creature
-from src.Hero import Hero
-from src.Room import Room
-from src.EnvironmentObject import EnvironmentObject
+from game_item.Equipment import Equipment
+from game_item.Item import Item
+from game_item.Consumable import Consumable
+from game_item.Weapon import Weapon
+from game_item.Armour import Armour
+from game_item.Creature import Creature
+from game_item.Hero import Hero
+from game_item.Room import Room
+from game_item.EnvironmentObject import EnvironmentObject
 
 
 class GameState:
