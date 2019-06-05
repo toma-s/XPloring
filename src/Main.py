@@ -8,4 +8,4 @@ if __name__ == '__main__':
     game_state = GameState(map0)
     game = Game(game_state)
     game.run()
-    # game.GUI.window.mainloop()
+    game.GUI.window.mainloop()
