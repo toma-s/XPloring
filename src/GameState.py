@@ -24,6 +24,9 @@ class GameState:
         self.environment_objects = self.create_dict(EnvironmentObject, "environment_objects")
         self.hero = self.create_hero()
 
+        #acievements
+        self.letters_read_count = 0;
+
     def create_dict(self, type, key_name) -> Dict[str, any]:
         objects = dict()
         if type is Item:

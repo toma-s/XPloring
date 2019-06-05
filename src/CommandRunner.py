@@ -344,7 +344,13 @@ class CommandRunner:
             elif c == "command_remove_item_from_inventory":
                 self.game_state.hero.inventory.remove(commands[c])
             elif c == "command_end_game":
-                exit(1)
+                for i in self.game_state.hero.achievements:
+                    self.display(i)
+            elif c == "command_append_read_lettters":
+                self.game_state.letters_read_count += 1
+                if(self.game_state.letters_read_count >= self.game_state.hero.number_of_letters):
+                    self.game_state.hero.achievements.append("letter reader");
+                    self.display("**You unlocked achievements \"letter reader\"**")
             else:
                 print(f"Unknown internal command {c}")
                 return

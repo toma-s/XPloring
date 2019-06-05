@@ -9,5 +9,6 @@ class Hero:
         self.chest = data['chest']
         self.legs = data['legs']
         self.actions = data['actions']
+        self.achievements = data['achievements']
+        self.number_of_letters = data['number_of_letters']
         self.inventory = data['inventory']
-

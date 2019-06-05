@@ -9,6 +9,7 @@
       },
       "items": [
         "#item_envelope",
+        "#item_letter_2",
         "#equipment_steel_sword",
         "#item_small_healing_potion",
         "#equipment_steel_helmet",
@@ -77,7 +78,20 @@
         ],
         "actions": {
           "read": {
-            "command_display": "Welcome, take sword and kill that dragon"
+            "command_display": "Welcome, take sword and kill that dragon",
+            "command_append_read_lettters": 1
+          }
+        }
+      },
+      "#item_letter_2": {
+        "description": "READ to read content",
+        "alias": [
+          "fancy_letter"
+        ],
+        "actions": {
+          "read": {
+            "command_display": "I like trains",
+            "command_append_read_lettters": 1
           }
         }
       },
@@ -191,6 +205,8 @@
       "heal": "heal self",
       "status": "display self"
     },
+    "achievements": [],
+    "number_of_letters": 2,
     "inventory": []
   }
 }
