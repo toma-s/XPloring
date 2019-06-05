@@ -36,6 +36,19 @@ class TestCombat(unittest.TestCase):
         self.assertEqual(29, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(80, self.game_state.hero.health)
 
+    def testKillDragon(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+        self.cr.execute(["go", "west"])
+        self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(100, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(30, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+        self.cr.execute(["attack", "dragon"])
+        self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(90, self.game_state.hero.health)
+
     def testGetKey(self):
         self.cr.execute(["take", "sword"])
         self.cr.execute(["equip", "sword"])
