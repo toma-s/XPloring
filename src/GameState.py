@@ -36,8 +36,8 @@ class GameState:
                 object = type(value)
                 objects[key] = object
             return objects
-        except KeyError:
-            raise GameStateFileException(f"Failed to read {key_name} data")
+        except KeyError as e:
+            raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
 
     def create_item_dict(self, key_name):
         try:
@@ -51,8 +51,8 @@ class GameState:
                 object = Consumable(data[key])
                 objects[key] = object
             return objects
-        except KeyError:
-            raise GameStateFileException(f"Failed to read {key_name} data")
+        except KeyError as e:
+            raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
 
     def create_equipment_dict(self, key_name):
         try:
@@ -66,15 +66,15 @@ class GameState:
                 object = Armour(data[key])
                 objects[key] = object
             return objects
-        except KeyError:
-            raise GameStateFileException(f"Failed to read {key_name} data")
+        except KeyError as e:
+            raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
 
     def create_hero(self) -> Hero:
         try:
             hero_data = self.game_data['hero']
             return Hero(hero_data)
-        except KeyError:
-            raise GameStateFileException("Failed to read hero data")
+        except KeyError as e:
+            raise GameStateFileException(f"Failed to read hero data: cannot find key {e}")
 
     @staticmethod
     def read_file(file_path) -> Dict[str, dict]:

@@ -1,6 +1,4 @@
 import unittest
-import contextlib
-import io
 from os.path import join
 
 from GameState import GameState
@@ -10,6 +8,8 @@ from exceptions.GameStateFileException import GameStateFileException
 class TestGameState(unittest.TestCase):
 
     parent_path = '..\\game_states'
+
+    # read file
 
     def test_game0_repr(self):
         game_config = "game0_repr.json"
@@ -32,6 +32,43 @@ class TestGameState(unittest.TestCase):
         expected_message = "Failed to parse JSON file: " \
                            "Expecting value: line 1 column 1 (char 0)"
         game_config = "game_wrong_format.txt"
+        with self.assertRaises(GameStateFileException) as e:
+            GameState(join(self.parent_path, game_config))
+        self.assertEqual(expected_message, str(e.exception))
+
+    # save to objects
+
+    def test_wrong_hero(self):
+        expected_message = "Failed to read hero data: cannot find key 'location'"
+        game_config = "game_wrong_hero.json"
+        with self.assertRaises(GameStateFileException) as e:
+            GameState(join(self.parent_path, game_config))
+        self.assertEqual(expected_message, str(e.exception))
+
+    def test_wrong_rooms(self):
+        expected_message = "Failed to read rooms data: cannot find key 'description'"
+        game_config = "game_wrong_rooms.json"
+        with self.assertRaises(GameStateFileException) as e:
+            GameState(join(self.parent_path, game_config))
+        self.assertEqual(expected_message, str(e.exception))
+
+    def test_wrong_creatures(self):
+        expected_message = "Failed to read creatures data: cannot find key 'alias'"
+        game_config = "game_wrong_creatures.json"
+        with self.assertRaises(GameStateFileException) as e:
+            GameState(join(self.parent_path, game_config))
+        self.assertEqual(expected_message, str(e.exception))
+
+    def test_wrong_items(self):
+        expected_message = "Failed to read items data: cannot find key 'actions'"
+        game_config = "game_wrong_items.json"
+        with self.assertRaises(GameStateFileException) as e:
+            GameState(join(self.parent_path, game_config))
+        self.assertEqual(expected_message, str(e.exception))
+
+    def test_wrong_equipment(self):
+        expected_message = "Failed to read equipment data: cannot find key 'in_use'"
+        game_config = "game_wrong_equipment.json"
         with self.assertRaises(GameStateFileException) as e:
             GameState(join(self.parent_path, game_config))
         self.assertEqual(expected_message, str(e.exception))
