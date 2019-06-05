@@ -22,3 +22,4 @@ def run_by_environment(game):
 if __name__ == '__main__':
     inited_game = init_game()
     run_by_environment(inited_game)
+

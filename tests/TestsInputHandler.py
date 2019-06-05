@@ -4,7 +4,7 @@ from src.InputHandler import InputHandler
 
 
 class TestInputHandler(unittest.TestCase):
-    def testSynnonym(self):
+    def testSynonym(self):
         ih = InputHandler()
         self.assertEqual(["go"], ih.parse_user_input("run"))
 
@@ -12,7 +12,7 @@ class TestInputHandler(unittest.TestCase):
         ih = InputHandler()
         self.assertEqual(["runy"], ih.parse_user_input("runy"))
 
-    def testMoreWordsWithSynnonym(self):
+    def testMoreWordsWithSynonym(self):
         ih = InputHandler()
         self.assertEqual(["go", "north"], ih.parse_user_input("move north"))
 
