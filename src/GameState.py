@@ -1,7 +1,8 @@
 import json
+from json import JSONDecodeError
 from typing import Dict
 
-from game_item.Equipment import Equipment
+from exceptions.GameStateFileException import GameStateFileException
 from game_item.Item import Item
 from game_item.Consumable import Consumable
 from game_item.Weapon import Weapon
@@ -15,18 +16,32 @@ from game_item.EnvironmentObject import EnvironmentObject
 class GameState:
 
     def __init__(self, file_path: str):
-        self.game_data = self.read_file(file_path)
+        try:
+            self.game_data = self.read_file(file_path)
 
-        self.rooms = self.create_dict(Room, 'rooms')
-        self.creatures = self.create_dict(Creature, 'creatures')
-        self.items = self.create_dict(Item, 'items')
-        self.equipment = self.create_dict(Equipment, 'equipment')
-        self.environment_objects = self.create_dict(EnvironmentObject, "environment_objects")
-        self.hero = self.create_hero()
+            self.rooms = self.create_dict(Room, 'rooms')
+            self.creatures = self.create_dict(Creature, 'creatures')
+            self.environment_objects = self.create_dict(EnvironmentObject, "environment_objects")
+            self.items = self.create_item_dict('items')
+            self.equipment = self.create_equipment_dict('equipment')
+            self.hero = self.create_hero()
+        except GameStateFileException as e:
+            raise GameStateFileException(e)
 
     def create_dict(self, type, key_name) -> Dict[str, any]:
-        objects = dict()
-        if type is Item:
+        try:
+            objects = dict()
+            rooms_data = self.game_data[key_name]
+            for key, value in rooms_data.items():
+                object = type(value)
+                objects[key] = object
+            return objects
+        except KeyError:
+            raise GameStateFileException(f"Failed to read {key_name} data")
+
+    def create_item_dict(self, key_name):
+        try:
+            objects = dict()
             data = self.game_data[key_name]["regular"]
             for key in data:
                 object = Item(data[key])
@@ -35,7 +50,13 @@ class GameState:
             for key in data:
                 object = Consumable(data[key])
                 objects[key] = object
-        elif type is Equipment:
+            return objects
+        except KeyError:
+            raise GameStateFileException(f"Failed to read {key_name} data")
+
+    def create_equipment_dict(self, key_name):
+        try:
+            objects = dict()
             data = self.game_data[key_name]["weapons"]
             for key in data:
                 object = Weapon(data[key])
@@ -44,19 +65,24 @@ class GameState:
             for key in data:
                 object = Armour(data[key])
                 objects[key] = object
-        else:
-            rooms_data = self.game_data[key_name]
-            for key, value in rooms_data.items():
-                object = type(value)
-                objects[key] = object
-        return objects
+            return objects
+        except KeyError:
+            raise GameStateFileException(f"Failed to read {key_name} data")
 
     def create_hero(self) -> Hero:
-        hero_data = self.game_data['hero']
-        return Hero(hero_data)
+        try:
+            hero_data = self.game_data['hero']
+            return Hero(hero_data)
+        except KeyError:
+            raise GameStateFileException("Failed to read hero data")
 
     @staticmethod
     def read_file(file_path) -> Dict[str, dict]:
-        with open(file_path, encoding='utf-8') as config_file:
-            game_data = json.load(config_file)
-        return game_data
+        try:
+            with open(file_path, encoding='utf-8') as config_file:
+                game_data = json.load(config_file)
+            return game_data
+        except IOError as e:
+            raise GameStateFileException(f"Failed to read file: {e}")
+        except JSONDecodeError as e:
+            raise GameStateFileException(f"Failed to parse JSON file: {e}")
