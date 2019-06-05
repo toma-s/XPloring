@@ -5,6 +5,7 @@ from src.GUI import GUI
 import re
 import sys
 
+
 import io
 from contextlib import redirect_stdout
 
@@ -24,6 +25,7 @@ class Game:
     def run_console(self):
         room = self.game_state.rooms[self.game_state.hero.location]
 
+        print("\n-----------------------------\n")
         print("Welcome, warrior!")
         print(f"You entered the {room.description.lower()}")
         print("What is your next step?")
