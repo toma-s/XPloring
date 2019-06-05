@@ -36,7 +36,7 @@ class TestCombat(unittest.TestCase):
         self.assertEqual(29, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(80, self.game_state.hero.health)
 
-    def testKillCreature(self):
+    def testGetKey(self):
         self.cr.execute(["take", "sword"])
         self.cr.execute(["equip", "sword"])
         self.cr.execute(["go", "west"])
