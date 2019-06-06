@@ -71,17 +71,13 @@ class GameStateSaver:
             group_key = "items"
             if isinstance(value, Consumable):
                 group_key = "consumable"
-                if group_key not in items.keys():
-                    items[group_key] = dict()
-                if key not in items[group_key].keys():
-                    items[group_key][key] = dict()
+                items.setdefault(group_key, {})
+                items[group_key].setdefault(key, {})
                 items[group_key][key]["value"] = item.value
             elif isinstance(value, Item):
                 group_key = "regular"
-                if group_key not in items.keys():
-                    items[group_key] = dict()
-                if key not in items[group_key].keys():
-                    items[group_key][key] = dict()
+                items.setdefault(group_key, {})
+                items[group_key].setdefault(key, {})
             items[group_key][key]["description"] = item.description
             items[group_key][key]["alias"] = [alias_item for alias_item in item.alias]
             items[group_key][key]["actions"] = item.actions
@@ -94,18 +90,14 @@ class GameStateSaver:
             group_key = "equipment"
             if isinstance(single_equipment, Armour):
                 group_key = "armour"
-                if group_key not in equipment.keys():
-                    equipment[group_key] = dict()
-                if key not in equipment[group_key].keys():
-                    equipment[group_key][key] = dict()
+                equipment.setdefault(group_key, {})
+                equipment[group_key].setdefault(key, {})
                 equipment[group_key][key]["resistance"] = single_equipment.resistance
                 equipment[group_key][key]["durability"] = single_equipment.durability
             elif isinstance(single_equipment, Weapon):
                 group_key = "weapons"
-                if group_key not in equipment.keys():
-                    equipment[group_key] = dict()
-                if key not in equipment[group_key].keys():
-                    equipment[group_key][key] = dict()
+                equipment.setdefault(group_key, {})
+                equipment[group_key].setdefault(key, {})
                 equipment[group_key][key]["damage"] = single_equipment.damage
             equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
             equipment[group_key][key]["slot"] = single_equipment.slot
