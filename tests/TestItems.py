@@ -180,5 +180,22 @@ class TestItems(unittest.TestCase):
         expected_output = f"Unlocked, you may enter the armory.\n"
         self.assertEqual(expected_output, result_output)
 
+    def test_equip_envelope_room(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["equip", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"You don't have envelope in your inventory.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_equip_envelope_inv(self):
+        self.cr2keys.execute(["take", "envelope"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["equip", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"You don't have envelope in your inventory.\n"
+        self.assertEqual(expected_output, result_output)
+
 if __name__ == '__main__':
     unittest.main()
