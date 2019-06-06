@@ -13,6 +13,10 @@ class TestItems(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
+        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
+        self.game_state2keys = GameState(self.map2keys)
+        self.cr2keys = CommandRunner(self.game_state2keys)
+
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
@@ -82,7 +86,7 @@ class TestItems(unittest.TestCase):
         self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
 
-    def testOpenNonexistingItem(self):
+    def test_open_nonexisting_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["open", "envel"])
@@ -90,7 +94,7 @@ class TestItems(unittest.TestCase):
         expected_output = "There is no such thing as \"envel\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testNonexistingActionOpe(self):
+    def test_nonexisting_action_ope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["ope", "envelope"])
@@ -98,7 +102,7 @@ class TestItems(unittest.TestCase):
         expected_output = f"Action \"ope\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testBothNonexisting(self):
+    def test_both_nonexisting_ope_enveep(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["ope", "enveep"])
@@ -106,13 +110,45 @@ class TestItems(unittest.TestCase):
         expected_output = "There is no such thing as \"enveep\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testNonexistingActionRead(self):
+    def test_nonexisting_action_read(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["read", "envelope"])
         result_output = stdout.getvalue()
         expected_output = f"Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
+
+    def test_take_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["take", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_examine_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["examine", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_nonexistent_action_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["read", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    # def test_take_keys_with_same_alias(self):
+    #     stdout = io.StringIO()
+    #     with contextlib.redirect_stdout(stdout):
+    #         self.cr2keys.execute(["take", "key"])
+    #     result_output = stdout.getvalue()
+    #     expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+    #     self.assertEqual(expected_output, result_output)
 
 
 if __name__ == '__main__':

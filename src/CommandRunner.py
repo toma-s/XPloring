@@ -73,7 +73,7 @@ class CommandRunner:
                 self._equip_item(target)
 
     def _item_action(self, action_name, item_alias):
-        item_ids = self._get_item_ids_by_alias(item_alias)
+        item_ids = self._find_item_ids_by_alias(item_alias)
         if len(item_ids) == 0:
             print(f"There is no such thing as \"{item_alias}\".")
             return
@@ -92,10 +92,31 @@ class CommandRunner:
         self.run_internal_command(item_action, item_id)
 
 
-    def _get_item_ids_by_alias(self, target_alias) -> [str]:
-        hero_room: Room = self.game_state.rooms[self.game_state.hero.location]
-        item_ids_in_room = hero_room.items
+    def _find_item_ids_by_alias(self, target_alias) -> [str]:
+        foundIds = []
+        foundIds += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
+        foundIds += self._find_item_ids_by_alias_in_inventory(target_alias)
+        return foundIds
+
+    def _find_item_ids_by_alias_in_inventory(self, target_alias) -> [str]:
         item_ids_in_inventory = self.game_state.hero.inventory
+
+        foundIds = []
+        for item_id in item_ids_in_inventory:
+            if item_id in self.game_state.items:
+                item_data = self.game_state.items[item_id]
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
+            if item_id in self.game_state.equipment:
+                item_data = self.game_state.equipment[item_id]
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
+        return foundIds
+
+
+    def _find_item_ids_by_alias_in_room(self, room_id, target_alias) -> [str]:
+        room: Room = self.game_state.rooms[room_id]
+        item_ids_in_room = room.items
 
         foundIds = []
         for item_id in item_ids_in_room:
@@ -107,18 +128,16 @@ class CommandRunner:
                 item_data = self.game_state.equipment[item_id]
                 if target_alias in item_data.alias:
                     foundIds.append(item_id)
-
-        for item_id in item_ids_in_inventory:
-            if item_id in self.game_state.items:
-                item_data = self.game_state.items[item_id]
-                if target_alias in item_data.alias:
-                    foundIds.append(item_id)
-            if item_id in self.game_state.equipment:
-                item_data = self.game_state.equipment[item_id]
-                if target_alias in item_data.alias:
-                    foundIds.append(item_id)
-
         return foundIds
+
+    def _check_one_item_only(self, item_ids, target_alias) -> bool:
+        if len(item_ids) == 0:
+            print(f"There is no such thing as \"{target_alias}\".")
+            return False
+        if len(item_ids) > 1:
+            print(f"There are {len(item_ids)} \"{target_alias}\"-s. You have to be more specific.")
+            return False
+        return True
 
 
     def _env_object_action(self, action, env_obj_id):
@@ -130,16 +149,12 @@ class CommandRunner:
         if int_commands:
             self.run_internal_command(int_commands, env_obj_id)
 
-    def _display_item(self, target):
-        items = self.game_state.items
+    def _display_item(self, target_alias):
+        item_ids = self._find_item_ids_by_alias(target_alias)
+        if self._check_one_item_only(item_ids, target_alias):
+            item_data = self.game_state.items[item_ids[0]]
+            self.display(item_data)
 
-        item = None
-        for it in items:
-            if target in items[it].alias:
-                item = items[it]
-                break
-        if item:
-            self.display(item)
 
     def _move_to_direction(self, target):
         hero = self.game_state.hero
@@ -162,29 +177,22 @@ class CommandRunner:
         else:
             print(f"You are not allowed to go {target}.")
 
-    def _item_take(self, target):
-        items = self.game_state.items
-        equipment = self.game_state.equipment
+
+    def _item_take(self, target_item_alias):
         hero = self.game_state.hero
+        item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
 
-        item = None
-        item_id = None
-        for it in items:
-            if target in items[it].alias:
-                item = items[it]
-                item_id = it
-                break
+        if len(item_ids) == 0:
+            print(f"There is no such thing as \"{target_item_alias}\".")
+            return
+        if len(item_ids) > 1:
+            print(f"There are {len(item_ids)} \"{target_item_alias}\"-s. You have to be more specific.")
+            return
 
-        if not item:
-            for it in equipment:
-                if target in equipment[it].alias:
-                    item = equipment[it]
-                    item_id = it
-                    break
-        if item and item_id in self.game_state.rooms[hero.location].items:
-            hero.inventory.append(item_id)
-            self.despawn_item(item_id)
-            print(f"You grabbed the {target}.")
+        item_id = item_ids[0]
+        hero.inventory.append(item_id)
+        self.despawn_item(item_id)
+        print(f"You grabbed the {target_item_alias}.")
 
     def _hit_creature(self, target):
         rooms = self.game_state.rooms
@@ -304,8 +312,8 @@ class CommandRunner:
         commands = [command for command in commands if command not in ignored]
         if len(commands) == 1:
             self.single_command(commands[0])
-        elif len(commands) == 2:
-            self.double_command(commands[0], commands[1])
+        else:
+            self.double_command(commands[0], " ".join(commands[1:]))
 
     def discover_room(self):
         items = self.game_state.items
@@ -332,7 +340,7 @@ class CommandRunner:
             print(f"You can GO {d.upper()}.")
 
     def examine_item(self, item):
-        print(f"{game_item.description}")
+        print(f"{item.description}")
 
     def display(self, obj):
         if isinstance(obj, Room):

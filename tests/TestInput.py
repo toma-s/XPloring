@@ -24,7 +24,7 @@ class TestInput(unittest.TestCase):
             self.cr.execute(["read", "envelope"])
 
         result_output = stdout.getvalue()
-        expected_output = "I don't understand. Try again."
+        expected_output = "Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
     def testOpenEnvelopeAgain(self):
