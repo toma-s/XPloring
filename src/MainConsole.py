@@ -11,7 +11,7 @@ parent_path = '..\\game_states'
 
 def run():
     try:
-        config_files = get_config_files()
+        config_files = _get_config_files()
         game_config = let_user_pick(config_files, "the game")
         game_state = GameState(join(parent_path, game_config))
         game = Game(game_state)
@@ -20,7 +20,7 @@ def run():
         print(f"Failed to read game configuration file: {e}")
 
 
-def get_config_files():
+def _get_config_files():
     files = []
     for file in listdir(parent_path):
         if isfile(join(parent_path, file)):

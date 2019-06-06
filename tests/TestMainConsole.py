@@ -7,19 +7,6 @@ import MainConsole
 
 class TestInput(unittest.TestCase):
 
-    def test_get_config_files(self):
-        expected_value = [
-            'game0_repr.json',
-            'game_wrong_creatures.json',
-            'game_wrong_equipment.json',
-            'game_wrong_format.txt',
-            'game_wrong_hero.json',
-            'game_wrong_items.json',
-            'game_wrong_rooms.json'
-        ]
-        result_value = MainConsole.get_config_files()
-        self.assertListEqual(expected_value, result_value)
-
     def test_valid_choice_1(self):
         expected_value = True
         result_value = MainConsole.valid_choice("1", 1)
