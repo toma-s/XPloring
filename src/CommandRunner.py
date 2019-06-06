@@ -34,16 +34,20 @@ class CommandRunner:
 
         print("I don't understand. Try again.")
 
-    def double_command(self, action, target):
-        if action in self.game_state.hero.actions:
-            self._hero_action(action, target)
-        else:
-            for direction in self.game_state.rooms[self.game_state.hero.location].directions:
-                if "env_obj_id" in self.game_state.rooms[self.game_state.hero.location].directions[direction]:
-                    # print(self.game_state.rooms[self.game_state.hero.location].directions[direction]["env_obj_id"])
-                    self._env_object_action(action, self.game_state.rooms[self.game_state.hero.location].directions[direction]["env_obj_id"])
-                    return
-            self._item_action(action, target)
+    def double_command(self, action_name, target_alias):
+        hero = self.game_state.hero
+        hero_room = self.game_state.rooms[self.game_state.hero.location]
+
+        if action_name in hero.actions:
+            self._hero_action(action_name, target_alias)
+            return
+        for direction in hero_room.directions:
+            if "env_obj_id" in hero_room.directions[direction]:
+                env_obj_id = hero_room.directions[direction]["env_obj_id"]
+                self._env_object_action(action_name, env_obj_id)
+                return
+
+        self._item_action(action_name, target_alias)
 
     def _hero_action(self, action, target):
         hero = self.game_state.hero
@@ -69,7 +73,7 @@ class CommandRunner:
                 self._equip_item(target)
 
     def _item_action(self, action_name, item_alias):
-        item_ids = self.getItemIdsByAlias(item_alias)
+        item_ids = self._get_item_ids_by_alias(item_alias)
         if len(item_ids) == 0:
             print(f"There is no such thing as \"{item_alias}\".")
             return
@@ -88,30 +92,43 @@ class CommandRunner:
         self.run_internal_command(item_action, item_id)
 
 
-    def getItemIdsByAlias(self, target_item_alias) -> [str]:
-        items_in_room = self.game_state.rooms[self.game_state.hero.location].items
-        foundItemIds = []
-        for item_id in items_in_room:
+    def _get_item_ids_by_alias(self, target_alias) -> [str]:
+        hero_room: Room = self.game_state.rooms[self.game_state.hero.location]
+        item_ids_in_room = hero_room.items
+        item_ids_in_inventory = self.game_state.hero.inventory
+
+        foundIds = []
+        for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_item_alias in item_data.alias:
-                    foundItemIds.append(item_id)
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_item_alias in item_data.alias:
-                    foundItemIds.append(item_id)
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
 
-        return foundItemIds
+        for item_id in item_ids_in_inventory:
+            if item_id in self.game_state.items:
+                item_data = self.game_state.items[item_id]
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
+            if item_id in self.game_state.equipment:
+                item_data = self.game_state.equipment[item_id]
+                if target_alias in item_data.alias:
+                    foundIds.append(item_id)
+
+        return foundIds
 
 
-    def _env_object_action(self, action, target):
-        obj = self.game_state.environment_objects[target]
+    def _env_object_action(self, action, env_obj_id):
+        obj = self.game_state.environment_objects[env_obj_id]
         if action == "unlock" and obj.unlocked:
             print(f"Already unlocked.")
             return
         int_commands = obj.actions[action]
         if int_commands:
-            self.run_internal_command(int_commands, target)
+            self.run_internal_command(int_commands, env_obj_id)
 
     def _display_item(self, target):
         items = self.game_state.items
@@ -233,8 +250,8 @@ class CommandRunner:
 
         item.in_use = False
         hero.inventory.remove(target)
-        print(f"Ouch! {game_item.alias[0]} has been destroyed!")
-        print(f"You've dropped {game_item.alias[0]}")
+        print(f"Ouch! {item.alias[0]} has been destroyed!")
+        print(f"You've dropped {item.alias[0]}")
 
     def _equip_item(self, target):
         hero = self.game_state.hero
@@ -403,7 +420,7 @@ class CommandRunner:
         sign = "+"
         if will_heal < 0:
             sign = ""
-        print(f"You used {game_item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        print(f"You used {item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
         hero.inventory.remove(item_id)
 
     def heal(self):

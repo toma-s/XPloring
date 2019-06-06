@@ -181,13 +181,13 @@
     "chest": "none",
     "legs": "none",
     "actions": {
-      "examine": "display item",
+      "examine": "display game_item",
       "look": "display room",
       "go": "move_to direction",
-      "take": "item_take item",
+      "take": "item_take game_item",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "equip": "equip item",
+      "equip": "equip game_item",
       "heal": "heal self",
       "status": "display self"
     },
