@@ -1,3 +1,5 @@
+import contextlib
+import io
 import unittest
 
 from src.GameState import GameState
@@ -11,6 +13,10 @@ class TestItems(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
+        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
+        self.game_state2keys = GameState(self.map2keys)
+        self.cr2keys = CommandRunner(self.game_state2keys)
+
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
@@ -21,10 +27,11 @@ class TestItems(unittest.TestCase):
         self.assertIn("#item_letter", room_items, "Letter should appear in room after opening an envelope")
         self.assertNotIn("#item_envelope", room_items, "After envelope was opened it should have disappeared")
 
+
     def testInternalTakeItem(self):
         self.cr.execute(["take", "sword"])
         room_items = self.game_state.rooms[self.game_state.hero.location].items
-        self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it in the room still???")
+        self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it still in the room ???")
 
     def testGoThroughtLockedDoor(self):
         self.cr.execute(["go", "west"])
@@ -79,6 +86,99 @@ class TestItems(unittest.TestCase):
         self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
 
+    def test_open_nonexisting_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["open", "envel"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"envel\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_nonexisting_action_ope(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["ope", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"Action \"ope\" is not allowed with \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_both_nonexisting_ope_enveep(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["ope", "enveep"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"enveep\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_nonexisting_action_read(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["read", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"Action \"read\" is not allowed with \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+
+    def test_take_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["take", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_examine_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["examine", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_nonexistent_action_keys_with_same_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["read", "key"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_open_doors_with_same_alias(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["open", "door"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"door\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_examine_armory_door(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["examine", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"Door to armory is locked, you need a key\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_unlock_armory_door_nokey(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["unlock", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"You do not have a required item to do this action.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_unlock_armory_door_has_key(self):
+        self.cr2keys.execute(["take", "armory key"])
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["unlock", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"Unlocked, you may enter the armory.\n"
+        self.assertEqual(expected_output, result_output)
 
 if __name__ == '__main__':
     unittest.main()
