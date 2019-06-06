@@ -1,3 +1,4 @@
+from game_item.EnvironmentObject import EnvironmentObject
 from src.GameState import GameState
 from game_item.Room import Room
 from game_item.Item import Item
@@ -36,66 +37,98 @@ class CommandRunner:
 
     def double_command(self, action_name, target_alias):
         hero = self.game_state.hero
-        hero_room = self.game_state.rooms[self.game_state.hero.location]
+        hero_room = self.game_state.rooms[hero.location]
 
         if action_name in hero.actions:
-            self._hero_action(action_name, target_alias)
+            self._handle_hero_action(action_name, target_alias)
             return
-        for direction in hero_room.directions:
-            if "env_obj_id" in hero_room.directions[direction]:
-                env_obj_id = hero_room.directions[direction]["env_obj_id"]
-                self._env_object_action(action_name, env_obj_id)
-                return
 
-        self._item_action(action_name, target_alias)
+        self._handle_target_action(action_name, target_alias)
 
-    def _hero_action(self, action, target):
+    def _handle_hero_action(self, action, target_alias):
         hero = self.game_state.hero
         verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
         if verb == "display":
             if noun == "game_item":
-                self._display_item(target)
+                self._display_item(target_alias)
 
         elif verb == "move_to":
             if noun == "direction":
-                self._move_to_direction(target)
+                self._move_to_direction(target_alias)
 
         elif verb == "item_take":
             if noun == "game_item":
-                self._item_take(target)
+                self._item_take(target_alias)
 
         elif verb == "hit":
             if noun == "creature":
-                self._hit_creature(target)
+                self._hit_creature(target_alias)
 
         elif verb == "equip":
             if noun == "game_item":
-                self._equip_item(target)
+                self._equip_item(target_alias)
 
-    def _item_action(self, action_name, item_alias):
-        item_ids = self._find_item_ids_by_alias(item_alias)
-        if len(item_ids) == 0:
-            print(f"There is no such thing as \"{item_alias}\".")
+    def _env_object_action(self, action_name, env_obj_id):
+        obj = self.game_state.environment_objects[env_obj_id]
+        if action_name == "unlock" and obj.unlocked:
+            print(f"Already unlocked.")
             return
-        if len(item_ids) > 1:
-            # TODO test this feature
-            print(f"There are {len(item_ids)} \"{item_alias}\"-s. You have to be more specific.")
+        int_commands = obj.actions[action_name]
+        if int_commands:
+            self.run_internal_command(int_commands, env_obj_id)
+
+    def _handle_target_action(self, action_name, target_alias):
+        ids = self._find_ids_by_alias(target_alias)
+
+        if not self._check_found_one_id_only(ids, target_alias):
             return
 
-        item_id = item_ids[0]
-        item_data =   self.game_state.items[item_id]
-        if action_name not in item_data.actions:
-            print(f"Action \"{action_name}\" is not allowed with \"{item_alias}\".")
+        id = ids[0]
+        data = None
+        if id in self.game_state.items:
+            data = self.game_state.items[id]
+        elif id in self.game_state.environment_objects:
+            data = self.game_state.environment_objects[id]
+        if data is None or action_name not in data.actions:
+            print(f"Action \"{action_name}\" is not allowed with \"{target_alias}\".")
             return
 
-        item_action = item_data.actions[action_name]
-        self.run_internal_command(item_action, item_id)
+        action = data.actions[action_name]
+        self.run_internal_command(action, id)
 
+    def _find_env_obj_ids_by_alias(self, target_alias) -> [str]:
+        foundIds = []
 
-    def _find_item_ids_by_alias(self, target_alias) -> [str]:
+        hero = self.game_state.hero
+        hero_room = self.game_state.rooms[hero.location]
+
+        for direction in hero_room.directions:
+            if "env_obj_id" in hero_room.directions[direction]:
+                env_obj_id = hero_room.directions[direction]["env_obj_id"]
+                env_obj_data: EnvironmentObject = self.game_state.environment_objects[env_obj_id]
+                if target_alias in env_obj_data.alias:
+                    foundIds.append(env_obj_id)
+        return foundIds
+
+    def _find_creature_ids_by_alias(self, target_alias) -> [str]:
+        foundIds = []
+
+        hero = self.game_state.hero
+        hero_room = self.game_state.rooms[hero.location]
+
+        for creature_id in hero_room.creature:
+            if creature_id in self.game_state.creatures:
+                creature_data = self.game_state.creatures[creature_id]
+                if target_alias in creature_data.alias:
+                    foundIds.append(creature_id)
+        return foundIds
+
+    def _find_ids_by_alias(self, target_alias) -> [str]:
         foundIds = []
         foundIds += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
         foundIds += self._find_item_ids_by_alias_in_inventory(target_alias)
+        foundIds += self._find_env_obj_ids_by_alias(target_alias)
+        foundIds += self._find_creature_ids_by_alias(target_alias)
         return foundIds
 
     def _find_item_ids_by_alias_in_inventory(self, target_alias) -> [str]:
@@ -130,30 +163,25 @@ class CommandRunner:
                     foundIds.append(item_id)
         return foundIds
 
-    def _check_one_item_only(self, item_ids, target_alias) -> bool:
-        if len(item_ids) == 0:
+    def _check_found_one_id_only(self, ids, target_alias) -> bool:
+        if len(ids) == 0:
             print(f"There is no such thing as \"{target_alias}\".")
             return False
-        if len(item_ids) > 1:
-            print(f"There are {len(item_ids)} \"{target_alias}\"-s. You have to be more specific.")
+        if len(ids) > 1:
+            print(f"There are {len(ids)} \"{target_alias}\"-s. You have to be more specific.")
             return False
         return True
 
-
-    def _env_object_action(self, action, env_obj_id):
-        obj = self.game_state.environment_objects[env_obj_id]
-        if action == "unlock" and obj.unlocked:
-            print(f"Already unlocked.")
-            return
-        int_commands = obj.actions[action]
-        if int_commands:
-            self.run_internal_command(int_commands, env_obj_id)
-
     def _display_item(self, target_alias):
-        item_ids = self._find_item_ids_by_alias(target_alias)
-        if self._check_one_item_only(item_ids, target_alias):
-            item_data = self.game_state.items[item_ids[0]]
-            self.display(item_data)
+        ids = self._find_ids_by_alias(target_alias)
+        if self._check_found_one_id_only(ids, target_alias):
+            id = ids[0]
+            if id in self.game_state.items:
+                item_data = self.game_state.items[id]
+                self.display(item_data)
+            elif id in self.game_state.environment_objects:
+                env_obj_data = self.game_state.environment_objects[id]
+                self.display(env_obj_data)
 
 
     def _move_to_direction(self, target):
@@ -182,11 +210,7 @@ class CommandRunner:
         hero = self.game_state.hero
         item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
 
-        if len(item_ids) == 0:
-            print(f"There is no such thing as \"{target_item_alias}\".")
-            return
-        if len(item_ids) > 1:
-            print(f"There are {len(item_ids)} \"{target_item_alias}\"-s. You have to be more specific.")
+        if not self._check_found_one_id_only(item_ids, target_item_alias):
             return
 
         item_id = item_ids[0]
@@ -345,6 +369,8 @@ class CommandRunner:
     def display(self, obj):
         if isinstance(obj, Room):
             self.discover_room()
+        elif isinstance(obj, EnvironmentObject):
+            self.examine_item(obj)
         elif isinstance(obj, Item):
             self.examine_item(obj)
         elif isinstance(obj, str):
@@ -365,7 +391,6 @@ class CommandRunner:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
     def run_internal_command(self, commands, node=None):
-        # print(f"[DEBUG] running internal - {commands}")
         for c in commands:
             if c == "command_spawn_item" and node:
                 self.spawn_item(commands[c])
@@ -374,7 +399,7 @@ class CommandRunner:
                 self.display(commands[c])
             elif c == "command_required_item":
                 if not self.check_inventory_for_item(commands[c]):
-                    print(f"You do not have game_item required to do this action.")
+                    print(f"You do not have a required item to do this action.")
                     return
                 continue
             elif c == "command_set_unlocked":

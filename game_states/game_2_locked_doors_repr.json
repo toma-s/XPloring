@@ -80,16 +80,16 @@
   "items": {
     "regular": {
       "#item_doorkey_armory": {
-        "description": "This key is painted with blue color",
+        "description": "This key opens armory door",
         "alias": [
-          "blue key", "blue-key", "blue_key", "key"
+          "key", "armory key"
         ],
         "actions": {}
       },
       "#item_doorkey_kitchen": {
-        "description": "This key is painted with red color",
+        "description": "This key opens kitchen door",
         "alias": [
-          "red key", "red-key", "key", "red_key"
+           "key", "kitchen key"
         ],
         "actions": {}
       }
@@ -114,10 +114,10 @@
   "environment_objects": {
     "#env_door_armory": {
       "alias": [
-        "door"
+        "armory door", "door to armory", "door"
       ],
       "unlocked": false,
-      "description": "Locked, you need a key",
+      "description": "Door to armory is locked, you need a key",
       "actions": {
         "unlock": {
           "command_required_item": "#item_doorkey_armory",
@@ -130,10 +130,10 @@
     },
     "#env_door_kitchen": {
       "alias": [
-        "door"
+        "kitchen door", "door to kitchen", "door"
       ],
       "unlocked": false,
-      "description": "Locked, you need a key",
+      "description": "Door to the kitchen is locked, you need a key",
       "actions": {
         "unlock": {
           "command_required_item": "#item_doorkey_kitchen",

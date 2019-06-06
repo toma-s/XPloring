@@ -118,6 +118,7 @@ class TestItems(unittest.TestCase):
         expected_output = f"Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
+
     def test_take_keys_with_same_alias(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -142,14 +143,42 @@ class TestItems(unittest.TestCase):
         expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
-    # def test_take_keys_with_same_alias(self):
-    #     stdout = io.StringIO()
-    #     with contextlib.redirect_stdout(stdout):
-    #         self.cr2keys.execute(["take", "key"])
-    #     result_output = stdout.getvalue()
-    #     expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
-    #     self.assertEqual(expected_output, result_output)
+    def test_open_doors_with_same_alias(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["open", "door"])
+        result_output = stdout.getvalue()
+        expected_output = f"There are 2 \"door\"-s. You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
 
+    def test_examine_armory_door(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["examine", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"Door to armory is locked, you need a key\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_unlock_armory_door_nokey(self):
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["unlock", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"You do not have a required item to do this action.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_unlock_armory_door_has_key(self):
+        self.cr2keys.execute(["take", "armory key"])
+        self.cr2keys.execute(["go", "north"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr2keys.execute(["unlock", "armory door"])
+        result_output = stdout.getvalue()
+        expected_output = f"Unlocked, you may enter the armory.\n"
+        self.assertEqual(expected_output, result_output)
 
 if __name__ == '__main__':
     unittest.main()
