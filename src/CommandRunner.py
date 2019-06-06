@@ -297,30 +297,30 @@ class CommandRunner:
         print(f"Ouch! {item.alias[0]} has been destroyed!")
         print(f"You've dropped {item.alias[0]}")
 
-    def _equip_item(self, target):
+    def _equip_item(self, target_alias):
         hero = self.game_state.hero
         items = self.game_state.items
         equipment = self.game_state.equipment
 
-        item = None
-        item_id = None
-        for it in equipment:
-            if target in equipment[it].alias:
-                item = equipment[it]
-                item_id = it
-                break
+        ids = self._find_item_ids_by_alias_in_inventory(target_alias)
+        if len(ids) == 0:
+            print(f"You don't have {target_alias} in your inventory.")
+            return
+        elif len(ids) > 1:
+            print(f"There are {len(ids)} \"{target_alias}\"-s. You have to be more specific.")
+            return
 
-        if item_id not in hero.inventory:
-            print(f"You don't have {target} in your inventory.")
+        item_id = ids[0]
+        if item_id not in self.game_state.equipment:
+            print(f"You can't equip {target_alias}")
             return
-        if item_id in items:
-            print(f"You cant equip {target}")
-            return
-        if not item:
-            print(f"There is no such thing as {target}")
-            return
-        if hero.right_hand == item_id or hero.left_hand == item_id:
-            print(f"You are already equipped with {target}")
+        item = self.game_state.equipment[item_id]
+
+
+        if hero.right_hand == item_id or hero.left_hand == item_id or \
+                hero.head == item_id or hero.chest == item_id or \
+                hero.legs == item_id:
+            print(f"You are already equipped with {target_alias}")
             return
 
         if item.slot == "hand":
@@ -340,7 +340,7 @@ class CommandRunner:
                 equipment[hero.legs].in_use = False
             hero.legs = item_id
 
-        print(f"You are now equipped with {target}")
+        print(f"You are now equipped with {target_alias}")
         item.in_use = True
 
     def execute(self, commands):
