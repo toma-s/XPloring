@@ -15,7 +15,7 @@
         "#item_small_poison_potion",
         "#equipment_golden_chestplate"
       ],
-      "creature": []
+      "creatures": []
     },
     "#room_arena": {
       "description": "A big round arena.",
@@ -29,7 +29,7 @@
         }
       },
       "items": [],
-      "creature": [
+      "creatures": [
         "#creature_dragon"
       ]
     },
@@ -37,7 +37,7 @@
       "description": "The matrix",
       "directions": {},
       "items": [],
-      "creature": [],
+      "creatures": [],
       "auto_commands": {
         "command_display": "Congratulations Hero. You reached the last room. Unfortunately for you, this was all a simulation and everything you experienced was a big lie. Wish you a nice day ^_^",
         "command_end_game": true

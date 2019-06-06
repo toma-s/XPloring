@@ -36,7 +36,7 @@ class TestGameState(unittest.TestCase):
             GameState(join(self.parent_path, game_config))
         self.assertEqual(expected_message, str(e.exception))
 
-    # save to objects
+    # load to objects
 
     def test_wrong_hero(self):
         expected_message = "Failed to read hero data: cannot find key 'location'"

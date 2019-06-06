@@ -1,3 +1,4 @@
+from GameStateSaver import GameStateSaver
 from src.GameState import GameState
 from src.InputHandler import InputHandler
 from src.CommandRunner import CommandRunner
@@ -36,6 +37,10 @@ class Game:
 
             if re.match("^help$|^HELP$", user_input):
                 print_help()
+                continue
+
+            if re.match("^save|^SAVE$", user_input):
+                GameStateSaver().save(self.game_state)
                 continue
 
             if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
