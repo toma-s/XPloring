@@ -117,7 +117,7 @@
         "door"
       ],
       "unlocked": false,
-      "description": "Locked, you need armory key",
+      "description": "Locked, you need a key",
       "actions": {
         "unlock": {
           "command_required_item": "#item_doorkey_armory",
@@ -133,7 +133,7 @@
         "door"
       ],
       "unlocked": false,
-      "description": "Locked, you need kitchen key",
+      "description": "Locked, you need a key",
       "actions": {
         "unlock": {
           "command_required_item": "#item_doorkey_kitchen",
