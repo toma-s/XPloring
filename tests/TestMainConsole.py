@@ -10,6 +10,8 @@ class TestInput(unittest.TestCase):
     def test_get_config_files(self):
         expected_value = [
             'game0_repr.json',
+            'game_2_locked_doors_repr.json',
+            'game_test_loader.json',
             'game_wrong_creatures.json',
             'game_wrong_equipment.json',
             'game_wrong_format.txt',

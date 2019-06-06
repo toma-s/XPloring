@@ -116,7 +116,7 @@ class CommandRunner:
         hero = self.game_state.hero
         hero_room = self.game_state.rooms[hero.location]
 
-        for creature_id in hero_room.creature:
+        for creature_id in hero_room.creatures:
             if creature_id in self.game_state.creatures:
                 creature_data = self.game_state.creatures[creature_id]
                 if target_alias in creature_data.alias:
@@ -224,7 +224,7 @@ class CommandRunner:
         hero = self.game_state.hero
 
         spotted_creature = None
-        for creature in rooms[hero.location].creature:
+        for creature in rooms[hero.location].creatures:
             if target in creatures[creature].alias:
                 spotted_creature = creatures[creature]
                 break
@@ -353,7 +353,7 @@ class CommandRunner:
                 print(f"There is a {equipment[i].alias[0]}. It's {equipment[i].description.lower()}.")
 
         # entities in room
-        if not room.creatures:
+        if not room.creaturess:
             print("There's nothing scary here.")
         else:
             for c in room.creatures:
