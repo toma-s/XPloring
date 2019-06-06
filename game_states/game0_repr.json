@@ -15,7 +15,7 @@
         "#item_small_poison_potion",
         "#equipment_golden_chestplate"
       ],
-      "creature": []
+      "creatures": []
     },
     "#room_arena": {
       "description": "A big round arena.",
@@ -29,7 +29,7 @@
         }
       },
       "items": [],
-      "creature": [
+      "creatures": [
         "#creature_dragon"
       ]
     },
@@ -37,7 +37,7 @@
       "description": "The matrix",
       "directions": {},
       "items": [],
-      "creature": [],
+      "creatures": [],
       "auto_commands": {
         "command_display": "Congratulations Hero. You reached the last room. Unfortunately for you, this was all a simulation and everything you experienced was a big lie. Wish you a nice day ^_^",
         "command_end_game": true
@@ -55,6 +55,24 @@
         "#item_doorkey_exit"
       ],
       "description": "Big green dragon"
+    }
+  },
+  "environment_objects": {
+    "#env_door_exit": {
+      "alias": [
+        "door"
+      ],
+      "unlocked": false,
+      "description": "Locked, you need key",
+      "actions": {
+        "unlock": {
+          "command_required_item": "#item_doorkey_exit",
+          "command_set_unlocked": true,
+          "command_remove_item_from_inventory": "#item_doorkey_exit",
+          "command_set_description": "Unlocked, you can leave.",
+          "command_display": "Unlocked, you can leave."
+        }
+      }
     }
   },
   "items": {
@@ -91,8 +109,8 @@
     },
     "consumable": {
       "#item_small_healing_potion": {
-        "description": "Small healing potion. USE it to heal yourself",
         "value": 25,
+        "description": "Small healing potion. USE it to heal yourself",
         "alias": [
           "potion"
         ],
@@ -104,8 +122,8 @@
         }
       },
       "#item_small_poison_potion": {
-        "description": "Small mystery potion. USE it to see what it does!",
         "value": -75,
+        "description": "Small mystery potion. USE it to see what it does!",
         "alias": [
           "mystery"
         ],
@@ -122,53 +140,35 @@
   "equipment": {
     "weapons": {
       "#equipment_steel_sword": {
+        "damage": 30,
         "alias": [
           "sword"
         ],
         "slot": "hand",
         "in_use": false,
-        "damage": 30,
         "description": "Simple sword for fighting"
       }
     },
     "armour": {
       "#equipment_steel_helmet": {
+        "resistance": 2,
+        "durability": 12,
         "alias": [
           "helmet"
         ],
         "slot": "head",
-        "resistance": 2,
-        "durability": 12,
         "in_use": false,
         "description": "Good ol' steel helmet"
       },
       "#equipment_golden_chestplate": {
+        "resistance": 3,
+        "durability": 18,
         "alias":[
           "chestplate"
         ],
         "slot": "chest",
-        "resistance": 3,
-        "durability": 18,
         "in_use": false,
         "description": "Lannister's army chestplate"
-      }
-    }
-  },
-  "environment_objects": {
-    "#env_door_exit": {
-      "alias": [
-        "door"
-      ],
-      "unlocked": false,
-      "description": "Locked, you need key",
-      "actions": {
-        "unlock": {
-          "command_required_item": "#item_doorkey_exit",
-          "command_set_unlocked": true,
-          "command_remove_item_from_inventory": "#item_doorkey_exit",
-          "command_set_description": "Unlocked, you can leave.",
-          "command_display": "Unlocked, you can leave."
-        }
       }
     }
   },
