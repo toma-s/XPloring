@@ -84,7 +84,9 @@
         ],
         "actions": {
           "open": {
-            "command_spawn_item": "#item_letter"
+            "command_spawn_item": "#item_letter",
+            "command_despawn_item": "#item_envelope",
+            "command_remove_item_from_inventory": "#item_envelope"
           }
         }
       },

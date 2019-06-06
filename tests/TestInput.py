@@ -27,15 +27,38 @@ class TestInput(unittest.TestCase):
         expected_output = "Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testOpenEnvelopeAgain(self):
+    def test_open_envelope_room(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
         self.cr.execute(["open", "envelope"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["open", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You found letter. READ to read content."
+        expected_output = "There is no such thing as \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+    def test_open_envelope_inventory(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+        self.cr.execute(["take", "envelope"])
+        self.cr.execute(["open", "envelope"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["open", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
     def testUseMysteryAtEntranceRoom(self):
         self.cr.execute(["take", "mystery"])
@@ -79,4 +102,12 @@ class TestInput(unittest.TestCase):
             self.cr.execute(["attach", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attach\" is not allowed with \"dragon\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testAttackEnvelope(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
