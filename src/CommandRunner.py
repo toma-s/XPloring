@@ -1,3 +1,4 @@
+from game_item.Creature import Creature
 from game_item.EnvironmentObject import EnvironmentObject
 from src.GameState import GameState
 from game_item.Room import Room
@@ -37,7 +38,6 @@ class CommandRunner:
 
     def double_command(self, action_name, target_alias):
         hero = self.game_state.hero
-        hero_room = self.game_state.rooms[hero.location]
 
         if action_name in hero.actions:
             self._handle_hero_action(action_name, target_alias)
@@ -68,21 +68,11 @@ class CommandRunner:
             if noun == "game_item":
                 self._equip_item(target_alias)
 
-    def _env_object_action(self, action_name, env_obj_id):
-        obj = self.game_state.environment_objects[env_obj_id]
-        if action_name == "unlock" and obj.unlocked:
-            print(f"Already unlocked.")
-            return
-        int_commands = obj.actions[action_name]
-        if int_commands:
-            self.run_internal_command(int_commands, env_obj_id)
 
     def _handle_target_action(self, action_name, target_alias):
         ids = self._find_ids_by_alias(target_alias)
-
         if not self._check_found_one_id_only(ids, target_alias):
             return
-
         id = ids[0]
         data = None
         if id in self.game_state.items:
@@ -95,6 +85,15 @@ class CommandRunner:
 
         action = data.actions[action_name]
         self.run_internal_command(action, id)
+
+    def _env_object_action(self, action_name, env_obj_id):
+        obj = self.game_state.environment_objects[env_obj_id]
+        if action_name == "unlock" and obj.unlocked:
+            print(f"Already unlocked.")
+            return
+        int_commands = obj.actions[action_name]
+        if int_commands:
+            self.run_internal_command(int_commands, env_obj_id)
 
     def _find_env_obj_ids_by_alias(self, target_alias) -> [str]:
         foundIds = []
@@ -215,42 +214,55 @@ class CommandRunner:
 
         item_id = item_ids[0]
         hero.inventory.append(item_id)
-        self.despawn_item(item_id)
+        room = self.game_state.rooms[hero.location]
+        room.items.remove(item_id)
+
         print(f"You grabbed the {target_item_alias}.")
 
-    def _hit_creature(self, target):
-        rooms = self.game_state.rooms
-        creatures = self.game_state.creatures
-        hero = self.game_state.hero
-
-        spotted_creature = None
-        for creature in rooms[hero.location].creatures:
-            if target in creatures[creature].alias:
-                spotted_creature = creatures[creature]
-                break
-
-        if spotted_creature:
-            if spotted_creature.health <= 0:
-                print(f"{target} is already dead.")
-                return
-
-            damage = 1
-            if hero.right_hand != "none":
-                damage = self.game_state.equipment[hero.right_hand].damage
-            spotted_creature.health -= damage
-            print(f"You hit the {target} for {damage} damage! {target} has {spotted_creature.health} HP left.")
-            if spotted_creature.health <= 0:
-                print(f"{target} is DEAD!")
-                for loot in spotted_creature.drops:
-                    self.spawn_item(loot)
-            # ak ešte žije
-            # todo: vsetky prisery v miestnosti su na rade s utokom ?
-            if spotted_creature.health > 0:
-                total_damage = self._count_total_hero_damage(spotted_creature)
-                hero.health -= total_damage
-                print(f"{target} hit you for {total_damage} damage! You have {hero.health} HP left.")
+    def _hit_creature(self, target_alias):
+        ids = self._find_ids_by_alias(target_alias)
+        if not self._check_found_one_id_only(ids, target_alias):
+            return
+        target_id = ids[0]
+        target_creature = None
+        if target_id in self.game_state.creatures:
+            target_creature = self.game_state.creatures[target_id]
         else:
-            print(f"There's no such thing as {target}.")
+            print(f"You can't attack the \"{target_alias}\".")
+            return
+
+        self._hero_attack_turn(target_creature)
+        self._creature_attack_turn(target_creature)
+
+
+    def _hero_attack_turn(self, target_creature: Creature):
+        hero = self.game_state.hero
+        target_alias = target_creature.alias[0]
+
+        if target_creature.health <= 0:
+            print(f"{target_alias} is already dead.")
+            return
+        damage = 1
+        if hero.right_hand != "none":
+            damage = self.game_state.equipment[hero.right_hand].damage
+        target_creature.health -= damage
+        print(
+            f"You hit the {target_alias} for {damage} damage! {target_alias} has {target_creature.health} HP left.")
+
+    def _creature_attack_turn(self, target_creature):
+        hero = self.game_state.hero
+        target_alias = target_creature.alias[0]
+
+        if target_creature.health <= 0:
+            print(f"{target_alias} is DEAD!")
+            for loot in target_creature.drops:
+                self.spawn_item(loot)
+        # ak ešte žije
+        # todo: vsetky prisery v miestnosti su na rade s utokom ?
+        if target_creature.health > 0:
+            total_damage = self._count_total_hero_damage(target_creature)
+            hero.health -= total_damage
+            print(f"{target_alias} hit you for {total_damage} damage! You have {hero.health} HP left.")
 
     def _count_total_hero_damage(self, creature):
         hero = self.game_state.hero
@@ -394,11 +406,12 @@ class CommandRunner:
         for c in commands:
             if c == "command_spawn_item" and node:
                 self.spawn_item(commands[c])
-                self.despawn_item(node)
+            elif c == "command_despawn_item":
+                self.despawn_item(commands[c])
             elif c == "command_display":
                 self.display(commands[c])
             elif c == "command_required_item":
-                if not self.check_inventory_for_item(commands[c]):
+                if not self._is_item_in_inventory(commands[c]):
                     print(f"You do not have a required item to do this action.")
                     return
                 continue
@@ -409,7 +422,7 @@ class CommandRunner:
             elif c == "command_use_item":
                 self.use_item(node)
             elif c == "command_remove_item_from_inventory":
-                self.game_state.hero.inventory.remove(commands[c])
+                self._remove_item_from_inventory(commands[c])
             elif c == "command_end_game":
                 exit(1)
             else:
@@ -426,12 +439,18 @@ class CommandRunner:
             print(f"You already did this.")
 
     def despawn_item(self, item_id):
-        room = self.game_state.rooms[self.game_state.hero.location]
+        hero = self.game_state.hero
+        room = self.game_state.rooms[hero.location]
         if item_id in room.items:
             room.items.remove(item_id)
 
-    def check_inventory_for_item(self, item_id):
+    def _is_item_in_inventory(self, item_id) -> bool:
         return item_id in self.game_state.hero.inventory
+
+    def _remove_item_from_inventory(self, item_id):
+        inventory = self.game_state.hero.inventory
+        if item_id in inventory:
+            inventory.remove(item_id)
 
     def use_item(self, item_id):
         item = self.game_state.items[item_id]

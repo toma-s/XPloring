@@ -27,17 +27,40 @@ class TestInput(unittest.TestCase):
         expected_output = "Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testOpenEnvelopeAgain(self):
+    def test_open_envelope_room(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
         self.cr.execute(["open", "envelope"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["open", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You found letter. READ to read content."
+        expected_output = "There is no such thing as \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def testUseMysteryAtEntranceRoom(self):
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+    def test_open_envelope_inventory(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+        self.cr.execute(["take", "envelope"])
+        self.cr.execute(["open", "envelope"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["open", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+    def test_use_mystery_entrance_room(self):
         self.cr.execute(["take", "mystery"])
 
         stdout = io.StringIO()
@@ -48,7 +71,7 @@ class TestInput(unittest.TestCase):
                           "Hahahahahaha you fool :P\n"
         self.assertEqual(expected_output, result_output)
 
-    def testUseMysteryAtArenaRoom(self):
+    def test_use_mystery_arena_room(self):
         self.cr.execute(["take", "mystery"])
         self.cr.execute(["go", "west"])
 
@@ -60,7 +83,7 @@ class TestInput(unittest.TestCase):
                           "Hahahahahaha you fool :P\n"
         self.assertEqual(expected_output, result_output)
 
-    def testAttackDragon(self):
+    def test_attack_dragon(self):
         self.cr.execute(["go", "west"])
 
         stdout = io.StringIO()
@@ -71,7 +94,7 @@ class TestInput(unittest.TestCase):
                           "dragon hit you for 10 damage! You have 90 HP left.\n"
         self.assertEqual(expected_output, result_output)
 
-    def testAttachDragon(self):
+    def test_attach_dragon(self):
         self.cr.execute(["go", "west"])
 
         stdout = io.StringIO()
@@ -79,4 +102,38 @@ class TestInput(unittest.TestCase):
             self.cr.execute(["attach", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attach\" is not allowed with \"dragon\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_envelope(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_helmet(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"helmet\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_door(self):
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "door"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"door\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_nonexistent(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "nothing"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"nothing\".\n"
         self.assertEqual(expected_output, result_output)
