@@ -68,24 +68,41 @@ class CommandRunner:
             if noun == "game_item":
                 self._equip_item(target)
 
-    def _item_action(self, action, target):
-        int_commands = None
-        item_id = None
-        for it in self.game_state.rooms[self.game_state.hero.location].items:
-            if it in self.game_state.items and target in self.game_state.items[it].alias and action in \
-                    self.game_state.items[it].actions:
-                int_commands = self.game_state.items[it].actions[action]
-                item_id = it
-                break
-        if not int_commands:
-            for it in self.game_state.items:
-                if it in self.game_state.hero.inventory and target in self.game_state.items[it].alias and action in \
-                        self.game_state.items[it].actions:
-                    int_commands = self.game_state.items[it].actions[action]
-                    item_id = it
-                    break
-        if int_commands:
-            self.run_internal_command(int_commands, item_id)
+    def _item_action(self, action_name, item_alias):
+        item_ids = self.getItemIdsByAlias(item_alias)
+        if len(item_ids) == 0:
+            print(f"There is no such thing as \"{item_alias}\".")
+            return
+        if len(item_ids) > 1:
+            # TODO test this feature
+            print(f"There are {len(item_ids)} \"{item_alias}\"-s. You have to be more specific.")
+            return
+
+        item_id = item_ids[0]
+        item_data =   self.game_state.items[item_id]
+        if action_name not in item_data.actions:
+            print(f"Action \"{action_name}\" is not allowed with \"{item_alias}\".")
+            return
+
+        item_action = item_data.actions[action_name]
+        self.run_internal_command(item_action, item_id)
+
+
+    def getItemIdsByAlias(self, target_item_alias) -> [str]:
+        items_in_room = self.game_state.rooms[self.game_state.hero.location].items
+        foundItemIds = []
+        for item_id in items_in_room:
+            if item_id in self.game_state.items:
+                item_data = self.game_state.items[item_id]
+                if target_item_alias in item_data.alias:
+                    foundItemIds.append(item_id)
+            if item_id in self.game_state.equipment:
+                item_data = self.game_state.equipment[item_id]
+                if target_item_alias in item_data.alias:
+                    foundItemIds.append(item_id)
+
+        return foundItemIds
+
 
     def _env_object_action(self, action, target):
         obj = self.game_state.environment_objects[target]

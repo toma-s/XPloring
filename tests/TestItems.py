@@ -1,3 +1,5 @@
+import contextlib
+import io
 import unittest
 
 from src.GameState import GameState
@@ -21,10 +23,11 @@ class TestItems(unittest.TestCase):
         self.assertIn("#item_letter", room_items, "Letter should appear in room after opening an envelope")
         self.assertNotIn("#item_envelope", room_items, "After envelope was opened it should have disappeared")
 
+
     def testInternalTakeItem(self):
         self.cr.execute(["take", "sword"])
         room_items = self.game_state.rooms[self.game_state.hero.location].items
-        self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it in the room still???")
+        self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it still in the room ???")
 
     def testGoThroughtLockedDoor(self):
         self.cr.execute(["go", "west"])
@@ -78,6 +81,38 @@ class TestItems(unittest.TestCase):
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
         self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
+
+    def testOpenNonexistingItem(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["open", "envel"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"envel\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testNonexistingActionOpe(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["ope", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"Action \"ope\" is not allowed with \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testBothNonexisting(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["ope", "enveep"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"enveep\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testNonexistingActionRead(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["read", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = f"Action \"read\" is not allowed with \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
 
 
 if __name__ == '__main__':
