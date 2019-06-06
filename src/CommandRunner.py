@@ -231,7 +231,6 @@ class CommandRunner:
             print(f"You can't attack the \"{target_alias}\".")
             return
 
-
         self._hero_attack_turn(target_creature)
         self._creature_attack_turn(target_creature)
 

@@ -111,3 +111,29 @@ class TestInput(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You can't attack the \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
+
+    def testAttackHelmet(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"helmet\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testAttackDoor(self):
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "door"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"door\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def testAttackNonexistent(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "nothing"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"nothing\".\n"
+        self.assertEqual(expected_output, result_output)
