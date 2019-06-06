@@ -121,7 +121,8 @@ class GameStateSaver:
 
     @staticmethod
     def _store(data):
-        timestamp = datetime.timestamp(datetime.now())
+        now = datetime.now()
+        timestamp = f"{now.date()}_{now.hour}-{now.minute}-{now.second}"
         output_path = f"../game_states/game_{timestamp}.json"
         with open(output_path, "w") as output_file:
             json.dump(data, output_file)
