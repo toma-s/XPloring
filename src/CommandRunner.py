@@ -353,7 +353,7 @@ class CommandRunner:
                 print(f"There is a {equipment[i].alias[0]}. It's {equipment[i].description.lower()}.")
 
         # entities in room
-        if not room.creaturess:
+        if not room.creatures:
             print("There's nothing scary here.")
         else:
             for c in room.creatures:
