@@ -11,7 +11,7 @@
         "#item_doorkey_armory",
         "#item_doorkey_kitchen"
       ],
-      "creature": []
+      "creatures": []
     },
     "#room_crossroad": {
       "description": "A room with 3 doors",
@@ -29,7 +29,7 @@
         }
       },
       "items": [],
-      "creature": [
+      "creatures": [
       ]
     },
     "#room_armory": {
@@ -41,7 +41,7 @@
         }
       },
       "items": [],
-      "creature": [
+      "creatures": [
       ]
     },
     "#room_kitchen": {
@@ -55,14 +55,14 @@
       "items": [
         "#item_cake"
       ],
-      "creature": [
+      "creatures": [
       ]
     },
     "#room_exit": {
       "description": "The matrix",
       "directions": {},
       "items": [],
-      "creature": [],
+      "creatures": [],
       "auto_commands": {
         "command_display": "Congratulations Hero. You reached the last room. Unfortunately for you, this was all a simulation and everything you experienced was a big lie. Wish you a nice day ^_^",
         "command_end_game": true
