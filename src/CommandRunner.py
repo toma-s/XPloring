@@ -305,7 +305,9 @@ class CommandRunner:
         item = self.game_state.equipment[item_id]
 
 
-        if hero.right_hand == item_id or hero.left_hand == item_id:
+        if hero.right_hand == item_id or hero.left_hand == item_id or \
+                hero.head == item_id or hero.chest == item_id or \
+                hero.legs == item_id:
             print(f"You are already equipped with {target_alias}")
             return
 

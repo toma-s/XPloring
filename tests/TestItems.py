@@ -197,5 +197,24 @@ class TestItems(unittest.TestCase):
         expected_output = f"You don't have envelope in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
+
+    def test_equip_already_equipped(self):
+        self.cr.execute(["take", "helmet"])
+        self.cr.execute(["equip", "helmet"])
+        self.cr.execute(["take", "chestplate"])
+        self.cr.execute(["equip", "chestplate"])
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["equip", "helmet"])
+            self.cr.execute(["equip", "chestplate"])
+            self.cr.execute(["equip", "sword"])
+        result_output = stdout.getvalue()
+        expected_output = f"You are already equipped with helmet\nYou are already equipped with chestplate\nYou are already equipped with sword\n"
+        self.assertEqual(expected_output, result_output)
+
+
 if __name__ == '__main__':
     unittest.main()
