@@ -40,7 +40,7 @@ class Game:
                 continue
 
             if re.match("^save|^SAVE$", user_input):
-                GameStateSaver().save(self.game_state)
+                GameStateSaver(self.game_state).save()
                 continue
 
             if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
@@ -70,6 +70,9 @@ class Game:
             if re.match("^help$|^HELP$", user_input):
                 print_help()
 
+            elif re.match("^save|^SAVE$", user_input):
+                GameStateSaver(self.game_state).save()
+
             elif re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 sys.exit(0)
 
@@ -88,4 +91,5 @@ def print_help():
     print("Type EQUIP to try on an game_item from the inventory.")
     print("Type STATUS to print out you current Hero status.")
     print("Type EXAMINE <game_item name> to learn more about an game_item.")
+    print("Type SAVE to save current game.")
     print("Type QUIT or Q to quit game.")
