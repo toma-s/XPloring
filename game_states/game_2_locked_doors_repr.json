@@ -17,11 +17,11 @@
       "description": "A room with 3 doors",
       "directions": {
         "west": {
-          "env_obj_id": "#env_door_armory",
+          "trans_obj_id": "#trans_door_armory",
           "room_id": "#room_armory"
         },
         "east": {
-          "env_obj_id": "#env_door_kitchen",
+          "trans_obj_id": "#trans_door_kitchen",
           "room_id": "#room_kitchen"
         },
         "south": {
@@ -36,7 +36,7 @@
       "description": "Armory. Unfortunately, it was pillaged some time ago by angry peasants.",
       "directions": {
         "east": {
-          "env_obj_id": "#env_door_armory",
+          "trans_obj_id": "#trans_door_armory",
           "room_id": "#room_crossroad"
         }
       },
@@ -48,7 +48,7 @@
       "description": "Kitchen. Strange, the fireplace is lit and the fire brightens the room.",
       "directions": {
         "west": {
-          "env_obj_id": "#env_door_kitchen",
+          "trans_obj_id": "#trans_door_kitchen",
           "room_id": "#room_crossroad"
         }
       },
@@ -111,8 +111,8 @@
       }
     }
   },
-  "environment_objects": {
-    "#env_door_armory": {
+  "transition_objects": {
+    "#trans_door_armory": {
       "alias": [
         "armory door", "door to armory", "door"
       ],
@@ -128,7 +128,7 @@
         }
       }
     },
-    "#env_door_kitchen": {
+    "#trans_door_kitchen": {
       "alias": [
         "kitchen door", "door to kitchen", "door"
       ],

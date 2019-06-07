@@ -4,7 +4,7 @@ from typing import Dict
 
 from exceptions.GameStateFileException import GameStateFileException
 from game_item.Creature import Creature
-from game_item.EnvironmentObject import EnvironmentObject
+from game_item.TransitionObject import TransitionObject
 from game_item.Item import Item
 from game_item.Consumable import Consumable
 from game_item.Room import Room
@@ -24,8 +24,8 @@ class GameStateLoader:
     def create_creatures(self) -> Dict[str, any]:
         return self._create_dict(Creature, "creatures")
 
-    def create_environment_objects(self) -> Dict[str, any]:
-        return self._create_dict(EnvironmentObject, "environment_objects")
+    def create_transition_objects(self) -> Dict[str, any]:
+        return self._create_dict(TransitionObject, "transition_objects")
 
     def _create_dict(self, type, key_name) -> Dict[str, any]:
         try:
