@@ -1,0 +1,61 @@
+{
+  "rooms": {
+    "#room1": {
+      "description": "Room #1",
+      "directions": {
+      },
+      "items": [
+        "#helmet1",
+        "#helmet2"
+      ],
+      "creatures": []
+    }
+  },
+  "creatures": {},
+  "items": {
+    "regular": {},
+    "consumable": {}
+  },
+  "equipment": {
+    "weapons": {},
+    "armour": {
+      "#helmet1": {
+        "alias": [
+          "helmet1"
+        ],
+        "slot": "head",
+        "resistance": 5,
+        "durability": 10,
+        "in_use": false,
+        "description": "Helmet Equipment #1"
+      },
+      "#helmet2": {
+        "alias": [
+          "helmet2"
+        ],
+        "slot": "head",
+        "resistance": 5,
+        "durability": 10,
+        "in_use": false,
+        "description": "Helmet Equipment #2"
+      }
+    }
+  },
+  "transition_objects": {},
+  "hero": {
+    "health": 100,
+    "location": "#room1",
+    "right_hand": "none",
+    "left_hand": "none",
+    "head": "none",
+    "chest": "none",
+    "legs": "none",
+    "actions": {
+      "take": "item_take game_item",
+      "equip": "equip game_item",
+      "inventory": "display inventory",
+      "status": "display self"
+    },
+    "inventory": []
+  }
+}
