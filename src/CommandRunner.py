@@ -312,7 +312,7 @@ class CommandRunner:
 
         item_id = ids[0]
         if item_id not in self.game_state.equipment:
-            print(f"You cant equip {target_alias}")
+            print(f"You can't equip {target_alias}")
             return
         item = self.game_state.equipment[item_id]
 
