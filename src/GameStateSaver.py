@@ -22,7 +22,7 @@ class GameStateSaver:
         data = dict()
         data["rooms"] = self._load_rooms()
         data["creatures"] = self._load_creatures()
-        data["environment_objects"] = self._load_environment_objects()
+        data["transition_objects"] = self._load_transition_objects()
         data["items"] = self._load_items()
         data["equipment"] = self._load_equipment()
         data["hero"] = self._load_hero()
@@ -53,16 +53,16 @@ class GameStateSaver:
             creatures[key]["description"] = creature.description
         return creatures
 
-    def _load_environment_objects(self) -> Dict[str, any]:
-        environment_objects = dict()
-        for key, value in self.game_state.environment_objects.items():
-            environment_object = value
-            environment_objects[key] = dict()
-            environment_objects[key]["alias"] = [alias_item for alias_item in environment_object.alias]
-            environment_objects[key]["unlocked"] = environment_object.unlocked
-            environment_objects[key]["description"] = environment_object.description
-            environment_objects[key]["actions"] = environment_object.actions
-        return environment_objects
+    def _load_transition_objects(self) -> Dict[str, any]:
+        transition_objects = dict()
+        for key, value in self.game_state.transition_objects.items():
+            transition_object = value
+            transition_objects[key] = dict()
+            transition_objects[key]["alias"] = [alias_item for alias_item in transition_object.alias]
+            transition_objects[key]["unlocked"] = transition_object.unlocked
+            transition_objects[key]["description"] = transition_object.description
+            transition_objects[key]["actions"] = transition_object.actions
+        return transition_objects
 
     def _load_items(self) -> Dict[str, any]:
         items = dict()

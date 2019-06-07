@@ -31,7 +31,7 @@
     "armour": {
     }
   },
-  "environment_objects": {
+  "transition_objects": {
   },
   "hero": {
     "health": 100,

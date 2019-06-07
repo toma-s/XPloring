@@ -24,8 +24,8 @@ class GameStateLoader:
     def create_creatures(self) -> Dict[str, any]:
         return self._create_dict(Creature, "creatures")
 
-    def create_environment_objects(self) -> Dict[str, any]:
-        return self._create_dict(EnvironmentObject, "environment_objects")
+    def create_transition_objects(self) -> Dict[str, any]:
+        return self._create_dict(EnvironmentObject, "transition_objects")
 
     def _create_dict(self, type, key_name) -> Dict[str, any]:
         try:

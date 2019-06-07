@@ -70,8 +70,8 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertEqual(50, creature2.damage)
         self.assertListEqual(["#item2"], creature2.drops)
 
-    def test_create_environment_objects(self):
-        result = self.loader.create_environment_objects()
+    def test_create_transition_objects(self):
+        result = self.loader.create_transition_objects()
         self.assertDictEqual(dict(), result)
 
     def test_create_items(self):

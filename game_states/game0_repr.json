@@ -1,7 +1,7 @@
 {
   "rooms": {
     "#room_entrance": {
-      "description": "Entrance room, there is a table in the middle.",
+      "description": "Entrance room, there are some things laying around in the room.",
       "directions": {
         "west": {
           "room_id": "#room_arena"
@@ -24,7 +24,7 @@
           "room_id": "#room_entrance"
         },
         "north": {
-          "env_obj_id": "#env_door_exit",
+          "trans_obj_id": "#trans_door_exit",
           "room_id": "#room_exit"
         }
       },
@@ -57,8 +57,8 @@
       "description": "Big green dragon"
     }
   },
-  "environment_objects": {
-    "#env_door_exit": {
+  "transition_objects": {
+    "#trans_door_exit": {
       "alias": [
         "door"
       ],

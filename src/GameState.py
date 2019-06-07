@@ -11,7 +11,7 @@ class GameState:
 
             self.rooms = loader.create_rooms()
             self.creatures = loader.create_creatures()
-            self.environment_objects = loader.create_environment_objects()
+            self.transition_objects = loader.create_transition_objects()
             self.items = loader.create_items()
             self.equipment = loader.create_equipment()
             self.hero = loader.create_hero()
