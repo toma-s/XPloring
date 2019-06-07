@@ -79,7 +79,7 @@ class TestAttack(unittest.TestCase):
             self.cr.execute(["attack", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "You hit the green dragon for 1 damage! Green dragon has 59 HP left.\n" \
-                          "The green dragon hit you for 10 damage! You have 90 HP left.\n"
+                          "Green dragon hit you for 10 damage! You have 90 HP left.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_inventory(self):

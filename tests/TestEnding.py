@@ -80,7 +80,10 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.cr.execute(["attack", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You hit the green dragon for 1 damage! green dragon has 50 HP left.\ngreen dragon hit you for 10 damage! You have 0 HP left.\nGAME OVER. You were killed by green dragon. Better luck next time.\n"
+        expected_output = "You hit the green dragon for 1 damage! " \
+                          "Green dragon has 50 HP left.\n" \
+                          "Green dragon hit you for 10 damage! You have 0 HP left.\n" \
+                          "GAME OVER. You were killed by green dragon. Better luck next time.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(50, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(0, self.game_state.hero.health)
@@ -100,7 +103,10 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.cr.execute(["attack", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You hit the green dragon for 1 damage! green dragon has 49 HP left.\ngreen dragon hit you for 10 damage! You have -4 HP left.\nGAME OVER. You were killed by green dragon. Better luck next time.\n"
+        expected_output = "You hit the green dragon for 1 damage! " \
+                          "Green dragon has 49 HP left.\n" \
+                          "Green dragon hit you for 10 damage! You have -4 HP left.\n" \
+                          "GAME OVER. You were killed by green dragon. Better luck next time.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(49, self.game_state.creatures["#creature_dragon"].health)
 

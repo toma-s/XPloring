@@ -258,21 +258,22 @@ class CommandRunner:
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias} is already dead.")
+            print(f"{target_alias.capitalize()} is already dead.")
             return
         damage = 1
         if hero.right_hand != "none":
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage
         print(
-            f"You hit the {target_alias} for {damage} damage! {target_alias} has {target_creature.health} HP left.")
+            f"You hit the {target_alias} for {damage} damage! "
+            f"{target_alias.capitalize()} has {target_creature.health} HP left.")
 
     def _creature_attack_turn(self, target_creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias} is DEAD!")
+            print(f"{target_alias.capitalize()} is DEAD!")
             for loot in target_creature.drops:
                 self.spawn_item(loot)
         # ak ešte žije
@@ -280,7 +281,8 @@ class CommandRunner:
         if target_creature.health > 0:
             total_damage = self._count_total_hero_damage(target_creature)
             hero.health -= total_damage
-            print(f"{target_alias} hit you for {total_damage} damage! You have {hero.health} HP left.")
+            print(f"{target_alias.capitalize()} hit you for {total_damage} damage! "
+                  f"You have {hero.health} HP left.")
 
 
     def _count_total_hero_damage(self, creature):
