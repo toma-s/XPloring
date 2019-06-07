@@ -106,7 +106,7 @@ class CommandRunner:
             if "trans_obj_id" in hero_room.directions[direction]:
                 trans_obj_id = hero_room.directions[direction]["trans_obj_id"]
                 trans_obj_data: TransitionObject = self.game_state.transition_objects[trans_obj_id]
-                if target_alias in trans_obj_data.alias:
+                if target_alias in [alias.lower() for alias in trans_obj_data.alias]:
                     foundIds.append(trans_obj_id)
         return foundIds
 
@@ -119,7 +119,7 @@ class CommandRunner:
         for creature_id in hero_room.creatures:
             if creature_id in self.game_state.creatures:
                 creature_data = self.game_state.creatures[creature_id]
-                if target_alias in creature_data.alias:
+                if target_alias in [alias.lower() for alias in creature_data.alias]:
                     foundIds.append(creature_id)
         return foundIds
 
@@ -138,11 +138,11 @@ class CommandRunner:
         for item_id in item_ids_in_inventory:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
         return foundIds
 
@@ -155,12 +155,14 @@ class CommandRunner:
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                for alias in item_data.alias:
+                    if target_alias == alias.lower():
+                        foundIds.append((item_id, alias))
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                for alias in item_data.alias:
+                    if target_alias == alias.lower():
+                        foundIds.append((item_id, alias))
         return foundIds
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
@@ -224,12 +226,13 @@ class CommandRunner:
         if not self._check_found_one_id_only(item_ids, target_item_alias):
             return
 
-        item_id = item_ids[0]
+        item_id = item_ids[0][0]
+        item_alias = item_ids[0][1]
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
 
-        print(f"You grabbed the {target_item_alias}.")
+        print(f"You grabbed the {item_alias}.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
@@ -381,7 +384,7 @@ class CommandRunner:
         # items in room
         for i in room.items:
             if i in items:
-                print(f"There is a {items[i].alias[0]}. {items[i].description}.")
+                print(f"There is a {items[i].alias[0]}. {items[i].description.capitalize()}.")
             elif i in equipment:
                 print(f"There is a {equipment[i].alias[0]}. It's {equipment[i].description.lower()}.")
 

@@ -5,6 +5,7 @@ import io
 
 from CommandRunner import CommandRunner
 from GameState import GameState
+from InputHandler import InputHandler
 
 
 class TestInput(unittest.TestCase):
@@ -56,12 +57,32 @@ class TestInput(unittest.TestCase):
         expected_output = "Action \"attach\" is not allowed with \"dragon\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_capital_alias(self):
+    def test_capital_alias_capital(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "Helmet"])
+            commands_to_run = InputHandler().parse_user_input("take Helmet")
+            self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "You grabbed the Helmet.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_capital_alias_lower(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take helmet")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_capital_alias_lower_capital_two_times(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "helmet"])
+            self.cr_capital_alias.execute(["take", "Helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n" \
+                          "There is no such thing as \"Helmet\".\n"
         self.assertEqual(expected_output, result_output)
 
 
