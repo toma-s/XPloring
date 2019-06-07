@@ -127,7 +127,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["equip", "key"])
         result_output = stdout.getvalue()
-        expected_output = "There are 2 key. You have to be more specific.\n"
+        expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door(self):
@@ -145,5 +145,5 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["equip", "door"])
         result_output = stdout.getvalue()
-        expected_output = "There are 2 door. You have to be more specific.\n"
+        expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

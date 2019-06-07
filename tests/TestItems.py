@@ -82,7 +82,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["take", "key"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 key. You have to be more specific.\n"
+        expected_output = f"There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_keys_with_same_alias(self):
@@ -90,7 +90,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["examine", "key"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 key. You have to be more specific.\n"
+        expected_output = f"There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_nonexistent_action_keys_with_same_alias(self):
@@ -98,7 +98,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["read", "key"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 key. You have to be more specific.\n"
+        expected_output = f"There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
 

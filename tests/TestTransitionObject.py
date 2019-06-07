@@ -62,7 +62,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["open", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 door. You have to be more specific.\n"
+        expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_armory_door(self):
@@ -118,7 +118,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["unlock", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 door. You have to be more specific.\n"
+        expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_doors_with_same_alias_haskey(self):
@@ -128,5 +128,5 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["unlock", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 door. You have to be more specific.\n"
+        expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
