@@ -1,0 +1,127 @@
+{
+  "rooms": {
+    "#room1": {
+      "description": "Room #1",
+      "directions": {
+        "west": {
+          "room_id": "#room2"
+        }
+      },
+      "items": [
+        "#item1"
+      ],
+      "creatures": [
+        "#creature1"
+      ]
+    },
+    "#room2": {
+      "description": "Room #2",
+      "directions": {
+        "east": {
+          "room_id": "#room1"
+        }
+      },
+      "items": [
+        "#item2"
+      ],
+      "creatures": [
+        "#creature2"
+      ]
+    }
+  },
+  "creatures": {
+    "#creature1": {
+      "alias": [
+        "beast 1"
+      ],
+      "health": 50,
+      "damage": 10,
+      "drops": [
+        "#item1"
+      ],
+      "description": "Creature #1"
+    },
+    "#creature2": {
+      "alias": [
+        "beast 2"
+      ],
+      "health": 100,
+      "damage": 50,
+      "drops": [
+        "#item2"
+      ],
+      "description": "Creature #2"
+    }
+  },
+  "items": {
+    "regular": {
+      "#item1": {
+        "description": "Regular Item #1",
+        "alias": [
+          "regular item 1"
+        ],
+        "actions": {
+          "open": {
+            "command_spawn_item": "#item2"
+          }
+        }
+      }
+    },
+    "consumable": {
+      "#item2": {
+        "description": "Consumable Item #2",
+        "value": 50,
+        "alias": [
+          "consumable item 2"
+        ],
+        "actions": {
+          "use": {
+            "command_required_item": "#item1",
+            "command_use_item": true
+          }
+        }
+      }
+    }
+  },
+  "equipment": {
+    "weapons": {
+      "#weapon1": {
+        "alias": [
+          "weapon equipment"
+        ],
+        "slot": "hand",
+        "in_use": false,
+        "damage": 50,
+        "description": "Weapon Equipment"
+      }
+    },
+    "armour": {
+      "#armour1": {
+        "alias": [
+          "armour equipment"
+        ],
+        "slot": "head",
+        "resistance": 5,
+        "durability": 10,
+        "in_use": false,
+        "description": "Armour Equipment"
+      }
+    }
+  },
+  "transition_objects": {
+  },
+  "hero": {
+    "health": 100,
+    "location": "#room1",
+    "right_hand": "#weapon1",
+    "left_hand": "none",
+    "head": "#armour1",
+    "chest": "none",
+    "legs": "none",
+    "actions": {
+    },
+    "inventory": [
+      "#item1"
+    ]
+  }
+}

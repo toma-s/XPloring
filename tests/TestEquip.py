@@ -6,7 +6,7 @@ from CommandRunner import CommandRunner
 from GameState import GameState
 
 
-class TestCombat(unittest.TestCase):
+class TestEquip(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -16,7 +16,6 @@ class TestCombat(unittest.TestCase):
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
-
 
     def test_equip(self):
         stdout = io.StringIO()
@@ -81,3 +80,33 @@ class TestCombat(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You can't equip dragon\n"
         self.assertEqual(expected_output, result_output)
+
+    def test_equip_item_not_in_inventory(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["equip", "sword"])
+        result_output = stdout.getvalue()
+        expected_output = "You don't have sword in your inventory.\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual("none", self.game_state.hero.right_hand)
+
+    def test_equip_item_in_inventory(self):
+        self.cr.execute(["take", "sword"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["equip", "sword"])
+        result_output = stdout.getvalue()
+        expected_output = "You are now equipped with sword\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
+
+    def test_equip_same_item_twice(self):
+        self.cr.execute(["take", "sword"])
+        self.cr.execute(["equip", "sword"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["equip", "sword"])
+        result_output = stdout.getvalue()
+        expected_output = "You are already equipped with sword\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
