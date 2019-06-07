@@ -99,7 +99,7 @@
       "#item_doorkey_exit": {
         "description": "This key opens heavy metal door",
         "alias": [
-           "metalic key", "key", "heavy metal door key"
+           "metallic key", "key", "heavy metal door key"
         ],
         "actions": {}
       }
