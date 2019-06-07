@@ -167,7 +167,7 @@ class CommandRunner:
             print(f"There is no such thing as \"{target_alias}\".")
             return False
         if len(ids) > 1:
-            print(f"There are {len(ids)} \"{target_alias}\"-s. You have to be more specific.")
+            print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")
             return False
         return True
 
@@ -314,7 +314,7 @@ class CommandRunner:
             print(f"You don't have {target_alias} in your inventory.")
             return
         elif len(ids) > 1:
-            print(f"There are {len(ids)} \"{target_alias}\"-s. You have to be more specific.")
+            print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")
             return
 
         item_id = ids[0]

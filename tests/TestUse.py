@@ -103,7 +103,7 @@ class TestUse(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "key"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"use\" is not allowed with \"key\".\n"
+        expected_output = "There is no such thing as \"key\".\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_key_ambiguous(self):

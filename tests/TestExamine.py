@@ -120,7 +120,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "door"])
         result_output = stdout.getvalue()
-        expected_output = "Locked, you need a key\n"
+        expected_output = "Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door_ambiguous(self):
