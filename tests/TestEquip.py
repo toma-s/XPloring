@@ -44,7 +44,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip envelope\n"
+        expected_output = "You can't equip the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_consumable_item(self):
@@ -52,7 +52,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip potion\n"
+        expected_output = "You can't equip the potion.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_equipment_weapon(self):
@@ -76,23 +76,24 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "west"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip west\n"
+        expected_output = "You can't equip the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_creature(self):
+        self.cr.execute(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip dragon\n"
+        expected_output = "You can't equip the dragon.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "head"])
+            self.cr.execute(["equip", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip inventory\n"
+        expected_output = "You can't equip the inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_item_not_in_inventory(self):
@@ -118,7 +119,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "key"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the \"key\".\n"
+        expected_output = "You can't equip the key.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_key_ambiguous(self):
@@ -126,7 +127,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["equip", "key"])
         result_output = stdout.getvalue()
-        expected_output = "There are 2 \"key\". You have to be more specific.\n"
+        expected_output = "There are 2 key. You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door(self):
@@ -135,7 +136,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "door"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the \"door\".\n"
+        expected_output = "You can't equip the door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door_ambiguous(self):
@@ -144,5 +145,5 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["equip", "door"])
         result_output = stdout.getvalue()
-        expected_output = "There are 2 \"door\". You have to be more specific.\n"
+        expected_output = "There are 2 door. You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

@@ -1,3 +1,4 @@
+from commands import commands_directions
 from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.TransitionObject import TransitionObject
@@ -49,13 +50,14 @@ class CommandRunner:
     def _handle_hero_action(self, action, target_alias):
         hero = self.game_state.hero
         verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
-        if verb == "display":
-            if noun == "game_item":
-                self._display_item(target_alias)
 
-        elif verb == "move_to":
+        if verb == "move_to":
             if noun == "direction":
                 self._move_to_direction(target_alias)
+
+        elif verb == "display":
+            if noun == "game_item":
+                self._display_item(target_alias)
 
         elif verb == "item_take":
             if noun == "game_item":
@@ -81,7 +83,7 @@ class CommandRunner:
         elif id in self.game_state.transition_objects:
             data = self.game_state.transition_objects[id]
         if data is None or action_name not in data.actions:
-            print(f"Action \"{action_name}\" is not allowed with \"{target_alias}\".")
+            print(f"Action \"{action_name}\" is not allowed with {target_alias}.")
             return
 
         action = data.actions[action_name]
@@ -165,10 +167,10 @@ class CommandRunner:
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:
-            print(f"There is no such thing as \"{target_alias}\".")
+            print(f"There is no such thing as {target_alias}.")
             return False
         if len(ids) > 1:
-            print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")
+            print(f"There are {len(ids)} {target_alias}. You have to be more specific.")
             return False
         return True
 
@@ -219,17 +221,22 @@ class CommandRunner:
 
     def _item_take(self, target_item_alias):
         hero = self.game_state.hero
-        item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
 
+        item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
+        item_ids += self._find_item_ids_by_alias_in_inventory( target_item_alias)
         if not self._check_found_one_id_only(item_ids, target_item_alias):
             return
 
         item_id = item_ids[0]
+
+        if item_id in hero.inventory:
+            print(f"{target_item_alias.capitalize()} is already in your inventory.")
+            return
+
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
-
-        print(f"You grabbed the {target_item_alias}.")
+        print(f"{target_item_alias.capitalize()} has been added to your inventory.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
@@ -239,7 +246,7 @@ class CommandRunner:
 
         target_id = ids[0]
         if target_id not in self.game_state.creatures:
-            print(f"You can't attack the \"{target_alias}\".")
+            print(f"You can't attack the {target_alias}.")
             return
 
         target_creature = self.game_state.creatures[target_id]
@@ -320,49 +327,47 @@ class CommandRunner:
 
     def _equip_item(self, target_alias):
         hero = self.game_state.hero
-        items = self.game_state.items
         equipment = self.game_state.equipment
 
-        ids = self._find_item_ids_by_alias_in_inventory(target_alias)
-        if len(ids) == 0:
-            print(f"You don't have {target_alias} in your inventory.")
-            return
-        elif len(ids) > 1:
-            print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")
+        ids = self._find_ids_by_alias(target_alias)
+        if not self._check_found_one_id_only(ids, target_alias):
             return
 
         item_id = ids[0]
         if item_id not in self.game_state.equipment:
-            print(f"You can't equip {target_alias}")
+            print(f"You can't equip the {target_alias}.")
             return
-        item = self.game_state.equipment[item_id]
 
+        if item_id not in hero.inventory:
+            print(f"You don't have {target_alias} in your inventory.")
+            return
 
+        item_data = self.game_state.equipment[item_id]
         if hero.right_hand == item_id or hero.left_hand == item_id or \
                 hero.head == item_id or hero.chest == item_id or \
                 hero.legs == item_id:
             print(f"You are already equipped with {target_alias}")
             return
 
-        if item.slot == "hand":
+        if item_data.slot == "hand":
             if hero.right_hand != "none":
                 equipment[hero.right_hand].in_use = False
             hero.right_hand = item_id
-        elif item.slot == "head":
+        elif item_data.slot == "head":
             if hero.head != "none":
                 equipment[hero.head].in_use = False
             hero.head = item_id
-        elif item.slot == "chest":
+        elif item_data.slot == "chest":
             if hero.chest != "none":
                 equipment[hero.chest].in_use = False
             hero.chest = item_id
-        elif item.slot == "legs":
+        elif item_data.slot == "legs":
             if hero.legs != "none":
                 equipment[hero.legs].in_use = False
             hero.legs = item_id
 
         print(f"You are now equipped with {target_alias}")
-        item.in_use = True
+        item_data.in_use = True
 
     def execute(self, commands):
         ignored = {"the", "on", "a", "an", "this", "that"}
