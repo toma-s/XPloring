@@ -128,7 +128,7 @@
         "armory door", "door to armory", "door"
       ],
       "unlocked": false,
-      "description": "Door to armory is locked, you need a key",
+      "description": "Armory door is locked, you need a key",
       "actions": {
         "open": {
           "command_show_description": null
@@ -137,7 +137,7 @@
           "command_required_item": "#item_doorkey_armory",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_armory",
-          "command_set_description": "Unlocked, you may enter the armory.",
+          "command_set_description": "Armory door is unlocked, you may go through.",
           "command_show_description": null
         }
       }
@@ -147,7 +147,7 @@
         "kitchen door", "door to kitchen", "door"
       ],
       "unlocked": false,
-      "description": "Door to the kitchen is locked, you need a key",
+      "description": "Kitchen door is locked, you need a key",
       "actions": {
         "open": {
           "command_show_description": null
@@ -156,7 +156,7 @@
           "command_required_item": "#item_doorkey_kitchen",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_kitchen",
-          "command_set_description": "Unlocked, you may enter the kitchen.",
+          "command_set_description": "Kitchen door is unlocked, you may go through.",
           "command_show_description": null
         }
       }
