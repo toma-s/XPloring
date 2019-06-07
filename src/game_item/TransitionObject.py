@@ -1,4 +1,4 @@
-class EnvironmentObject:
+class TransitionObject:
     def __init__(self, data: dict):
         self.alias = data['alias']
         self.unlocked = data['unlocked']

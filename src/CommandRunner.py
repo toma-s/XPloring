@@ -1,5 +1,5 @@
 from game_item.Creature import Creature
-from game_item.EnvironmentObject import EnvironmentObject
+from game_item.TransitionObject import TransitionObject
 from src.GameState import GameState
 from game_item.Room import Room
 from game_item.Item import Item
@@ -86,7 +86,7 @@ class CommandRunner:
         action = data.actions[action_name]
         self.run_internal_command(action, id)
 
-    def _env_object_action(self, action_name, trans_obj_id):
+    def _trans_object_action(self, action_name, trans_obj_id):
         obj = self.game_state.transition_objects[trans_obj_id]
         if action_name == "unlock" and obj.unlocked:
             print(f"Already unlocked.")
@@ -104,8 +104,8 @@ class CommandRunner:
         for direction in hero_room.directions:
             if "trans_obj_id" in hero_room.directions[direction]:
                 trans_obj_id = hero_room.directions[direction]["trans_obj_id"]
-                env_obj_data: EnvironmentObject = self.game_state.transition_objects[trans_obj_id]
-                if target_alias in env_obj_data.alias:
+                trans_obj_data: TransitionObject = self.game_state.transition_objects[trans_obj_id]
+                if target_alias in trans_obj_data.alias:
                     foundIds.append(trans_obj_id)
         return foundIds
 
@@ -179,8 +179,8 @@ class CommandRunner:
                 item_data = self.game_state.items[id]
                 self.display(item_data)
             elif id in self.game_state.transition_objects:
-                env_obj_data = self.game_state.transition_objects[id]
-                self.display(env_obj_data)
+                trans_obj_data = self.game_state.transition_objects[id]
+                self.display(trans_obj_data)
 
 
     def _move_to_direction(self, target):
@@ -194,9 +194,9 @@ class CommandRunner:
             my_direction = rooms[hero.location].directions[target]
 
             if "trans_obj_id" in my_direction:
-                env_obj = transition_objects[my_direction["trans_obj_id"]]
-                if not env_obj.unlocked:
-                    print(env_obj.description)
+                trans_obj = transition_objects[my_direction["trans_obj_id"]]
+                if not trans_obj.unlocked:
+                    print(trans_obj.description)
                 else:
                     self.move_to(room_id)
             else:
@@ -381,7 +381,7 @@ class CommandRunner:
     def display(self, obj):
         if isinstance(obj, Room):
             self.discover_room()
-        elif isinstance(obj, EnvironmentObject):
+        elif isinstance(obj, TransitionObject):
             self.examine_item(obj)
         elif isinstance(obj, Item):
             self.examine_item(obj)
