@@ -17,6 +17,17 @@ class TestCombat(unittest.TestCase):
         del self.game_state
         del self.cr
 
+    def test_attack_dragon(self):
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "dragon"])
+        result_output = stdout.getvalue()
+        expected_output = "You hit the dragon for 1 damage! dragon has 59 HP left.\n" \
+                          "dragon hit you for 10 damage! You have 90 HP left.\n"
+        self.assertEqual(expected_output, result_output)
+
     def testHitCreatureWithFist(self):
         self.cr.execute(["go", "west"])
         self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
@@ -138,6 +149,9 @@ class TestCombat(unittest.TestCase):
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
         self.cr.execute(["unlock", "door"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
+
+
+
 
 
 if __name__ == '__main__':

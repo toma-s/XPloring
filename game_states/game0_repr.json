@@ -63,17 +63,17 @@
         "door"
       ],
       "unlocked": false,
-      "description": "Locked, you need key",
+      "description": "Locked, you need a key",
       "actions": {
         "open": {
-          "command_show_description": ""
+          "command_show_description": null
         },
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "Unlocked, you can leave.",
-          "command_display": "Unlocked, you can leave."
+          "command_show_description": null
         }
       }
     }

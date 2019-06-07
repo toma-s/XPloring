@@ -119,12 +119,15 @@
       "unlocked": false,
       "description": "Door to armory is locked, you need a key",
       "actions": {
+        "open": {
+          "command_show_description": null
+        },
         "unlock": {
           "command_required_item": "#item_doorkey_armory",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_armory",
           "command_set_description": "Unlocked, you may enter the armory.",
-          "command_display": "Unlocked, you may enter the armory."
+          "command_show_description": null
         }
       }
     },
@@ -135,12 +138,15 @@
       "unlocked": false,
       "description": "Door to the kitchen is locked, you need a key",
       "actions": {
+        "open": {
+          "command_show_description": null
+        },
         "unlock": {
           "command_required_item": "#item_doorkey_kitchen",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_kitchen",
           "command_set_description": "Unlocked, you may enter the kitchen.",
-          "command_display": "Unlocked, you may enter the kitchen."
+          "command_show_description": null
         }
       }
     }

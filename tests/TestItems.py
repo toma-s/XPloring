@@ -44,48 +44,6 @@ class TestItems(unittest.TestCase):
         self.assertEqual(1, len(self.game_state.hero.inventory))
         self.assertIn("#equipment_steel_sword", self.game_state.hero.inventory)
 
-    def testEquipItemNotInInventory(self):
-        self.cr.execute(["equip", "sword"])
-        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if
-                 "sword" in self.game_state.equipment[item].alias]
-        self.assertGreaterEqual(1, len(sword))
-        self.assertFalse(sword[0].in_use)
-        self.assertEqual("none", self.game_state.hero.right_hand)
-
-    def testEquipItemInInventory(self):
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
-        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if "sword" in self.game_state.equipment[item].alias]
-        self.assertGreaterEqual(1, len(sword))
-        self.assertTrue(sword[0].in_use)
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
-
-    def testEquipSameItemTwice(self):
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
-        self.cr.execute(["equip", "sword"])
-        sword = [self.game_state.equipment[item] for item in self.game_state.equipment if
-                 "sword" in self.game_state.equipment[item].alias]
-        self.assertGreaterEqual(1, len(sword))
-        self.assertTrue(sword[0].in_use)
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
-
-    def testTakeDeadlyPotionMystery(self):
-        self.cr.execute(["take", "mystery"])
-        self.cr.execute(["use", "mystery"])
-        self.assertEqual(25, self.game_state.hero.health)
-
-    def testEquipFullArmor(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
-        self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
-        self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
-
     def test_open_nonexisting_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -143,77 +101,88 @@ class TestItems(unittest.TestCase):
         expected_output = f"There are 2 \"key\"-s. You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_open_doors_with_same_alias(self):
-        self.cr2keys.execute(["go", "north"])
+
+
+    def testReadEnvelope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["open", "door"])
+            self.cr.execute(["read", "envelope"])
+
         result_output = stdout.getvalue()
-        expected_output = f"There are 2 \"door\"-s. You have to be more specific.\n"
+        expected_output = "Action \"read\" is not allowed with \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_examine_armory_door(self):
-        self.cr2keys.execute(["go", "north"])
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["examine", "armory door"])
-        result_output = stdout.getvalue()
-        expected_output = f"Door to armory is locked, you need a key\n"
-        self.assertEqual(expected_output, result_output)
+    def test_open_envelope_room(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
-    def test_unlock_armory_door_nokey(self):
-        self.cr2keys.execute(["go", "north"])
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["unlock", "armory door"])
-        result_output = stdout.getvalue()
-        expected_output = f"You do not have a required item to do this action.\n"
-        self.assertEqual(expected_output, result_output)
-
-    def test_unlock_armory_door_has_key(self):
-        self.cr2keys.execute(["take", "armory key"])
-        self.cr2keys.execute(["go", "north"])
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["unlock", "armory door"])
-        result_output = stdout.getvalue()
-        expected_output = f"Unlocked, you may enter the armory.\n"
-        self.assertEqual(expected_output, result_output)
-
-    def test_equip_envelope_room(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["equip", "envelope"])
-        result_output = stdout.getvalue()
-        expected_output = f"You don't have envelope in your inventory.\n"
-        self.assertEqual(expected_output, result_output)
-
-    def test_equip_envelope_inv(self):
-        self.cr2keys.execute(["take", "envelope"])
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["equip", "envelope"])
-        result_output = stdout.getvalue()
-        expected_output = f"You don't have envelope in your inventory.\n"
-        self.assertEqual(expected_output, result_output)
-
-
-    def test_equip_already_equipped(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
+        self.cr.execute(["open", "envelope"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "helmet"])
-            self.cr.execute(["equip", "chestplate"])
-            self.cr.execute(["equip", "sword"])
+            self.cr.execute(["open", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = f"You are already equipped with helmet\nYou are already equipped with chestplate\nYou are already equipped with sword\n"
+        expected_output = "There is no such thing as \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+    def test_open_envelope_inventory(self):
+        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+        self.cr.execute(["take", "envelope"])
+        self.cr.execute(["open", "envelope"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["open", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
+
+
+
+    # -- attack non creatures --
+
+    def test_attack_envelope(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_helmet(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"helmet\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_door(self):
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "door"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't attack the \"door\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_attack_nonexistent(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attack", "nothing"])
+        result_output = stdout.getvalue()
+        expected_output = "There is no such thing as \"nothing\".\n"
+        self.assertEqual(expected_output, result_output)
+
 
 
 if __name__ == '__main__':
