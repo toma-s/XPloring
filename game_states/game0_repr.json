@@ -18,7 +18,7 @@
       "creatures": []
     },
     "#room_arena": {
-      "description": "A big round arena.",
+      "description": "Big round arena.",
       "directions": {
         "east": {
           "room_id": "#room_entrance"
@@ -34,12 +34,12 @@
       ]
     },
     "#room_exit": {
-      "description": "The matrix",
+      "description": "The freedom",
       "directions": {},
       "items": [],
       "creatures": [],
       "auto_commands": {
-        "command_display": "Congratulations Hero. You reached the last room. Unfortunately for you, this was all a simulation and everything you experienced was a big lie. Wish you a nice day ^_^",
+        "command_display": "Congratulations Hero !\nYou are free. Do anything you want, be who you want to be. Go enjoy your life.",
         "command_end_game": true
       }
     }
@@ -47,7 +47,7 @@
   "creatures": {
     "#creature_dragon": {
       "alias": [
-        "dragon"
+        "green dragon", "dragon"
       ],
       "health": 60,
       "damage": 10,

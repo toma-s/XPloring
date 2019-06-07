@@ -24,8 +24,8 @@ class TestCombat(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You hit the dragon for 1 damage! dragon has 59 HP left.\n" \
-                          "dragon hit you for 10 damage! You have 90 HP left.\n"
+        expected_output = "You hit the green dragon for 1 damage! green dragon has 59 HP left.\n" \
+                          "green dragon hit you for 10 damage! You have 90 HP left.\n"
         self.assertEqual(expected_output, result_output)
 
     def testHitCreatureWithFist(self):
