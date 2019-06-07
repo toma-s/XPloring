@@ -32,7 +32,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"Locked, you need a key\n"
+        expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_arena_door(self):
@@ -41,7 +41,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["open", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"Locked, you need a key\n"
+        expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_arena_door_nokey(self):
@@ -71,7 +71,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["examine", "armory door"])
         result_output = stdout.getvalue()
-        expected_output = f"Door to armory is locked, you need a key\n"
+        expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_locked_door_nokey(self):
@@ -80,7 +80,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["open", "armory door"])
         result_output = stdout.getvalue()
-        expected_output = f"Door to armory is locked, you need a key\n"
+        expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_locked_door_haskey(self):
@@ -90,7 +90,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["open", "armory door"])
         result_output = stdout.getvalue()
-        expected_output = f"Door to armory is locked, you need a key\n"
+        expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_armory_door_nokey(self):
@@ -109,7 +109,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr2keys.execute(["unlock", "armory door"])
         result_output = stdout.getvalue()
-        expected_output = f"Unlocked, you may enter the armory.\n"
+        expected_output = f"Armory door is unlocked, you may go through.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_doors_with_same_alias_nokey(self):
