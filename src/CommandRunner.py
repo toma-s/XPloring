@@ -155,11 +155,11 @@ class CommandRunner:
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
         return foundIds
 

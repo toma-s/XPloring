@@ -14,6 +14,10 @@ class TestInput(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
+        self.map_capital_alias = '../game_states/game_capital_alias.json'
+        self.game_state_capital_alias = GameState(self.map_capital_alias)
+        self.cr_capital_alias = CommandRunner(self.game_state_capital_alias)
+
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
@@ -50,6 +54,14 @@ class TestInput(unittest.TestCase):
             self.cr.execute(["attach", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attach\" is not allowed with \"dragon\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_capital_alias(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "Helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n"
         self.assertEqual(expected_output, result_output)
 
 
