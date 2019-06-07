@@ -1,82 +1,82 @@
 {
   "rooms": {
-    "#room1": {
-      "description": "Room #1",
+    "#": {
+      "description": "",
       "directions": {
         "west": {
-          "room_id": "#room2"
+          "room_id": "#"
         }
       },
       "items": [
-        "#item1"
+        "#"
       ],
       "creatures": [
-        "#creature1"
+        "#"
       ]
     },
-    "#room2": {
-      "description": "Room #2",
+    "#": {
+      "description": "",
       "directions": {
         "east": {
-          "room_id": "#room1"
+          "room_id": "#"
         }
       },
       "items": [
-        "#item2"
+        "#"
       ],
       "creatures": [
-        "#creature2"
+        "#"
       ]
     }
   },
   "creatures": {
-    "#creature1": {
+    "#": {
       "alias": [
-        "beast 1"
+        ""
       ],
-      "health": 50,
-      "damage": 10,
+      "health": 0,
+      "damage": 0,
       "drops": [
-        "#item1"
+        "#"
       ],
-      "description": "Creature #1"
+      "description": ""
     },
-    "#creature2": {
+    "#": {
       "alias": [
-        "beast 2"
+        ""
       ],
-      "health": 100,
-      "damage": 50,
+      "health": 0,
+      "damage": 0,
       "drops": [
-        "#item2"
+        "#"
       ],
-      "description": "Creature #2"
+      "description": ""
     }
   },
   "items": {
     "regular": {
-      "#item1": {
-        "description": "Regular Item #1",
+      "#": {
+        "description": "",
         "alias": [
-          "regular item 1"
+          ""
         ],
         "actions": {
           "open": {
-            "command_spawn_item": "#item2"
+            "command_spawn_item": "#"
           }
         }
       }
     },
     "consumable": {
-      "#item2": {
-        "description": "Consumable Item #2",
-        "value": 50,
+      "#": {
+        "description": "",
+        "value": 0,
         "alias": [
-          "consumable item 2"
+          ""
         ],
         "actions": {
           "use": {
-            "command_required_item": "#item1",
+            "command_required_item": "#",
             "command_use_item": true
           }
         }
@@ -85,43 +85,43 @@
   },
   "equipment": {
     "weapons": {
-      "#weapon1": {
+      "#": {
         "alias": [
-          "weapon equipment"
+          ""
         ],
-        "slot": "hand",
+        "slot": "",
         "in_use": false,
-        "damage": 50,
-        "description": "Weapon Equipment"
+        "damage": 0,
+        "description": ""
       }
     },
     "armour": {
-      "#armour1": {
+      "#": {
         "alias": [
-          "armour equipment"
+          ""
         ],
-        "slot": "head",
-        "resistance": 5,
-        "durability": 10,
+        "slot": "",
+        "resistance": 0,
+        "durability": 0,
         "in_use": false,
-        "description": "Armour Equipment"
+        "description": ""
       }
     }
   },
   "transition_objects": {
   },
   "hero": {
-    "health": 100,
-    "location": "#room1",
-    "right_hand": "#weapon1",
+    "health": 0,
+    "location": "#",
+    "right_hand": "#",
     "left_hand": "none",
-    "head": "#armour1",
+    "head": "#",
     "chest": "none",
     "legs": "none",
     "actions": {
     },
     "inventory": [
-      "#item1"
+      "#"
     ]
   }
 }
