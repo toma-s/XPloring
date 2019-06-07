@@ -155,14 +155,12 @@ class CommandRunner:
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                for alias in item_data.alias:
-                    if target_alias == alias.lower():
-                        foundIds.append((item_id, alias))
+                if target_alias in [alias.lower() for alias in item_data.alias]:
+                    foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                for alias in item_data.alias:
-                    if target_alias == alias.lower():
-                        foundIds.append((item_id, alias))
+                if target_alias in [alias.lower() for alias in item_data.alias]:
+                    foundIds.append(item_id)
         return foundIds
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
@@ -226,8 +224,11 @@ class CommandRunner:
         if not self._check_found_one_id_only(item_ids, target_item_alias):
             return
 
-        item_id = item_ids[0][0]
-        item_alias = item_ids[0][1]
+        item_id = item_ids[0]
+        if item_id in self.game_state.items:
+            item_alias = self.game_state.items[item_id].alias[0]
+        if item_id in self.game_state.equipment:
+            item_alias = self.game_state.equipment[item_id].alias[0]
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
