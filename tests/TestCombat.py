@@ -149,10 +149,3 @@ class TestCombat(unittest.TestCase):
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
         self.cr.execute(["unlock", "door"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
-
-
-
-
-
-if __name__ == '__main__':
-    unittest.main()
