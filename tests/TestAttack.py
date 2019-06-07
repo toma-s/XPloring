@@ -6,16 +6,12 @@ from CommandRunner import CommandRunner
 from GameState import GameState
 
 
-class TestEquip(unittest.TestCase):
+class TestAttack(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
-
-        self.map_two_helmets = '../game_states/game_two_helmets.json'
-        self.game_two_helmets = GameState(self.map_two_helmets)
-        self.cr_two_helmets = CommandRunner(self.game_two_helmets)
 
         self.map2keys = '../game_states/game_2_locked_doors_repr.json'
         self.game_state2keys = GameState(self.map2keys)
@@ -25,86 +21,76 @@ class TestEquip(unittest.TestCase):
         del self.game_state
         del self.cr
 
-        del self.game_two_helmets
-        del self.cr_two_helmets
-
         del self.game_state2keys
         del self.cr2keys
 
-    def test_equip(self):
+    def test_attack(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip"])
+            self.cr.execute(["attack"])
         result_output = stdout.getvalue()
         expected_output = "I don't understand. Try again.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_regular_item(self):
+    def test_attack_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "envelope"])
+            self.cr.execute(["attack", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip envelope\n"
+        expected_output = "You can't attack the \"envelope\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_consumable_item(self):
+    def test_attack_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "potion"])
+            self.cr.execute(["attack", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip potion\n"
+        expected_output = "You can't attack the \"potion\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_equipment_weapon(self):
+    def test_attack_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
+            self.cr.execute(["attack", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You don't have sword in your inventory.\n"
+        expected_output = "You can't attack the \"sword\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_equipment_armour(self):
+    def test_attack_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "helmet"])
+            self.cr.execute(["attack", "helmet"])
         result_output = stdout.getvalue()
-        expected_output = "You don't have helmet in your inventory.\n"
+        expected_output = "You can't attack the \"helmet\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_direction(self):
+    def test_attack_direction(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "west"])
+            self.cr.execute(["attack", "west"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip west\n"
+        expected_output = "Action \"attack\" is not associated with \"west\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_creature(self):
+    def test_attack_creature(self):
+        self.cr.execute(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "dragon"])
+            self.cr.execute(["attack", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip dragon\n"
+        expected_output = "You hit the green dragon for 1 damage! Green dragon has 59 HP left.\n" \
+                          "The green dragon hit you for 10 damage! You have 90 HP left.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_inventory(self):
+    def test_attack_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "head"])
+            self.cr.execute(["attack", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip inventory\n"
+        expected_output = "Action \"attack\" is not associated with \"inventory\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_item_not_in_inventory(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
-        result_output = stdout.getvalue()
-        expected_output = "You don't have sword in your inventory.\n"
-        self.assertEqual(expected_output, result_output)
-        self.assertEqual("none", self.game_state.hero.right_hand)
-
-    def test_equip_key(self):
+    def test_attack_key(self):
         self.cr.execute(["take", "helmet"])
         self.cr.execute(["take", "sword"])
         self.cr.execute(["take", "chestplate"])
@@ -116,33 +102,33 @@ class TestEquip(unittest.TestCase):
         self.cr.execute(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "key"])
+            self.cr.execute(["attack", "key"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the \"key\".\n"
+        expected_output = "You can't attack the \"key\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_key_ambiguous(self):
+    def test_attack_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["equip", "key"])
+            self.cr2keys.execute(["attack", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_door(self):
+    def test_attack_door(self):
         self.cr.execute(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "door"])
+            self.cr.execute(["attack", "door"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the \"door\".\n"
+        expected_output = "You can't attack the \"door\".\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_equip_door_ambiguous(self):
+    def test_attack_door_ambiguous(self):
         self.cr2keys.execute(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["equip", "door"])
+            self.cr2keys.execute(["attack", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

@@ -21,6 +21,15 @@ class TestEquipment(unittest.TestCase):
         del self.game_state
         del self.cr
 
+    def test_equip_regular_item_inv(self):
+        self.cr.execute(["take", "envelope"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["equip", "envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "You can't equip envelope\n"
+        self.assertEqual(expected_output, result_output)
+
     def test_equip_item_in_inventory(self):
         self.cr.execute(["take", "sword"])
         stdout = io.StringIO()
