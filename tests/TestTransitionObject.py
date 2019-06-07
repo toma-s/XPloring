@@ -32,7 +32,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"Locked, you need a key\n"
+        expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_arena_door(self):
@@ -41,7 +41,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["open", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"Locked, you need a key\n"
+        expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_arena_door_nokey(self):
