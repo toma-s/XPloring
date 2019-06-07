@@ -69,7 +69,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "west"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"examine\" is not associated with \"west\".\n"
+        expected_output = "Action \"examine\" is not allowed with west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_creature(self):
@@ -86,7 +86,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"examine\" is not associated with \"inventory\".\n"
+        expected_output = "Action \"examine\" is not allowed with inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_key(self):

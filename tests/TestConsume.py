@@ -34,7 +34,7 @@ class TestConsume(unittest.TestCase):
             self.cr.execute(["take", "mystery"])
             self.cr.execute(["use", "mystery"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the mystery.\n" \
+        expected_output = "Mystery has been added to your inventory.\n" \
                           "You used mystery. -75 health. Current health is 25 health.\n" \
                           "Hahahahahaha you fool :P\n"
         self.assertEqual(expected_output, result_output)
@@ -46,7 +46,7 @@ class TestConsume(unittest.TestCase):
             self.cr.execute(["take", "potion"])
             self.cr.execute(["use", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the potion.\n" \
+        expected_output = "Potion has been added to your inventory.\n" \
                           "You are fully healed, you don't need healing.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(100, self.game_state.hero.health)
@@ -61,7 +61,7 @@ class TestConsume(unittest.TestCase):
             self.cr2keys.execute(["take", "cake"])
             self.cr2keys.execute(["eat", "cake"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the cake.\n" \
+        expected_output = "Cake has been added to your inventory.\n" \
                           "You used cake. -15 health. Current health is 85 health.\n" \
                           "The cake is a lie ...\n" \
                           "You found key. This key opens heavy metal door.\n"

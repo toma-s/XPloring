@@ -27,7 +27,7 @@ class TestEquipment(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip envelope\n"
+        expected_output = "You can't equip the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_item_in_inventory(self):
