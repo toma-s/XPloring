@@ -64,6 +64,6 @@ class TestConsume(unittest.TestCase):
         expected_output = "You grabbed the cake.\n" \
                           "You used cake. -15 health. Current health is 85 health.\n" \
                           "The cake is a lie ...\n" \
-                          "You found metallic key. This key opens heavy metal door.\n"
+                          "You found key. This key opens heavy metal door.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(100, self.game_state.hero.health)

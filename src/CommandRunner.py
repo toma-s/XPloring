@@ -1,4 +1,5 @@
 from game_item.Creature import Creature
+from game_item.Equipment import Equipment
 from game_item.TransitionObject import TransitionObject
 from src.GameState import GameState
 from game_item.Room import Room
@@ -181,6 +182,17 @@ class CommandRunner:
             elif id in self.game_state.transition_objects:
                 trans_obj_data = self.game_state.transition_objects[id]
                 self.display(trans_obj_data)
+            elif id in self.game_state.transition_objects:
+                trans_obj_data = self.game_state.transition_objects[id]
+                self.display(trans_obj_data)
+            elif id in self.game_state.creatures:
+                creature_data = self.game_state.creatures[id]
+                self.display(creature_data)
+            elif id in self.game_state.equipment:
+                equipment_data = self.game_state.equipment[id]
+                self.display(equipment_data)
+            else:
+                self.display("You can't examine this.")
 
 
     def _move_to_direction(self, target):
@@ -384,16 +396,20 @@ class CommandRunner:
         for d in room.directions:
             print(f"You can GO {d.upper()}.")
 
-    def examine_item(self, item):
-        print(f"{item.description}")
+    def show_description(self, obj):
+        print(f"{obj.description}")
 
     def display(self, obj):
         if isinstance(obj, Room):
             self.discover_room()
-        elif isinstance(obj, TransitionObject):
-            self.examine_item(obj)
+        elif isinstance(obj, Creature):
+            self.show_description(obj)
+        elif isinstance(obj, Equipment):
+            self.show_description(obj)
         elif isinstance(obj, Item):
-            self.examine_item(obj)
+            self.show_description(obj)
+        elif isinstance(obj, TransitionObject):
+            self.show_description(obj)
         elif isinstance(obj, str):
             if obj == "inventory":
                 self.show_inventory()
