@@ -417,6 +417,8 @@ class CommandRunner:
                 continue
             elif c == "command_set_unlocked":
                 self.game_state.transition_objects[node].unlocked = commands[c]
+            elif c == "command_show_description":
+                print(self.game_state.transition_objects[node].description)
             elif c == "command_set_description":
                 self.game_state.transition_objects[node].description = commands[c]
             elif c == "command_use_item":
