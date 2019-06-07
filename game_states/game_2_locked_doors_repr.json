@@ -63,13 +63,12 @@
       ]
     },
     "#room_exit": {
-      "description": "The freedom",
+      "description": "The End",
       "directions": {},
       "items": [],
       "creatures": [],
       "auto_commands": {
-        "command_display": "Congratulations Hero!\nyou are free. Do anything you want, be who you want to be. Go enjoy your life.",
-        "command_end_game": true
+        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
     }
   },
@@ -167,7 +166,7 @@
         "exit door", "heavy metal door", "door"
       ],
       "unlocked": false,
-      "description": "The heavy metal door is locked. Bright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door.",
+      "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door.",
       "actions": {
         "open": {
           "command_show_description": null
@@ -176,7 +175,7 @@
           "command_required_item": "#item_doorkey_exit",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
-          "command_set_description": "The heavy metal door is unlocked.\n Bright daylight shines through the tiny gaps in the heavy metal door.\nYour freedom is right behind the door",
+          "command_set_description": "The heavy metal door is unlocked.\nBright daylight shines through the tiny gaps in the heavy metal door.\nYour freedom is right behind the door",
           "command_show_description": null
         }
       }

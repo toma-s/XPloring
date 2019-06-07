@@ -34,13 +34,12 @@
       ]
     },
     "#room_exit": {
-      "description": "The freedom",
+      "description": "The end",
       "directions": {},
       "items": [],
       "creatures": [],
       "auto_commands": {
-        "command_display": "Congratulations Hero !\nYou are free. Do anything you want, be who you want to be. Go enjoy your life.",
-        "command_end_game": true
+        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
     }
   },

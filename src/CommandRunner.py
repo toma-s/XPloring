@@ -221,18 +221,24 @@ class CommandRunner:
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
+
         if not self._check_found_one_id_only(ids, target_alias):
             return
+
         target_id = ids[0]
-        target_creature = None
-        if target_id in self.game_state.creatures:
-            target_creature = self.game_state.creatures[target_id]
-        else:
+        if target_id not in self.game_state.creatures:
             print(f"You can't attack the \"{target_alias}\".")
             return
 
+        target_creature = self.game_state.creatures[target_id]
+
         self._hero_attack_turn(target_creature)
         self._creature_attack_turn(target_creature)
+
+        hero = self.game_state.hero
+        if hero.health <= 0:
+            self._end_game(f"GAME OVER. You were killed by {target_creature.alias[0]}. Better luck next time.")
+
 
 
     def _hero_attack_turn(self, target_creature: Creature):
@@ -263,6 +269,7 @@ class CommandRunner:
             total_damage = self._count_total_hero_damage(target_creature)
             hero.health -= total_damage
             print(f"{target_alias} hit you for {total_damage} damage! You have {hero.health} HP left.")
+
 
     def _count_total_hero_damage(self, creature):
         hero = self.game_state.hero
@@ -425,8 +432,9 @@ class CommandRunner:
                 self.use_item(node)
             elif c == "command_remove_item_from_inventory":
                 self._remove_item_from_inventory(commands[c])
-            elif c == "command_end_game":
-                exit(1)
+            elif c == "command_good_end":
+                end_massage = commands[c]
+                self._end_game(end_massage)
             else:
                 print(f"Unknown internal command {c}")
                 return
@@ -538,3 +546,8 @@ class CommandRunner:
                 if it.in_use:
                     res += " [EQUIPPED]"
             print(res)
+
+    def _end_game(self, end_message):
+        print(end_message)
+        exit(0)
+
