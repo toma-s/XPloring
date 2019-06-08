@@ -90,7 +90,7 @@ class CommandRunner:
             self.run_internal_command(int_commands, trans_obj_id)
 
     def _find_trans_obj_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
+        found_ids = []
 
         hero = self.game_state.hero
         hero_room = self.game_state.rooms[hero.location]
@@ -100,11 +100,11 @@ class CommandRunner:
                 trans_obj_id = hero_room.directions[direction]["trans_obj_id"]
                 trans_obj_data: TransitionObject = self.game_state.transition_objects[trans_obj_id]
                 if target_alias in [alias.lower() for alias in trans_obj_data.alias]:
-                    foundIds.append(trans_obj_id)
-        return foundIds
+                    found_ids.append(trans_obj_id)
+        return found_ids
 
     def _find_creature_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
+        found_ids = []
 
         hero = self.game_state.hero
         hero_room = self.game_state.rooms[hero.location]
@@ -113,47 +113,47 @@ class CommandRunner:
             if creature_id in self.game_state.creatures:
                 creature_data = self.game_state.creatures[creature_id]
                 if target_alias in [alias.lower() for alias in creature_data.alias]:
-                    foundIds.append(creature_id)
-        return foundIds
+                    found_ids.append(creature_id)
+        return found_ids
 
     def _find_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
-        foundIds += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
-        foundIds += self._find_item_ids_by_alias_in_inventory(target_alias)
-        foundIds += self._find_trans_obj_ids_by_alias(target_alias)
-        foundIds += self._find_creature_ids_by_alias(target_alias)
-        return foundIds
+        found_ids = []
+        found_ids += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
+        found_ids += self._find_item_ids_by_alias_in_inventory(target_alias)
+        found_ids += self._find_trans_obj_ids_by_alias(target_alias)
+        found_ids += self._find_creature_ids_by_alias(target_alias)
+        return found_ids
 
     def _find_item_ids_by_alias_in_inventory(self, target_alias) -> [str]:
         item_ids_in_inventory = self.game_state.hero.inventory
 
-        foundIds = []
+        found_ids = []
         for item_id in item_ids_in_inventory:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                    found_ids.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
-        return foundIds
+                    found_ids.append(item_id)
+        return found_ids
 
     def _find_item_ids_by_alias_in_room(self, room_id, target_alias) -> [str]:
         room: Room = self.game_state.rooms[room_id]
         item_ids_in_room = room.items
 
-        foundIds = []
+        found_ids = []
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                    found_ids.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
-        return foundIds
+                    found_ids.append(item_id)
+        return found_ids
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:
