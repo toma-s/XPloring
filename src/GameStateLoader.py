@@ -57,20 +57,14 @@ class GameStateLoader:
     def create_equipment(self):
         key_name = "equipment"
         try:
-            inherit_actions = {}
-            if "inherit_actions" in self.game_data[key_name]:
-                inherit_actions = self.game_data[key_name]["inherit_actions"]
-
             objects = dict()
             data = self.game_data[key_name]["weapons"]
             for key in data:
                 object = Weapon(data[key])
-                object.actions.update(inherit_actions)
                 objects[key] = object
             data = self.game_data[key_name]["armour"]
             for key in data:
                 object = Armour(data[key])
-                object.actions.update(inherit_actions)
                 objects[key] = object
             return objects
         except KeyError as e:

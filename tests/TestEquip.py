@@ -44,7 +44,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the envelope.\n"
+        expected_output = "Action \"equip\" is not allowed with envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_consumable_item(self):
@@ -52,7 +52,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the potion.\n"
+        expected_output = "Action \"equip\" is not allowed with potion.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_equipment_weapon(self):
@@ -60,7 +60,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You don't have sword in your inventory.\n"
+        expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_equipment_armour(self):
@@ -68,7 +68,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "helmet"])
         result_output = stdout.getvalue()
-        expected_output = "You don't have helmet in your inventory.\n"
+        expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_direction(self):
@@ -85,7 +85,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the dragon.\n"
+        expected_output = "Action \"equip\" is not allowed with dragon.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_inventory(self):
@@ -101,7 +101,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You don't have sword in your inventory.\n"
+        expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("none", self.game_state.hero.right_hand)
 
@@ -119,7 +119,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "key"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the key.\n"
+        expected_output = "Action \"equip\" is not allowed with key.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_key_ambiguous(self):
@@ -136,7 +136,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "door"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the door.\n"
+        expected_output = "Action \"equip\" is not allowed with door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door_ambiguous(self):

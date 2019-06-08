@@ -56,7 +56,6 @@
     "legs": "none",
     "actions": {
       "take": "item_take game_item",
-      "equip": "equip game_item",
       "inventory": "display inventory",
       "status": "display self"
     },

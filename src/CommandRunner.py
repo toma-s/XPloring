@@ -67,9 +67,6 @@ class CommandRunner:
             if noun == "creature":
                 self._hit_creature(target_alias)
 
-        elif verb == "equip":
-            if noun == "game_item":
-                self._equip_item(target_alias)
 
 
     def _handle_target_action(self, action_name, target_alias):
@@ -339,7 +336,7 @@ class CommandRunner:
         if hero.right_hand == item_id or hero.left_hand == item_id or \
                 hero.head == item_id or hero.chest == item_id or \
                 hero.legs == item_id:
-            print(f"That is already equipped.")
+            print(f"It is already equipped.")
             return
 
         if item_data.slot == "hand":

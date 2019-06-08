@@ -27,7 +27,7 @@ class TestEquipment(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the envelope.\n"
+        expected_output = "Action \"equip\" is not allowed with envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_item_in_inventory(self):
@@ -36,7 +36,7 @@ class TestEquipment(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You are now equipped with sword\n"
+        expected_output = "Item equipped\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
 
@@ -47,7 +47,7 @@ class TestEquipment(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You are already equipped with sword\n"
+        expected_output = "It is already equipped.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
 
@@ -60,9 +60,10 @@ class TestEquipment(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr_two_helmets.execute(["equip", "helmet2"])
         result_output = stdout.getvalue()
-        expected_output = "You are now equipped with helmet2\n"
+        expected_output = "Item equipped\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("#helmet2", self.game_two_helmets.hero.head)
+        self.assertIn("#helmet2", self.game_two_helmets.hero.inventory)
 
     def test_equip_already_equipped(self):
         self.cr.execute(["take", "helmet"])
@@ -78,5 +79,5 @@ class TestEquipment(unittest.TestCase):
             self.cr.execute(["equip", "chestplate"])
             self.cr.execute(["equip", "sword"])
         result_output = stdout.getvalue()
-        expected_output = f"You are already equipped with helmet\nYou are already equipped with chestplate\nYou are already equipped with sword\n"
+        expected_output = f"It is already equipped.\nIt is already equipped.\nIt is already equipped.\n"
         self.assertEqual(expected_output, result_output)

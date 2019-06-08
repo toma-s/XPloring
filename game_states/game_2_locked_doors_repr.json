@@ -196,7 +196,6 @@
       "take": "item_take game_item",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "equip": "equip game_item",
       "heal": "heal self",
       "status": "display self"
     },

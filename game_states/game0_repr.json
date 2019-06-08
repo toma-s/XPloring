@@ -142,11 +142,6 @@
     }
   },
   "equipment": {
-    "inherit_actions": {
-      "equip": {
-        "command_equip": null
-      }
-    },
     "weapons": {
       "#equipment_steel_sword": {
         "damage": 30,
