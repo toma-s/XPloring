@@ -175,11 +175,13 @@ class TestTake(unittest.TestCase):
     def test_alias_lower_capital_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "envelope"])
-            self.cr_capital_alias.execute(["take", "Envelope"])
+            commands_to_run = InputHandler().parse_user_input("take envelope")
+            self.cr_capital_alias.execute(commands_to_run)
+            commands_to_run = InputHandler().parse_user_input("take Envelope")
+            self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Envelope has been added to your inventory.\n" \
-                          "There is no such thing as Envelope.\n"
+                          "Envelope is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     # consumable item
@@ -205,11 +207,13 @@ class TestTake(unittest.TestCase):
     def test_alias_lower_capital_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "potion"])
-            self.cr_capital_alias.execute(["take", "Potion"])
+            commands_to_run = InputHandler().parse_user_input("take potion")
+            self.cr_capital_alias.execute(commands_to_run)
+            commands_to_run = InputHandler().parse_user_input("take Potion")
+            self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Potion has been added to your inventory.\n"\
-                          "There is no such thing as Potion.\n"
+                          "Potion is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment weapon
@@ -235,11 +239,13 @@ class TestTake(unittest.TestCase):
     def test_alias_lower_capital_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "sword"])
-            self.cr_capital_alias.execute(["take", "Sword"])
+            commands_to_run = InputHandler().parse_user_input("take sword")
+            self.cr_capital_alias.execute(commands_to_run)
+            commands_to_run = InputHandler().parse_user_input("take Sword")
+            self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n" \
-                          "There is no such thing as Sword.\n"
+                          "Sword is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment armour
@@ -265,9 +271,11 @@ class TestTake(unittest.TestCase):
     def test_alias_lower_capital_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "helmet"])
-            self.cr_capital_alias.execute(["take", "Helmet"])
+            commands_to_run = InputHandler().parse_user_input("take helmet")
+            self.cr_capital_alias.execute(commands_to_run)
+            commands_to_run = InputHandler().parse_user_input("take Helmet")
+            self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet has been added to your inventory.\n" \
-                          "There is no such thing as Helmet.\n"
+                          "Helmet is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
