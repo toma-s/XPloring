@@ -175,15 +175,15 @@ class CommandRunner:
         else:
             return None
 
-    def _display_item(self, target_alias):
-        if self._is_keyword(target_alias):
-            print(f"This action is not allowed with the {target_alias}.")
-            return
-        ids = self._find_ids_by_alias(target_alias)
-        if not self._check_found_one_id_only(ids, target_alias):
-            return
+    def _display_item(self, item_id):
+        # if self._is_keyword(target_alias):
+        #     print(f"This action is not allowed with the {target_alias}.")
+        #     return
+        # ids = self._find_ids_by_alias(target_alias)
+        # if not self._check_found_one_id_only(ids, target_alias):
+        #     return
+        # item_id = ids[0]
 
-        item_id = ids[0]
         item_data = self._get_data_by_id(item_id)
         if item_data is None:
             self.display("You can't examine this.")
@@ -426,7 +426,8 @@ class CommandRunner:
             elif c == "command_set_unlocked":
                 self.game_state.transition_objects[target_id].unlocked = commands[c]
             elif c == "command_show_description":
-                print(self.game_state.transition_objects[target_id].description)
+                self._display_item(target_id)
+                # print(self.game_state.transition_objects[target_id].description)
             elif c == "command_set_description":
                 self.game_state.transition_objects[target_id].description = commands[c]
             elif c == "command_use_item":

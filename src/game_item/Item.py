@@ -1,9 +1,12 @@
 
-class Item():
+class Item:
 
     item_actions = {
         "take": {
             "command_add_item_to_inventory": None
+        },
+        "examine": {
+            "command_show_description": None
         }
     }
 

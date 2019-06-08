@@ -3,6 +3,9 @@ class Creature:
     creature_actions = {
         "attack": {
             "command_attack_creature": None
+        },
+        "examine": {
+            "command_show_description": None
         }
     }
 

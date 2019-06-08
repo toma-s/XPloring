@@ -89,6 +89,9 @@ class TestGameStateLoader(unittest.TestCase):
                 },
                 "take": {
                     "command_add_item_to_inventory": None
+                },
+                "examine": {
+                    "command_show_description": None
                 }
             }, item1.actions
         )
@@ -105,6 +108,9 @@ class TestGameStateLoader(unittest.TestCase):
                 },
                 "take": {
                     "command_add_item_to_inventory": None
+                },
+                "examine": {
+                    "command_show_description": None
                 }
             }, item2.actions
         )
