@@ -69,7 +69,7 @@ class TestUse(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "west"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"use\" is not allowed with west.\n"
+        expected_output = "This action is not allowed with west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_creature(self):
@@ -86,7 +86,7 @@ class TestUse(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"use\" is not allowed with inventory.\n"
+        expected_output = "This action is not allowed with inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_key(self):
