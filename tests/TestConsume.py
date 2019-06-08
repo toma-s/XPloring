@@ -17,16 +17,16 @@ class TestConsume(unittest.TestCase):
         self.game_two_helmets = GameState(self.map_two_helmets)
         self.cr_two_helmets = CommandRunner(self.game_two_helmets)
 
-        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
-        self.game_state2keys = GameState(self.map2keys)
-        self.cr2keys = CommandRunner(self.game_state2keys)
+        self.map1 = '../game_states/game1_cake.json'
+        self.game_state1 = GameState(self.map1)
+        self.cr1 = CommandRunner(self.game_state1)
 
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
 
-        del self.game_state2keys
-        del self.cr2keys
+        del self.game_state1
+        del self.cr1
 
     def test_use_mystery(self):
         stdout = io.StringIO()
@@ -52,14 +52,14 @@ class TestConsume(unittest.TestCase):
         self.assertEqual(100, self.game_state.hero.health)
 
     def test_eat_cake(self):
-        self.cr2keys.execute(["take", "kitchen key"])
-        self.cr2keys.execute(["go", "north"])
-        self.cr2keys.execute(["unlock", "kitchen door"])
-        self.cr2keys.execute(["go", "east"])
+        self.cr1.execute(["take", "kitchen key"])
+        self.cr1.execute(["go", "north"])
+        self.cr1.execute(["unlock", "kitchen door"])
+        self.cr1.execute(["go", "east"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["take", "cake"])
-            self.cr2keys.execute(["eat", "cake"])
+            self.cr1.execute(["take", "cake"])
+            self.cr1.execute(["eat", "cake"])
         result_output = stdout.getvalue()
         expected_output = "Cake has been added to your inventory.\n" \
                           "You have consumed cake. -15 HP. Current health is 85 HP.\n" \

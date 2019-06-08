@@ -14,33 +14,33 @@ class TestInput(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
-        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
-        self.game_state2keys = GameState(self.map2keys)
-        self.cr2keys = CommandRunner(self.game_state2keys)
+        self.map1 = '../game_states/game1_cake.json'
+        self.game_state1 = GameState(self.map1)
+        self.cr1 = CommandRunner(self.game_state1)
 
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
 
-        del self.game_state2keys
-        del self.cr2keys
+        del self.game_state1
+        del self.cr1
 
 
     # -- Good End --
 
-    def test_game2keys_escape_good_end(self):
-        self.cr2keys.execute(["take", "kitchen key"])
-        self.cr2keys.execute(["go", "north"])
-        self.cr2keys.execute(["unlock", "kitchen door"])
-        self.cr2keys.execute(["go", "east"])
-        self.cr2keys.execute(["take", "cake"])
-        self.cr2keys.execute(["eat", "cake"])
-        self.cr2keys.execute(["take", "key"])
-        self.cr2keys.execute(["unlock", "heavy metal door"])
+    def test_game1_escape_good_end(self):
+        self.cr1.execute(["take", "kitchen key"])
+        self.cr1.execute(["go", "north"])
+        self.cr1.execute(["unlock", "kitchen door"])
+        self.cr1.execute(["go", "east"])
+        self.cr1.execute(["take", "cake"])
+        self.cr1.execute(["eat", "cake"])
+        self.cr1.execute(["take", "key"])
+        self.cr1.execute(["unlock", "heavy metal door"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
-            self.cr2keys.execute(["go", "east"])
+            self.cr1.execute(["go", "east"])
         result_output = stdout.getvalue()
         expected_output = "The End\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)

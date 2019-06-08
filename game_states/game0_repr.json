@@ -99,7 +99,7 @@
         ],
         "actions": {
           "read": {
-            "command_display": "Welcome, take sword and kill that dragon"
+            "command_show_message": "Welcome, take sword and kill that dragon"
           }
         }
       },
@@ -133,7 +133,7 @@
         "actions": {
           "use": {
             "command_use_item": true,
-            "command_display": "It was a poison"
+            "command_show_message": "It was a poison"
           }
         }
       }

@@ -37,27 +37,18 @@ class CommandRunner:
     def double_command(self, action_name, target_alias):
         hero = self.game_state.hero
 
-        if action_name in hero.actions:
-            self._handle_hero_action(action_name, target_alias)
+        # if action_name in hero.actions:
+        #     self._handle_hero_action(action_name, target_alias)
+        #     return
+        # TODO hero.actions (go, inventory, status)
+        if action_name == "go":
+            self._move_to_direction(target_alias)
             return
 
-        self._handle_target_action(action_name, target_alias)
-
-    def _handle_hero_action(self, action_name, target_alias):
-        hero = self.game_state.hero
-        verb, noun = tuple(hero.actions[action_name].replace(",", "").split(" "))
-
-        if verb == "move_to":
-            if noun == "direction":
-                self._move_to_direction(target_alias)
-        else:
-            print(f"You don't know how to {action_name}")
-
-    def _handle_target_action(self, action_name, target_alias):
-        found_ids = self._find_ids_by_alias(target_alias)
         if self._is_keyword(target_alias):
             print(f"This action is not allowed with the {target_alias}.")
             return
+        found_ids = self._find_ids_by_alias(target_alias)
         if not self._check_found_one_id_only(found_ids, target_alias):
             return
 
@@ -71,14 +62,15 @@ class CommandRunner:
         action = data.actions[action_name]
         self.run_internal_command(action, target_id)
 
-    def _trans_object_action(self, action_name, trans_obj_id):
-        obj = self.game_state.transition_objects[trans_obj_id]
-        if action_name == "unlock" and obj.unlocked:
-            print(f"Already unlocked.")
-            return
-        int_commands = obj.actions[action_name]
-        if int_commands:
-            self.run_internal_command(int_commands, trans_obj_id)
+    def _handle_hero_action(self, action_name, target_alias):
+        hero = self.game_state.hero
+        verb, noun = tuple(hero.actions[action_name].replace(",", "").split(" "))
+
+        if verb == "move_to":
+            if noun == "direction":
+                self._move_to_direction(target_alias)
+        else:
+            print(f"You don't know how to {action_name}")
 
     def _find_trans_obj_ids_by_alias(self, target_alias) -> [str]:
         found_ids = []
@@ -230,7 +222,6 @@ class CommandRunner:
         self._hero_attack_turn(creature_data)
         self._creature_attack_turn(creature_data)
 
-
     def _hero_attack_turn(self, target_creature: Creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
@@ -335,6 +326,14 @@ class CommandRunner:
         print(f"Item equipped")
         item_data.in_use = True
 
+    def _set_unlocked(self, target_id, is_unlocked: bool):
+        target_data = self._get_data_by_id(target_id)
+        target_data.unlocked = is_unlocked
+
+    def _set_description(self, target_id, description_message: str):
+        target_data = self._get_data_by_id(target_id)
+        target_data.description = description_message
+
     def execute(self, commands):
         ignored = {"the", "on", "a", "an", "this", "that"}
         commands = [command for command in commands if command not in ignored]
@@ -401,32 +400,45 @@ class CommandRunner:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
     def run_internal_command(self, commands, target_id=None):
-        target_data = self._get_data_by_id(target_id)
-
         for c in commands:
             if c == "command_attack_creature":
                 self._attack_creature(target_id)
-            elif c == "command_spawn_item" and target_id:
-                self.spawn_item(commands[c])
+
+            elif c == "command_spawn_item":
+                item_id = commands[c]
+                self.spawn_item(item_id)
+
             elif c == "command_despawn_item":
-                self.despawn_item(commands[c])
-            elif c == "command_display":
-                self.display(commands[c])
+                item_id = commands[c]
+                self.despawn_item(item_id)
+
+            elif c == "command_show_message":
+                message = commands[c]
+                self.display(message)
+
             elif c == "command_required_item":
-                if not self._is_item_in_inventory(commands[c]):
+                item_id = commands[c]
+                if not self._is_item_in_inventory(item_id):
                     print(f"You do not have a required item to do this action.")
                     return
                 continue
+
             elif c == "command_set_unlocked":
-                self.game_state.transition_objects[target_id].unlocked = commands[c]
+                unlocked: bool = commands[c]
+                self._set_unlocked(target_id, unlocked)
+
             elif c == "command_show_description":
                 self._display_item(target_id)
+
             elif c == "command_set_description":
                 self.game_state.transition_objects[target_id].description = commands[c]
+
             elif c == "command_use_item":
                 self.use_item(target_id)
+
             elif c == "command_remove_item_from_inventory":
                 self._remove_item_from_inventory(commands[c])
+
             elif c == "command_add_item_to_inventory":
                 self._item_take(target_id)
 

@@ -13,9 +13,9 @@ class TestItems(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
-        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
-        self.game_state2keys = GameState(self.map2keys)
-        self.cr2keys = CommandRunner(self.game_state2keys)
+        self.map1 = '../game_states/game1_cake.json'
+        self.game_state1 = GameState(self.map1)
+        self.cr1 = CommandRunner(self.game_state1)
 
     def tearDown(self) -> None:
         del self.game_state
@@ -108,7 +108,7 @@ class TestItems(unittest.TestCase):
         def test_take_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.cr2keys.execute(["take", "key"])
+                self.cr1.execute(["take", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)
@@ -116,7 +116,7 @@ class TestItems(unittest.TestCase):
         def test_examine_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.cr2keys.execute(["examine", "key"])
+                self.cr1.execute(["examine", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)
@@ -124,7 +124,7 @@ class TestItems(unittest.TestCase):
         def test_nonexistent_action_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.cr2keys.execute(["read", "key"])
+                self.cr1.execute(["read", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)

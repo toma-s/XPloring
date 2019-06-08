@@ -14,9 +14,9 @@ class TestTake(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
-        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
-        self.game_state2keys = GameState(self.map2keys)
-        self.cr2keys = CommandRunner(self.game_state2keys)
+        self.map1 = '../game_states/game1_cake.json'
+        self.game_state1 = GameState(self.map1)
+        self.cr1 = CommandRunner(self.game_state1)
 
         self.map_capital_alias = '../game_states/game_capital_alias.json'
         self.game_state_capital_alias = GameState(self.map_capital_alias)
@@ -26,8 +26,8 @@ class TestTake(unittest.TestCase):
         del self.game_state
         del self.cr
 
-        del self.game_state2keys
-        del self.cr2keys
+        del self.game_state1
+        del self.cr1
 
         del self.game_state_capital_alias
         del self.cr_capital_alias
@@ -127,7 +127,7 @@ class TestTake(unittest.TestCase):
     def test_take_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["take", "key"])
+            self.cr1.execute(["take", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
@@ -142,10 +142,10 @@ class TestTake(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door_ambiguous(self):
-        self.cr2keys.execute(["go", "north"])
+        self.cr1.execute(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["examine", "door"])
+            self.cr1.execute(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

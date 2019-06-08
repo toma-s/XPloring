@@ -13,16 +13,16 @@ class TestUse(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
 
-        self.map2keys = '../game_states/game_2_locked_doors_repr.json'
-        self.game_state2keys = GameState(self.map2keys)
-        self.cr2keys = CommandRunner(self.game_state2keys)
+        self.map1 = '../game_states/game1_cake.json'
+        self.game_state1 = GameState(self.map1)
+        self.cr1 = CommandRunner(self.game_state1)
 
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
 
-        del self.game_state2keys
-        del self.cr2keys
+        del self.game_state1
+        del self.cr1
     
     def test_use(self):
         stdout = io.StringIO()
@@ -109,7 +109,7 @@ class TestUse(unittest.TestCase):
     def test_use_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["use", "key"])
+            self.cr1.execute(["use", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
@@ -124,10 +124,10 @@ class TestUse(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
 
     def test_use_door_ambiguous(self):
-        self.cr2keys.execute(["go", "north"])
+        self.cr1.execute(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr2keys.execute(["use", "door"])
+            self.cr1.execute(["use", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
