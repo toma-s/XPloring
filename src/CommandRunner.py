@@ -392,14 +392,14 @@ class CommandRunner:
             if i in items:
                 print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
             elif i in equipment:
-                print(f"There is a {equipment[i].alias[0]}. It's {self._lower_first(equipment[i].description)}.")
+                print(f"There is a {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
 
         # entities in room
         if not room.creatures:
             print("There's nothing scary here.")
         else:
             for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. It's {self._lower_first(creatures[c].description)}.")
+                print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")
 
         # direction from room
         for d in room.directions:
@@ -432,7 +432,7 @@ class CommandRunner:
     def move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
-        print(f"You entered {self._lower_first(rooms[room_id].description)}")
+        print(f"{rooms[room_id].description}")
         if rooms[room_id].auto_commands is not None:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
@@ -581,8 +581,3 @@ class CommandRunner:
     @staticmethod
     def _capitalize_first(input: str):
         return input[0].capitalize() + input[1:]
-
-    @staticmethod
-    def _lower_first(input: str):
-        return input[0].lower() + input[1:]
-
