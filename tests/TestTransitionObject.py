@@ -50,7 +50,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["unlock", "door"])
         result_output = stdout.getvalue()
-        expected_output = f"You do not have a required item to do this action.\n"
+        expected_output = f"You don't have a required item to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
 
@@ -99,7 +99,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr1.execute(["unlock", "armory door"])
         result_output = stdout.getvalue()
-        expected_output = f"You do not have a required item to do this action.\n"
+        expected_output = f"You don't have a required item to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_armory_door_has_key(self):

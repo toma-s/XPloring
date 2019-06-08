@@ -37,7 +37,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine"])
         result_output = stdout.getvalue()
-        expected_output = "I don't understand. Try again.\n"
+        expected_output = "You don't know how to do that.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_regular_item(self):
