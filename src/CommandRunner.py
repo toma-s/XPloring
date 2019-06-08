@@ -180,25 +180,16 @@ class CommandRunner:
             print(f"This action is not allowed with the {target_alias}.")
             return
         ids = self._find_ids_by_alias(target_alias)
-        if self._check_found_one_id_only(ids, target_alias):
-            id = ids[0]
-            if id in self.game_state.items:
-                item_data = self.game_state.items[id]
-                self.display(item_data)
-            elif id in self.game_state.transition_objects:
-                trans_obj_data = self.game_state.transition_objects[id]
-                self.display(trans_obj_data)
-            elif id in self.game_state.transition_objects:
-                trans_obj_data = self.game_state.transition_objects[id]
-                self.display(trans_obj_data)
-            elif id in self.game_state.creatures:
-                creature_data = self.game_state.creatures[id]
-                self.display(creature_data)
-            elif id in self.game_state.equipment:
-                equipment_data = self.game_state.equipment[id]
-                self.display(equipment_data)
-            else:
-                self.display("You can't examine this.")
+        if not self._check_found_one_id_only(ids, target_alias):
+            return
+
+        item_id = ids[0]
+        item_data = self._get_data_by_id(item_id)
+        if item_data is None:
+            self.display("You can't examine this.")
+            return
+        self.display(item_data)
+
 
     def _move_to_direction(self, target):
         hero = self.game_state.hero
