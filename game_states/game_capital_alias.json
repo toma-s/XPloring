@@ -72,6 +72,7 @@
     "chest": "none",
     "legs": "none",
     "actions": {
+      "examine": "display game_item",
       "take": "item_take game_item",
       "equip": "equip game_item",
       "inventory": "display inventory",
