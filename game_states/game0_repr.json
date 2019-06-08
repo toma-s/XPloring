@@ -133,7 +133,7 @@
         "actions": {
           "use": {
             "command_use_item": true,
-            "command_display": "Hahahahahaha you fool :P"
+            "command_display": "It was a poison"
           }
         }
       }

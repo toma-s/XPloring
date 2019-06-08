@@ -510,7 +510,8 @@ class CommandRunner:
         sign = "+"
         if will_heal < 0:
             sign = ""
-        print(f"You used {item_data.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        print(f"You have consumed {item_data.alias[0]}. "
+              f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
         hero.inventory.remove(item_id)
 
     def heal(self):

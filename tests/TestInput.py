@@ -25,8 +25,9 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "mystery"])
         result_output = stdout.getvalue()
-        expected_output = "You used mystery. -75 health. Current health is 25 health.\n" \
-                          "Hahahahahaha you fool :P\n"
+        expected_output = "You have consumed mystery. -75 HP. " \
+                          "Current health is 25 HP.\n" \
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_mystery_arena_room(self):
@@ -37,8 +38,9 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "mystery"])
         result_output = stdout.getvalue()
-        expected_output = "You used mystery. -75 health. Current health is 25 health.\n" \
-                          "Hahahahahaha you fool :P\n"
+        expected_output = "You have consumed mystery. -75 HP. " \
+                          "Current health is 25 HP.\n" \
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attach_dragon(self):
