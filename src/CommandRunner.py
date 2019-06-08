@@ -223,14 +223,14 @@ class CommandRunner:
 
         item_id = item_ids[0]
         if item_id in self.game_state.items:
-            item_alias = self.game_state.items[item_id].alias[0]
+            item_original_alias = self.game_state.items[item_id].alias[0]
         if item_id in self.game_state.equipment:
-            item_alias = self.game_state.equipment[item_id].alias[0]
+            item_original_alias = self.game_state.equipment[item_id].alias[0]
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
 
-        print(f"You grabbed the {item_alias}.")
+        print(f"You grabbed the {item_original_alias}.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
@@ -252,14 +252,12 @@ class CommandRunner:
         if hero.health <= 0:
             self._end_game(f"GAME OVER. You were killed by {target_creature.alias[0]}. Better luck next time.")
 
-
-
     def _hero_attack_turn(self, target_creature: Creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias.capitalize()} is already dead.")
+            print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
         damage = 1
         if hero.right_hand != "none":
@@ -267,14 +265,14 @@ class CommandRunner:
         target_creature.health -= damage
         print(
             f"You hit the {target_alias} for {damage} damage! "
-            f"{target_alias.capitalize()} has {target_creature.health} HP left.")
+            f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
     def _creature_attack_turn(self, target_creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias.capitalize()} is DEAD!")
+            print(f"{self._capitalize_first(target_alias)} is DEAD!")
             for loot in target_creature.drops:
                 self.spawn_item(loot)
         # ak ešte žije
@@ -282,9 +280,8 @@ class CommandRunner:
         if target_creature.health > 0:
             total_damage = self._count_total_hero_damage(target_creature)
             hero.health -= total_damage
-            print(f"{target_alias.capitalize()} hit you for {total_damage} damage! "
+            print(f"{self._capitalize_first(target_alias)} hit you for {total_damage} damage! "
                   f"You have {hero.health} HP left.")
-
 
     def _count_total_hero_damage(self, creature):
         hero = self.game_state.hero
@@ -338,7 +335,6 @@ class CommandRunner:
             return
         item = self.game_state.equipment[item_id]
 
-
         if hero.right_hand == item_id or hero.left_hand == item_id or \
                 hero.head == item_id or hero.chest == item_id or \
                 hero.legs == item_id:
@@ -382,16 +378,16 @@ class CommandRunner:
         # items in room
         for i in room.items:
             if i in items:
-                print(f"There is a {items[i].alias[0]}. {items[i].description.capitalize()}.")
+                print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
             elif i in equipment:
-                print(f"There is a {equipment[i].alias[0]}. It's {equipment[i].description.lower()}.")
+                print(f"There is a {equipment[i].alias[0]}. It's {self._lower_first(equipment[i].description)}.")
 
         # entities in room
         if not room.creatures:
             print("There's nothing scary here.")
         else:
             for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. It's {creatures[c].description}.")
+                print(f"There is a {creatures[c].alias[0]} here. It's {self._lower_first(creatures[c].description)}.")
 
         # direction from room
         for d in room.directions:
@@ -424,7 +420,7 @@ class CommandRunner:
     def move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
-        print(f"You entered {rooms[room_id].description.lower()}")
+        print(f"You entered {self._lower_first(rooms[room_id].description)}")
         if rooms[room_id].auto_commands is not None:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
@@ -569,4 +565,12 @@ class CommandRunner:
     def _end_game(self, end_message):
         print(end_message)
         exit(0)
+
+    @staticmethod
+    def _capitalize_first(input: str):
+        return input[0].capitalize() + input[1:]
+
+    @staticmethod
+    def _lower_first(input: str):
+        return input[0].lower() + input[1:]
 

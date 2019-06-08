@@ -10,10 +10,22 @@
         "#potion",
         "#sword"
       ],
-      "creatures": []
+      "creatures": [
+        "#creature"
+      ]
     }
   },
-  "creatures": {},
+  "creatures": {
+    "#creature": {
+      "alias": [
+        "Green Dragon"
+      ],
+      "health": 50,
+      "damage": 10,
+      "drops": [],
+      "description": "Green Dragon Creature"
+    }
+  },
   "items": {
     "regular": {
       "#envelope": {
@@ -72,6 +84,7 @@
     "chest": "none",
     "legs": "none",
     "actions": {
+      "attack": "hit creature",
       "examine": "display game_item",
       "take": "item_take game_item",
       "equip": "equip game_item",
