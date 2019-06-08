@@ -160,7 +160,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take Envelope")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Envelope.\n"
+        expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_regular_item(self):
@@ -169,7 +169,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take envelope")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Envelope.\n"
+        expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_capital_regular_item(self):
@@ -178,8 +178,8 @@ class TestTake(unittest.TestCase):
             self.cr_capital_alias.execute(["take", "envelope"])
             self.cr_capital_alias.execute(["take", "Envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Envelope.\n" \
-                          "There is no such thing as \"Envelope\".\n"
+        expected_output = "Envelope has been added to your inventory.\n" \
+                          "There is no such thing as Envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     # consumable item
@@ -190,7 +190,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take Potion")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Potion.\n"
+        expected_output = "Potion has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_consumable_item(self):
@@ -199,7 +199,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take potion")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Potion.\n"
+        expected_output = "Potion has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_capital_consumable_item(self):
@@ -208,8 +208,8 @@ class TestTake(unittest.TestCase):
             self.cr_capital_alias.execute(["take", "potion"])
             self.cr_capital_alias.execute(["take", "Potion"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Potion.\n" \
-                          "There is no such thing as \"Potion\".\n"
+        expected_output = "Potion has been added to your inventory.\n"\
+                          "There is no such thing as Potion.\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment weapon
@@ -220,7 +220,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take Sword")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Sword.\n"
+        expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_equipment_weapon(self):
@@ -229,7 +229,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take sword")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Sword.\n"
+        expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_capital_equipment_weapon(self):
@@ -238,8 +238,8 @@ class TestTake(unittest.TestCase):
             self.cr_capital_alias.execute(["take", "sword"])
             self.cr_capital_alias.execute(["take", "Sword"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Sword.\n" \
-                          "There is no such thing as \"Sword\".\n"
+        expected_output = "Sword has been added to your inventory.\n" \
+                          "There is no such thing as Sword.\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment armour
@@ -250,7 +250,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take Helmet")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n"
+        expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_equipment_armour(self):
@@ -259,7 +259,7 @@ class TestTake(unittest.TestCase):
             commands_to_run = InputHandler().parse_user_input("take helmet")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n"
+        expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_capital_equipment_armour(self):
@@ -268,6 +268,6 @@ class TestTake(unittest.TestCase):
             self.cr_capital_alias.execute(["take", "helmet"])
             self.cr_capital_alias.execute(["take", "Helmet"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n" \
-                          "There is no such thing as \"Helmet\".\n"
+        expected_output = "Helmet has been added to your inventory.\n" \
+                          "There is no such thing as Helmet.\n"
         self.assertEqual(expected_output, result_output)

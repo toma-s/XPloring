@@ -230,13 +230,13 @@ class CommandRunner:
         target_item_alias = item_data.alias[0]
 
         if item_id in hero.inventory:
-            print(f"{self._capitalize_first(item_original_alias)} is already in your inventory.")
+            print(f"{self._capitalize_first(target_item_alias)} is already in your inventory.")
             return
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
 
-        print(f"{self._capitalize_first(item_original_alias)} has been added to your inventory.")
+        print(f"{self._capitalize_first(target_item_alias)} has been added to your inventory.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)

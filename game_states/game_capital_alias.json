@@ -58,7 +58,9 @@
         ],
         "slot": "hand",
         "in_use": false,
-        "description": "Weapon Equipment Sword"
+        "description": "Weapon Equipment Sword",
+        "actions": {
+        }
       }
     },
     "armour": {
@@ -70,7 +72,9 @@
         "resistance": 5,
         "durability": 10,
         "in_use": false,
-        "description": "Helmet Equipment"
+        "description": "Helmet Equipment",
+        "actions": {
+        }
       }
     }
   },
@@ -86,7 +90,6 @@
     "actions": {
       "attack": "hit creature",
       "examine": "display game_item",
-      "take": "item_take game_item",
       "equip": "equip game_item",
       "inventory": "display inventory",
       "status": "display self",
