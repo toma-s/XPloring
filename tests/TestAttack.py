@@ -2,7 +2,7 @@ import contextlib
 import io
 import unittest
 
-from CommandRunner import CommandRunner
+from CommandExecutor import CommandExecutor
 from GameState import GameState
 from InputHandler import InputHandler
 
@@ -12,15 +12,15 @@ class TestAttack(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandRunner(self.game_state)
+        self.cr = CommandExecutor(self.game_state)
 
         self.map1 = '../game_states/game1_cake.json'
         self.game_state1 = GameState(self.map1)
-        self.cr1 = CommandRunner(self.game_state1)
+        self.cr1 = CommandExecutor(self.game_state1)
 
         self.map_capital_alias = '../game_states/game_capital_alias.json'
         self.game_state_capital_alias = GameState(self.map_capital_alias)
-        self.cr_capital_alias = CommandRunner(self.game_state_capital_alias)
+        self.cr_capital_alias = CommandExecutor(self.game_state_capital_alias)
 
     def tearDown(self) -> None:
         del self.game_state

@@ -3,7 +3,7 @@ import contextlib
 import io
 
 from src.GameState import GameState
-from src.CommandRunner import CommandRunner
+from src.CommandExecutor import CommandExecutor
 
 
 class TestCombat(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestCombat(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandRunner(self.game_state)
+        self.cr = CommandExecutor(self.game_state)
 
     def tearDown(self) -> None:
         del self.game_state

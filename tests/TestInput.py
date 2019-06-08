@@ -3,7 +3,7 @@ import contextlib
 import io
 
 
-from CommandRunner import CommandRunner
+from CommandExecutor import CommandExecutor
 from GameState import GameState
 
 
@@ -12,7 +12,7 @@ class TestInput(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandRunner(self.game_state)
+        self.cr = CommandExecutor(self.game_state)
 
     def tearDown(self) -> None:
         del self.game_state

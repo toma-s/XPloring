@@ -10,10 +10,13 @@ from game_item.Weapon import Weapon
 from game_item.Armour import Armour
 
 
-class CommandRunner:
+class CommandExecutor:
 
-    def __init__(self, map: GameState):
-        self.game_state = map
+    def __init__(self, game_state: GameState):
+        self.game_state = game_state
+        # TODO
+        # self.internal_command_runner = InternalCommandExecutor(map)
+        # self.finder = Finder(map)
 
     def single_command(self, action_name):
         hero = self.game_state.hero
@@ -23,13 +26,13 @@ class CommandRunner:
             verb, noun = tuple(hero.actions[action_name].replace(",", '').split(" "))
             if verb == "display":
                 if noun == "room":
-                    self.display(rooms[hero.location])
+                    self._display(rooms[hero.location])
                     return
                 if noun == "inventory":
-                    self.display("inventory")
+                    self._display("inventory")
                     return
                 if noun == "self":
-                    self.display("status")
+                    self._display("status")
                     return
 
         print("I don't understand. Try again.")
@@ -59,8 +62,8 @@ class CommandRunner:
             print(f"Action \"{action_name}\" is not allowed with the {target_alias}.")
             return
 
-        action = data.actions[action_name]
-        self.run_internal_command(action, target_id)
+        action_data = data.actions[action_name]
+        self.run_internal_command(action_data, target_id)
 
     def _handle_hero_action(self, action_name, target_alias):
         hero = self.game_state.hero
@@ -170,9 +173,9 @@ class CommandRunner:
 
         item_data = self._get_data_by_id(item_id)
         if item_data is None:
-            self.display("You can't examine this.")
+            self._display("You can't examine this.")
             return
-        self.display(item_data)
+        self._display(item_data)
 
 
     def _move_to_direction(self, target):
@@ -371,7 +374,7 @@ class CommandRunner:
     def show_description(self, obj):
         print(f"{obj.description}")
 
-    def display(self, obj):
+    def _display(self, obj):
         if isinstance(obj, Room):
             self.discover_room()
         elif isinstance(obj, Creature):
@@ -410,11 +413,11 @@ class CommandRunner:
 
             elif c == "command_despawn_item":
                 item_id = commands[c]
-                self.despawn_item(item_id)
+                self._despawn_item(item_id)
 
             elif c == "command_show_message":
                 message = commands[c]
-                self.display(message)
+                self._display(message)
 
             elif c == "command_required_item":
                 item_id = commands[c]
@@ -461,7 +464,7 @@ class CommandRunner:
         else:
             print(f"You already did this.")
 
-    def despawn_item(self, item_id):
+    def _despawn_item(self, item_id):
         hero = self.game_state.hero
         room = self.game_state.rooms[hero.location]
         if item_id in room.items:
