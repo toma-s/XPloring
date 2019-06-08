@@ -226,11 +226,15 @@ class CommandRunner:
             item_original_alias = self.game_state.items[item_id].alias[0]
         if item_id in self.game_state.equipment:
             item_original_alias = self.game_state.equipment[item_id].alias[0]
+
+        if item_id in hero.inventory:
+            print(f"{self._capitalize_first(item_original_alias)} is already in your inventory.")
+            return
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
 
-        print(f"You grabbed the {item_original_alias}.")
+        print(f"{self._capitalize_first(item_original_alias)} has been added to your inventory.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
