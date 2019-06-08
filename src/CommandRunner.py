@@ -233,13 +233,6 @@ class CommandRunner:
     def _item_take(self, item_id):
         hero = self.game_state.hero
 
-        # item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
-        # item_ids += self._find_item_ids_by_alias_in_inventory( target_item_alias)
-        # if not self._check_found_one_id_only(item_ids, target_item_alias):
-        #     return
-        #
-        # item_id = item_ids[0]
-
         item_data = self._get_data_by_id(item_id)
         target_item_alias = item_data.alias[0]
 
