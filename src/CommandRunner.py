@@ -80,6 +80,8 @@ class CommandRunner:
         data = None
         if id in self.game_state.items:
             data = self.game_state.items[id]
+        if id in self.game_state.equipment:
+            data = self.game_state.equipment[id]
         elif id in self.game_state.transition_objects:
             data = self.game_state.transition_objects[id]
         if data is None or action_name not in data.actions:
@@ -325,28 +327,19 @@ class CommandRunner:
         print(f"Ouch! {item.alias[0]} has been destroyed!")
         print(f"You've dropped {item.alias[0]}")
 
-    def _equip_item(self, target_alias):
+    def _equip_item(self, item_id):
         hero = self.game_state.hero
         equipment = self.game_state.equipment
 
-        ids = self._find_ids_by_alias(target_alias)
-        if not self._check_found_one_id_only(ids, target_alias):
-            return
-
-        item_id = ids[0]
-        if item_id not in self.game_state.equipment:
-            print(f"You can't equip the {target_alias}.")
-            return
-
         if item_id not in hero.inventory:
-            print(f"You don't have {target_alias} in your inventory.")
+            print(f"You don't have that in your inventory.")
             return
 
         item_data = self.game_state.equipment[item_id]
         if hero.right_hand == item_id or hero.left_hand == item_id or \
                 hero.head == item_id or hero.chest == item_id or \
                 hero.legs == item_id:
-            print(f"You are already equipped with {target_alias}")
+            print(f"That is already equipped.")
             return
 
         if item_data.slot == "hand":
@@ -366,7 +359,7 @@ class CommandRunner:
                 equipment[hero.legs].in_use = False
             hero.legs = item_id
 
-        print(f"You are now equipped with {target_alias}")
+        print(f"Item equipped")
         item_data.in_use = True
 
     def execute(self, commands):
@@ -432,9 +425,9 @@ class CommandRunner:
         if rooms[room_id].auto_commands is not None:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
-    def run_internal_command(self, commands, node=None):
+    def run_internal_command(self, commands, target_id=None):
         for c in commands:
-            if c == "command_spawn_item" and node:
+            if c == "command_spawn_item" and target_id:
                 self.spawn_item(commands[c])
             elif c == "command_despawn_item":
                 self.despawn_item(commands[c])
@@ -446,15 +439,19 @@ class CommandRunner:
                     return
                 continue
             elif c == "command_set_unlocked":
-                self.game_state.transition_objects[node].unlocked = commands[c]
+                self.game_state.transition_objects[target_id].unlocked = commands[c]
             elif c == "command_show_description":
-                print(self.game_state.transition_objects[node].description)
+                print(self.game_state.transition_objects[target_id].description)
             elif c == "command_set_description":
-                self.game_state.transition_objects[node].description = commands[c]
+                self.game_state.transition_objects[target_id].description = commands[c]
             elif c == "command_use_item":
-                self.use_item(node)
+                self.use_item(target_id)
             elif c == "command_remove_item_from_inventory":
                 self._remove_item_from_inventory(commands[c])
+
+            elif c == "command_equip":
+                self._equip_item(target_id)
+
             elif c == "command_good_end":
                 end_massage = commands[c]
                 self._end_game(end_massage)

@@ -142,7 +142,11 @@
     }
   },
   "equipment": {
-
+    "inherit_actions": {
+      "equip": {
+        "command_equip": null
+      }
+    },
     "weapons": {
       "#equipment_steel_sword": {
         "damage": 30,
@@ -198,7 +202,6 @@
       "take": "item_take game_item",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "equip": "equip game_item",
       "heal": "heal self",
       "status": "display self"
     },
