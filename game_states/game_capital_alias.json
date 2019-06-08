@@ -7,7 +7,7 @@
       "items": [
         "#helmet",
         "#envelope",
-        "#potion",
+        "#bandage",
         "#sword"
       ],
       "creatures": [
@@ -38,10 +38,10 @@
       }
     },
     "consumable": {
-      "#potion": {
-        "description": "Regular Item Potion",
+      "#bandage": {
+        "description": "Regular Item Bandage",
         "alias": [
-          "Potion"
+          "Bandage"
         ],
         "actions": {
         },

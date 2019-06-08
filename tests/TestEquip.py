@@ -59,9 +59,9 @@ class TestEquip(unittest.TestCase):
     def test_equip_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "potion"])
+            self.cr.execute(["equip", "bandage"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"equip\" is not allowed with the potion.\n"
+        expected_output = "Action \"equip\" is not allowed with the bandage.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_equipment_weapon(self):

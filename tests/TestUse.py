@@ -43,7 +43,7 @@ class TestUse(unittest.TestCase):
     def test_use_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["use", "potion"])
+            self.cr.execute(["use", "bandage"])
         result_output = stdout.getvalue()
         expected_output = "You do not have it in your inventory.\n"
         self.assertEqual(expected_output, result_output)

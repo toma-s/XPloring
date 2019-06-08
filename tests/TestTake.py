@@ -51,9 +51,9 @@ class TestTake(unittest.TestCase):
     def test_take_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "potion"])
+            self.cr.execute(["take", "bandage"])
         result_output = stdout.getvalue()
-        expected_output = "Potion has been added to your inventory.\n"
+        expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_equipment_weapon(self):
@@ -189,31 +189,31 @@ class TestTake(unittest.TestCase):
     def test_alias_capital_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("take Potion")
+            commands_to_run = InputHandler().parse_user_input("take Bandage")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "Potion has been added to your inventory.\n"
+        expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("take potion")
+            commands_to_run = InputHandler().parse_user_input("take bandage")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "Potion has been added to your inventory.\n"
+        expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_capital_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("take potion")
+            commands_to_run = InputHandler().parse_user_input("take bandage")
             self.cr_capital_alias.execute(commands_to_run)
-            commands_to_run = InputHandler().parse_user_input("take Potion")
+            commands_to_run = InputHandler().parse_user_input("take Bandage")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "Potion has been added to your inventory.\n"\
-                          "Potion is already in your inventory.\n"
+        expected_output = "Bandage has been added to your inventory.\n"\
+                          "Bandage is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment weapon

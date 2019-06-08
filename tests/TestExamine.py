@@ -51,9 +51,9 @@ class TestExamine(unittest.TestCase):
     def test_examine_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "potion"])
+            self.cr.execute(["examine", "bandage"])
         result_output = stdout.getvalue()
-        expected_output = "Small healing potion. USE it to heal yourself\n"
+        expected_output = "You can USE bandage to reduce swelling or slow heavy bleeding.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_equipment_weapon(self):
@@ -167,19 +167,19 @@ class TestExamine(unittest.TestCase):
     def test_alias_capital_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("examine Potion")
+            commands_to_run = InputHandler().parse_user_input("examine Bandage")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "Regular Item Potion\n"
+        expected_output = "Regular Item Bandage\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("examine potion")
+            commands_to_run = InputHandler().parse_user_input("examine bandage")
             self.cr_capital_alias.execute(commands_to_run)
         result_output = stdout.getvalue()
-        expected_output = "Regular Item Potion\n"
+        expected_output = "Regular Item Bandage\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment weapon

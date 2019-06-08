@@ -28,7 +28,6 @@ class TestConsume(unittest.TestCase):
         del self.game_state1
         del self.cr1
 
-
     def test_use_bottle_entrance_room(self):
         self.cr.execute(["take", "bottle"])
 
@@ -79,13 +78,13 @@ class TestConsume(unittest.TestCase):
                           "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_use_healing_potion(self):
+    def test_use_bandage(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "potion"])
-            self.cr.execute(["use", "potion"])
+            self.cr.execute(["take", "bandage"])
+            self.cr.execute(["use", "bandage"])
         result_output = stdout.getvalue()
-        expected_output = "Potion has been added to your inventory.\n" \
+        expected_output = "Bandage has been added to your inventory.\n" \
                           "You are fully healed, you don't need healing.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(100, self.game_state.hero.health)

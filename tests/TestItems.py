@@ -76,6 +76,16 @@ class TestItems(unittest.TestCase):
         expected_output = "Action \"read\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
+    def test_read_letter(self):
+        self.cr.execute(["open", "envelope"])
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["read", "letter"])
+        result_output = stdout.getvalue()
+        expected_output = "A green dragon guards a key to the exit door.\n"\
+                          "You must kill the dragon and take the key from its dead body.\n"
+        self.assertEqual(expected_output, result_output)
+
     def test_open_envelope_room(self):
         self.cr.execute(["open", "envelope"])
 

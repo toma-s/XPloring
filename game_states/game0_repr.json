@@ -10,9 +10,9 @@
       "items": [
         "#item_envelope",
         "#equipment_steel_sword",
-        "#item_small_healing_potion",
+        "#item_bandage",
         "#equipment_steel_helmet",
-        "#item_small_poison_potion",
+        "#item_poison_bottle",
         "#equipment_golden_chestplate"
       ],
       "creatures": []
@@ -99,7 +99,7 @@
         ],
         "actions": {
           "read": {
-            "command_show_message": "Welcome, take sword and kill that dragon"
+            "command_show_message": "A green dragon guards a key to the exit door.\nYou must kill the dragon and take the key from its dead body."
           }
         }
       },
@@ -112,11 +112,11 @@
       }
     },
     "consumable": {
-      "#item_small_healing_potion": {
+      "#item_bandage": {
         "value": 25,
-        "description": "Small healing potion. USE it to heal yourself",
+        "description": "You can USE bandage to reduce swelling or slow heavy bleeding.",
         "alias": [
-          "potion"
+          "bandage", "bandages"
         ],
         "actions": {
           "use": {
@@ -124,9 +124,9 @@
           }
         }
       },
-      "#item_small_poison_potion": {
+      "#item_poison_bottle": {
         "value": -75,
-        "description": "Small unlabelled bottle with strange liquid inside. USE may be cause bad consequences.",
+        "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences.",
         "alias": [
           "unlabelled bottle", "bottle"
         ],
