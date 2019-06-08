@@ -42,7 +42,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.cr2keys.execute(["go", "east"])
         result_output = stdout.getvalue()
-        expected_output = "You entered the end\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
+        expected_output = "The End\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual('0', str(e.exception))
 
@@ -61,7 +61,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.cr.execute(["go", "north"])
         result_output = stdout.getvalue()
-        expected_output = "You entered the end\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
+        expected_output = "The end\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual('0', str(e.exception))
 
