@@ -182,6 +182,7 @@
   },
   "hero": {
     "health": 100,
+    "damage": 1,
     "location": "#room_entrance",
     "right_hand": "none",
     "left_hand": "none",
@@ -194,7 +195,6 @@
       "go": "move_to direction",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "heal": "heal self",
       "status": "display self"
     },
     "inventory": []

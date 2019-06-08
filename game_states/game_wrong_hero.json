@@ -27,6 +27,7 @@
   },
   "hero": {
     "health": 100,
+    "damage": 1,
     "location_BUG": "#room_dummy",
     "right_hand": "none",
     "left_hand": "none",

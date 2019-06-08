@@ -116,6 +116,7 @@
   },
   "hero": {
     "health": 100,
+    "damage": 1,
     "location": "#room1",
     "right_hand": "#weapon1",
     "left_hand": "none",

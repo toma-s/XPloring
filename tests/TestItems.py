@@ -129,11 +129,11 @@ class TestItems(unittest.TestCase):
         self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
     def test_open_envelope_inventory(self):
-        self.assertIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
-        self.assertNotIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
-
         self.cr.execute(["take", "envelope"])
         self.cr.execute(["open", "envelope"])
+
+        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
+        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -141,11 +141,6 @@ class TestItems(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as envelope.\n"
         self.assertEqual(expected_output, result_output)
-
-        self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
-        self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
-
-
 
     # -- attack non creatures --
 

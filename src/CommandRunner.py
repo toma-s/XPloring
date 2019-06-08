@@ -31,10 +31,6 @@ class CommandRunner:
                 if noun == "self":
                     self.display("status")
                     return
-            elif verb == "heal":
-                if noun == "self":
-                    self.heal()
-                    return
 
         print("I don't understand. Try again.")
 
@@ -65,8 +61,6 @@ class CommandRunner:
         else:
             print(f"You can't {action_name}")
 
-
-
     def _handle_target_action(self, action_name, target_alias):
         ids = self._find_ids_by_alias(target_alias)
         if not self._check_found_one_id_only(ids, target_alias):
@@ -96,7 +90,7 @@ class CommandRunner:
             self.run_internal_command(int_commands, trans_obj_id)
 
     def _find_trans_obj_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
+        found_ids = []
 
         hero = self.game_state.hero
         hero_room = self.game_state.rooms[hero.location]
@@ -106,11 +100,11 @@ class CommandRunner:
                 trans_obj_id = hero_room.directions[direction]["trans_obj_id"]
                 trans_obj_data: TransitionObject = self.game_state.transition_objects[trans_obj_id]
                 if target_alias in [alias.lower() for alias in trans_obj_data.alias]:
-                    foundIds.append(trans_obj_id)
-        return foundIds
+                    found_ids.append(trans_obj_id)
+        return found_ids
 
     def _find_creature_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
+        found_ids = []
 
         hero = self.game_state.hero
         hero_room = self.game_state.rooms[hero.location]
@@ -119,47 +113,47 @@ class CommandRunner:
             if creature_id in self.game_state.creatures:
                 creature_data = self.game_state.creatures[creature_id]
                 if target_alias in [alias.lower() for alias in creature_data.alias]:
-                    foundIds.append(creature_id)
-        return foundIds
+                    found_ids.append(creature_id)
+        return found_ids
 
     def _find_ids_by_alias(self, target_alias) -> [str]:
-        foundIds = []
-        foundIds += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
-        foundIds += self._find_item_ids_by_alias_in_inventory(target_alias)
-        foundIds += self._find_trans_obj_ids_by_alias(target_alias)
-        foundIds += self._find_creature_ids_by_alias(target_alias)
-        return foundIds
+        found_ids = []
+        found_ids += self._find_item_ids_by_alias_in_room(self.game_state.hero.location, target_alias)
+        found_ids += self._find_item_ids_by_alias_in_inventory(target_alias)
+        found_ids += self._find_trans_obj_ids_by_alias(target_alias)
+        found_ids += self._find_creature_ids_by_alias(target_alias)
+        return found_ids
 
     def _find_item_ids_by_alias_in_inventory(self, target_alias) -> [str]:
         item_ids_in_inventory = self.game_state.hero.inventory
 
-        foundIds = []
+        found_ids = []
         for item_id in item_ids_in_inventory:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                    found_ids.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
-        return foundIds
+                    found_ids.append(item_id)
+        return found_ids
 
     def _find_item_ids_by_alias_in_room(self, room_id, target_alias) -> [str]:
         room: Room = self.game_state.rooms[room_id]
         item_ids_in_room = room.items
 
-        foundIds = []
+        found_ids = []
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
+                    found_ids.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
                 if target_alias in [alias.lower() for alias in item_data.alias]:
-                    foundIds.append(item_id)
-        return foundIds
+                    found_ids.append(item_id)
+        return found_ids
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:
@@ -267,7 +261,7 @@ class CommandRunner:
         if target_creature.health <= 0:
             print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
-        damage = 1
+        damage = hero.damage
         if hero.right_hand != "none":
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage
@@ -510,18 +504,9 @@ class CommandRunner:
         sign = "+"
         if will_heal < 0:
             sign = ""
-        print(f"You used {item_data.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        print(f"You have consumed {item_data.alias[0]}. "
+              f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
         hero.inventory.remove(item_id)
-
-    def heal(self):
-        hero = self.game_state.hero
-
-        for item in hero.inventory:
-            if item in self.game_state.items and isinstance(self.game_state.items[item], Consumable):
-                if self.game_state.items[item].value > 0:
-                    self.use_item(item)
-                    return
-        print(f"You don't have anything you could use for healing in your inventory")
 
     def show_status(self):
         hero = self.game_state.hero

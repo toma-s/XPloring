@@ -2,6 +2,7 @@ class Hero:
 
     def __init__(self, data: dict):
         self.health = data['health']
+        self.damage = data['damage']
         self.location = data['location']
         self.right_hand = data['right_hand']
         self.left_hand = data['left_hand']
