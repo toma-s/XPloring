@@ -17,10 +17,11 @@ class InternalCommandHandler:
         for c in commands:
             if c == "command_show_message":
                 message = commands[c]
-                self._display(message)
+                print(f"{message}")
 
             elif c == "command_show_description":
-                self._display_item(target_id)
+                data = self.finder.get_data_by_id(target_id)
+                print(f"{data.description}")
 
             elif c == "command_set_description":
                 new_description: str = commands[c]
@@ -65,34 +66,6 @@ class InternalCommandHandler:
                 print(f"Unknown internal command {c}")
                 return
 
-    def _display(self, obj):
-        if isinstance(obj, Creature):
-            print(f"{obj.description}")
-        elif isinstance(obj, Equipment):
-            print(f"{obj.description}")
-        elif isinstance(obj, TransitionObject):
-            print(f"{obj.description}")
-        elif isinstance(obj, Item):
-            print(f"{obj.description}")
-        else:
-            print(obj)
-
-
-    def _display_item(self, item_id):
-        # if self._is_keyword(target_alias):
-        #     print(f"This action is not allowed with the {target_alias}.")
-        #     return
-        # ids = self._find_ids_by_alias(target_alias)
-        # if not self._check_found_one_id_only(ids, target_alias):
-        #     return
-        # item_id = ids[0]
-
-        item_data = self.finder.get_data_by_id(item_id)
-        if item_data is None:
-            self._display("You can't examine this.")
-            return
-        self._display(item_data)
-
     def _set_description(self, target_id, description_message: str):
         target_data = self.finder.get_data_by_id(target_id)
         target_data.description = description_message
@@ -123,10 +96,8 @@ class InternalCommandHandler:
         if hero.right_hand != "none":
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage
-        print(
-            f"You hit the {target_alias} for {damage} damage! "
-            f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
-
+        print(f"You hit the {target_alias} for {damage} damage! "
+              f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
     def _creature_attack_turn(self, creature_data):
         hero = self.game_state.hero

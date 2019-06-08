@@ -8,6 +8,18 @@ class Finder:
     def __init__(self, game_state: GameState):
         self.game_state = game_state
 
+    def get_data_by_id(self, id):
+        if id in self.game_state.items:
+            return self.game_state.items[id]
+        if id in self.game_state.equipment:
+            return self.game_state.equipment[id]
+        if id in self.game_state.creatures:
+            return self.game_state.creatures[id]
+        if id in self.game_state.transition_objects:
+            return self.game_state.transition_objects[id]
+        else:
+            return None
+
     def find_ids_by_alias(self, target_alias) -> [str]:
         hero = self.game_state.hero
         found_ids = []
@@ -75,14 +87,3 @@ class Finder:
                     found_ids.append(creature_id)
         return found_ids
 
-    def get_data_by_id(self, id):
-        if id in self.game_state.items:
-            return self.game_state.items[id]
-        if id in self.game_state.equipment:
-            return self.game_state.equipment[id]
-        if id in self.game_state.creatures:
-            return self.game_state.creatures[id]
-        if id in self.game_state.transition_objects:
-            return self.game_state.transition_objects[id]
-        else:
-            return None
