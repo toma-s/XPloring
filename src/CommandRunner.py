@@ -59,10 +59,6 @@ class CommandRunner:
             if noun == "game_item":
                 self._display_item(target_alias)
 
-        elif verb == "item_take":
-            if noun == "game_item":
-                self._item_take(target_alias)
-
         elif verb == "hit":
             if noun == "creature":
                 self._hit_creature(target_alias)
