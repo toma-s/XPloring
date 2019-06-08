@@ -61,7 +61,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "Simple sword for fighting\n"
+        expected_output = "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_equipment_armour(self):
@@ -69,7 +69,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["examine", "helmet"])
         result_output = stdout.getvalue()
-        expected_output = "Good ol' steel helmet\n"
+        expected_output = "Gladiator helmet made of steel\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_direction(self):

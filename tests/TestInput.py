@@ -18,29 +18,29 @@ class TestInput(unittest.TestCase):
         del self.game_state
         del self.cr
 
-    def test_use_mystery_entrance_room(self):
-        self.cr.execute(["take", "mystery"])
+    def test_use_bottle_entrance_room(self):
+        self.cr.execute(["take", "bottle"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["use", "mystery"])
+            self.cr.execute(["use", "bottle"])
         result_output = stdout.getvalue()
-        expected_output = "You have consumed mystery. -75 HP. " \
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_use_mystery_arena_room(self):
-        self.cr.execute(["take", "mystery"])
+    def test_use_bottle_arena_room(self):
+        self.cr.execute(["take", "bottle"])
         self.cr.execute(["go", "west"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["use", "mystery"])
+            self.cr.execute(["use", "bottle"])
         result_output = stdout.getvalue()
-        expected_output = "You have consumed mystery. -75 HP. " \
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attach_dragon(self):

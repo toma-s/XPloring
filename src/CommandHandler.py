@@ -1,6 +1,7 @@
 from Finder import Finder
 from InternalCommandHandler import InternalCommandHandler
 from commands import commands_directions
+from game_item.Hero import Hero
 from src.GameState import GameState
 from game_item.Weapon import Weapon
 from game_item.Armour import Armour
@@ -142,37 +143,41 @@ class CommandHandler:
             self.internal_command_handler.handle_internal_command(rooms[room_id].auto_commands, room_id)
 
     def show_status(self):
-        hero = self.game_state.hero
+
+        def _print_weapon(slot_name: str):
+            hero: Hero = self.game_state.hero
+            weapon_id = getattr(hero, slot_name)
+            info = "none"
+            if weapon_id != "none":
+                weapon_data = self.game_state.equipment[weapon_id]
+                info = weapon_data.description
+                info += f" {weapon_data.damage} ATK"
+            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
+            print(f"{slot_print}: {info}")
+
+        def _print_armour(slot_name: str):
+            hero: Hero = self.game_state.hero
+            armour_id = getattr(hero, slot_name)
+            info = "none"
+            if armour_id != "none":
+                armour_data = self.game_state.equipment[armour_id]
+                info = armour_data.description
+                info += f" {armour_data.resistance} DEF"
+                info += f" {armour_data.durability} Durability"
+            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
+            print(f"{slot_print}: {info}")
+
         print(f"----- HERO STATUS -----")
-        print(f"Health: {hero.health}HP")
-        tmp = "none"
-        if hero.right_hand != "none":
-            it = self.game_state.equipment[hero.right_hand]
-            tmp = it.description
-            tmp += f" {it.damage} ATK"
-        print(f"Right hand: {tmp}")
-        tmp = "none"
-        if hero.head != "none":
-            it = self.game_state.equipment[hero.head]
-            tmp = it.description
-            tmp += f" {it.resistance} DEF"
-            tmp += f" {it.durability} Durability"
-        print(f"Head: {tmp}")
-        tmp = "none"
-        if hero.chest != "none":
-            it = self.game_state.equipment[hero.chest]
-            tmp = it.description
-            tmp += f" {it.resistance} DEF"
-            tmp += f" {it.durability} Durability"
-        print(f"Chest: {tmp}")
-        tmp = "none"
-        if hero.legs != "none":
-            it = self.game_state.equipment[hero.legs]
-            tmp = it.description
-            tmp += " {it.resistance} DEF"
-            tmp += f" {it.durability} Durability"
-        print(f"Leg: {tmp}")
-        print(f"For inventory detail type INV")
+        print(f"Health: {hero.health} HP")
+        print(f"Attack Power: {hero.damage} ATK")
+
+        _print_weapon("right_hand")
+        _print_weapon("left_hand")
+
+        _print_armour("head")
+        _print_armour("chest")
+        _print_armour("legs")
+
         print(f"-----------------------")
 
     def show_inventory(self):
