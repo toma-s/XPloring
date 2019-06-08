@@ -29,17 +29,55 @@ class TestConsume(unittest.TestCase):
         del self.cr1
 
 
-    def test_drink_unlabeled_bottle(self):
+    def test_use_bottle_entrance_room(self):
+        self.cr.execute(["take", "bottle"])
+
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "bottle"])
-            self.cr.execute(["drink", "bottle"])
+            self.cr.execute(["use", "bottle"])
         result_output = stdout.getvalue()
-        expected_output = "Unlabelled bottle has been added to your inventory.\n" \
-                          "You have consumed unlabelled bottle. -75 HP. Current health is 25 HP.\n" \
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
+                          "Current health is 25 HP.\n" \
                           "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual(25, self.game_state.hero.health)
+
+    def test_use_bottle_arena_room(self):
+        self.cr.execute(["take", "bottle"])
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["use", "bottle"])
+        result_output = stdout.getvalue()
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
+                          "Current health is 25 HP.\n" \
+                          "It was a poison.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_drink_bottle_entrance_room(self):
+        self.cr.execute(["take", "bottle"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["drink", "bottle"])
+        result_output = stdout.getvalue()
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
+                          "Current health is 25 HP.\n" \
+                          "It was a poison.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_drink_bottle_arena_room(self):
+        self.cr.execute(["take", "bottle"])
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["drink", "bottle"])
+        result_output = stdout.getvalue()
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
+                          "Current health is 25 HP.\n" \
+                          "It was a poison.\n"
+        self.assertEqual(expected_output, result_output)
 
     def test_use_healing_potion(self):
         stdout = io.StringIO()

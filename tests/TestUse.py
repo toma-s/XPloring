@@ -131,3 +131,13 @@ class TestUse(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
+
+    def test_attach_dragon(self):
+        self.cr.execute(["go", "west"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr.execute(["attach", "dragon"])
+        result_output = stdout.getvalue()
+        expected_output = "Action \"attach\" is not allowed with the dragon.\n"
+        self.assertEqual(expected_output, result_output)
