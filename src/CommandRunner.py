@@ -50,14 +50,6 @@ class CommandRunner:
         if verb == "move_to":
             if noun == "direction":
                 self._move_to_direction(target_alias)
-
-        elif verb == "display":
-            if noun == "game_item":
-                self._display_item(target_alias)
-
-        elif verb == "hit":
-            if noun == "creature":
-                self._attack_creature(target_alias)
         else:
             print(f"You don't know how to {action_name}")
 
@@ -409,6 +401,8 @@ class CommandRunner:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
     def run_internal_command(self, commands, target_id=None):
+        target_data = self._get_data_by_id(target_id)
+
         for c in commands:
             if c == "command_attack_creature":
                 self._attack_creature(target_id)
@@ -427,7 +421,6 @@ class CommandRunner:
                 self.game_state.transition_objects[target_id].unlocked = commands[c]
             elif c == "command_show_description":
                 self._display_item(target_id)
-                # print(self.game_state.transition_objects[target_id].description)
             elif c == "command_set_description":
                 self.game_state.transition_objects[target_id].description = commands[c]
             elif c == "command_use_item":
