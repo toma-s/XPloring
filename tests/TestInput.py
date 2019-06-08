@@ -41,7 +41,6 @@ class TestInput(unittest.TestCase):
                           "Hahahahahaha you fool :P\n"
         self.assertEqual(expected_output, result_output)
 
-
     def test_attach_dragon(self):
         self.cr.execute(["go", "west"])
 
@@ -51,5 +50,3 @@ class TestInput(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "Action \"attach\" is not allowed with dragon.\n"
         self.assertEqual(expected_output, result_output)
-
-

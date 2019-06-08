@@ -103,7 +103,7 @@ class CommandRunner:
             if "trans_obj_id" in hero_room.directions[direction]:
                 trans_obj_id = hero_room.directions[direction]["trans_obj_id"]
                 trans_obj_data: TransitionObject = self.game_state.transition_objects[trans_obj_id]
-                if target_alias in trans_obj_data.alias:
+                if target_alias in [alias.lower() for alias in trans_obj_data.alias]:
                     foundIds.append(trans_obj_id)
         return foundIds
 
@@ -116,7 +116,7 @@ class CommandRunner:
         for creature_id in hero_room.creatures:
             if creature_id in self.game_state.creatures:
                 creature_data = self.game_state.creatures[creature_id]
-                if target_alias in creature_data.alias:
+                if target_alias in [alias.lower() for alias in creature_data.alias]:
                     foundIds.append(creature_id)
         return foundIds
 
@@ -135,14 +135,13 @@ class CommandRunner:
         for item_id in item_ids_in_inventory:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
         return foundIds
-
 
     def _find_item_ids_by_alias_in_room(self, room_id, target_alias) -> [str]:
         room: Room = self.game_state.rooms[room_id]
@@ -152,11 +151,11 @@ class CommandRunner:
         for item_id in item_ids_in_room:
             if item_id in self.game_state.items:
                 item_data = self.game_state.items[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
             if item_id in self.game_state.equipment:
                 item_data = self.game_state.equipment[item_id]
-                if target_alias in item_data.alias:
+                if target_alias in [alias.lower() for alias in item_data.alias]:
                     foundIds.append(item_id)
         return foundIds
 
@@ -203,7 +202,6 @@ class CommandRunner:
             else:
                 self.display("You can't examine this.")
 
-
     def _move_to_direction(self, target):
         hero = self.game_state.hero
         rooms = self.game_state.rooms
@@ -225,7 +223,6 @@ class CommandRunner:
         else:
             print(f"You are not allowed to go {target}.")
 
-
     def _item_take(self, item_id):
         hero = self.game_state.hero
 
@@ -233,13 +230,13 @@ class CommandRunner:
         target_item_alias = item_data.alias[0]
 
         if item_id in hero.inventory:
-            print(f"{target_item_alias.capitalize()} is already in your inventory.")
+            print(f"{self._capitalize_first(item_original_alias)} is already in your inventory.")
             return
-
         hero.inventory.append(item_id)
         room = self.game_state.rooms[hero.location]
         room.items.remove(item_id)
-        print(f"{target_item_alias.capitalize()} has been added to your inventory.")
+
+        print(f"{self._capitalize_first(item_original_alias)} has been added to your inventory.")
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
@@ -261,14 +258,12 @@ class CommandRunner:
         if hero.health <= 0:
             self._end_game(f"GAME OVER. You were killed by {target_creature.alias[0]}. Better luck next time.")
 
-
-
     def _hero_attack_turn(self, target_creature: Creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias.capitalize()} is already dead.")
+            print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
         damage = 1
         if hero.right_hand != "none":
@@ -276,14 +271,14 @@ class CommandRunner:
         target_creature.health -= damage
         print(
             f"You hit the {target_alias} for {damage} damage! "
-            f"{target_alias.capitalize()} has {target_creature.health} HP left.")
+            f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
     def _creature_attack_turn(self, target_creature):
         hero = self.game_state.hero
         target_alias = target_creature.alias[0]
 
         if target_creature.health <= 0:
-            print(f"{target_alias.capitalize()} is DEAD!")
+            print(f"{self._capitalize_first(target_alias)} is DEAD!")
             for loot in target_creature.drops:
                 self.spawn_item(loot)
         # ak ešte žije
@@ -291,9 +286,8 @@ class CommandRunner:
         if target_creature.health > 0:
             total_damage = self._count_total_hero_damage(target_creature)
             hero.health -= total_damage
-            print(f"{target_alias.capitalize()} hit you for {total_damage} damage! "
+            print(f"{self._capitalize_first(target_alias)} hit you for {total_damage} damage! "
                   f"You have {hero.health} HP left.")
-
 
     def _count_total_hero_damage(self, creature):
         hero = self.game_state.hero
@@ -337,10 +331,13 @@ class CommandRunner:
             return
 
         item_data = self.game_state.equipment[item_id]
+
         if hero.right_hand == item_id or hero.left_hand == item_id or \
                 hero.head == item_id or hero.chest == item_id or \
                 hero.legs == item_id:
+
             print(f"It is already equipped.")
+
             return
 
         if item_data.slot == "hand":
@@ -380,16 +377,16 @@ class CommandRunner:
         # items in room
         for i in room.items:
             if i in items:
-                print(f"There is a {items[i].alias[0]}. {items[i].description}.")
+                print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
             elif i in equipment:
-                print(f"There is a {equipment[i].alias[0]}. It's {equipment[i].description.lower()}.")
+                print(f"There is a {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
 
         # entities in room
         if not room.creatures:
             print("There's nothing scary here.")
         else:
             for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. It's {creatures[c].description}.")
+                print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")
 
         # direction from room
         for d in room.directions:
@@ -422,7 +419,7 @@ class CommandRunner:
     def move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
-        print(f"You entered {rooms[room_id].description.lower()}")
+        print(f"{rooms[room_id].description}")
         if rooms[room_id].auto_commands is not None:
             self.run_internal_command(rooms[room_id].auto_commands, room_id)
 
@@ -574,3 +571,6 @@ class CommandRunner:
         print(end_message)
         exit(0)
 
+    @staticmethod
+    def _capitalize_first(input: str):
+        return input[0].capitalize() + input[1:]
