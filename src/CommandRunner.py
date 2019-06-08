@@ -173,6 +173,18 @@ class CommandRunner:
             return False
         return True
 
+    def _get_data_by_id(self, id):
+        if id in self.game_state.items:
+            return self.game_state.items[id]
+        if id in self.game_state.equipment:
+            return self.game_state.equipment[id]
+        if id in self.game_state.creatures:
+            return self.game_state.creatures[id]
+        if id in self.game_state.transition_objects:
+            return self.game_state.transition_objects[id]
+        else:
+            return None
+
     def _display_item(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
         if self._check_found_one_id_only(ids, target_alias):
@@ -218,15 +230,18 @@ class CommandRunner:
             print(f"You are not allowed to go {target}.")
 
 
-    def _item_take(self, target_item_alias):
+    def _item_take(self, item_id):
         hero = self.game_state.hero
 
-        item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
-        item_ids += self._find_item_ids_by_alias_in_inventory( target_item_alias)
-        if not self._check_found_one_id_only(item_ids, target_item_alias):
-            return
+        # item_ids = self._find_item_ids_by_alias_in_room(hero.location, target_item_alias)
+        # item_ids += self._find_item_ids_by_alias_in_inventory( target_item_alias)
+        # if not self._check_found_one_id_only(item_ids, target_item_alias):
+        #     return
+        #
+        # item_id = item_ids[0]
 
-        item_id = item_ids[0]
+        item_data = self._get_data_by_id(item_id)
+        target_item_alias = item_data.alias[0]
 
         if item_id in hero.inventory:
             print(f"{target_item_alias.capitalize()} is already in your inventory.")
@@ -445,6 +460,8 @@ class CommandRunner:
                 self.use_item(target_id)
             elif c == "command_remove_item_from_inventory":
                 self._remove_item_from_inventory(commands[c])
+            elif c == "command_add_item_to_inventory":
+                self._item_take(target_id)
 
             elif c == "command_equip":
                 self._equip_item(target_id)

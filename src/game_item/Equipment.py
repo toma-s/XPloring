@@ -3,7 +3,7 @@ from game_item.Item import Item
 
 class Equipment(Item):
 
-    default_actions = {
+    equipment_actions = {
         "equip": {
             "command_equip": None
         }
@@ -13,6 +13,6 @@ class Equipment(Item):
         super().__init__(data)
         self.slot = data['slot']  # what equipment slot does this game_item fit
         self.in_use = data['in_use']  # is game_item currently equipped
-        self.actions.update(self.default_actions)
+        self.actions.update(self.equipment_actions)
 
 
