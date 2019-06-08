@@ -113,7 +113,6 @@
         ],
         "actions": {
           "eat": {
-            "command_required_item": "#item_cake",
             "command_use_item": true,
             "command_display": "The cake is a lie ...",
             "command_spawn_item": "#item_doorkey_exit"

@@ -120,7 +120,6 @@
         ],
         "actions": {
           "use": {
-            "command_required_item": "#item_small_healing_potion",
             "command_use_item": true
           }
         }
@@ -133,7 +132,6 @@
         ],
         "actions": {
           "use": {
-            "command_required_item": "#item_small_poison_potion",
             "command_use_item": true,
             "command_display": "Hahahahahaha you fool :P"
           }
