@@ -50,5 +50,5 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attach", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"attach\" is not allowed with dragon.\n"
+        expected_output = "Action \"attach\" is not allowed with the dragon.\n"
         self.assertEqual(expected_output, result_output)

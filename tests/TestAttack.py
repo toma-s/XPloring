@@ -45,7 +45,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the envelope.\n"
+        expected_output = "Action \"attack\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_consumable_item(self):
@@ -53,7 +53,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the potion.\n"
+        expected_output = "Action \"attack\" is not allowed with the potion.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_equipment_weapon(self):
@@ -61,7 +61,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the sword.\n"
+        expected_output = "Action \"attack\" is not allowed with the sword.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_equipment_armour(self):
@@ -69,7 +69,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "helmet"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the helmet.\n"
+        expected_output = "Action \"attack\" is not allowed with the helmet.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_direction(self):
@@ -77,7 +77,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "west"])
         result_output = stdout.getvalue()
-        expected_output = "This action is not allowed with west.\n"
+        expected_output = "This action is not allowed with the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_creature(self):
@@ -95,7 +95,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "This action is not allowed with inventory.\n"
+        expected_output = "This action is not allowed with the inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_key(self):
@@ -112,7 +112,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "key"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the key.\n"
+        expected_output = "Action \"attack\" is not allowed with the key.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_key_ambiguous(self):
@@ -129,7 +129,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "door"])
         result_output = stdout.getvalue()
-        expected_output = "You can't attack the door.\n"
+        expected_output = "Action \"attack\" is not allowed with the door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_door_ambiguous(self):

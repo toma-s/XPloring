@@ -89,7 +89,6 @@
     "chest": "none",
     "legs": "none",
     "actions": {
-      "attack": "hit creature",
       "examine": "display game_item",
       "equip": "equip game_item",
       "inventory": "display inventory",

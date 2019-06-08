@@ -193,7 +193,6 @@
       "examine": "display game_item",
       "look": "display room",
       "go": "move_to direction",
-      "attack": "hit creature",
       "inventory": "display inventory",
       "status": "display self"
     },

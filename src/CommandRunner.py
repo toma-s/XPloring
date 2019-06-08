@@ -57,32 +57,27 @@ class CommandRunner:
 
         elif verb == "hit":
             if noun == "creature":
-                self._hit_creature(target_alias)
+                self._attack_creature(target_alias)
         else:
-            print(f"You can't {action_name}")
+            print(f"You don't know how to {action_name}")
 
     def _handle_target_action(self, action_name, target_alias):
-        ids = self._find_ids_by_alias(target_alias)
+        found_ids = self._find_ids_by_alias(target_alias)
         if self._is_keyword(target_alias):
-            print(f"This action is not allowed with {target_alias}.")
+            print(f"This action is not allowed with the {target_alias}.")
             return
-        if not self._check_found_one_id_only(ids, target_alias):
+        if not self._check_found_one_id_only(found_ids, target_alias):
             return
 
-        id = ids[0]
-        data = None
-        if id in self.game_state.items:
-            data = self.game_state.items[id]
-        if id in self.game_state.equipment:
-            data = self.game_state.equipment[id]
-        elif id in self.game_state.transition_objects:
-            data = self.game_state.transition_objects[id]
+        target_id = found_ids[0]
+        data = self._get_data_by_id(target_id)
+
         if data is None or action_name not in data.actions:
-            print(f"Action \"{action_name}\" is not allowed with {target_alias}.")
+            print(f"Action \"{action_name}\" is not allowed with the {target_alias}.")
             return
 
         action = data.actions[action_name]
-        self.run_internal_command(action, id)
+        self.run_internal_command(action, target_id)
 
     def _trans_object_action(self, action_name, trans_obj_id):
         obj = self.game_state.transition_objects[trans_obj_id]
@@ -182,7 +177,7 @@ class CommandRunner:
 
     def _display_item(self, target_alias):
         if self._is_keyword(target_alias):
-            print(f"This action is not allowed with {target_alias}.")
+            print(f"This action is not allowed with the {target_alias}.")
             return
         ids = self._find_ids_by_alias(target_alias)
         if self._check_found_one_id_only(ids, target_alias):
@@ -241,29 +236,17 @@ class CommandRunner:
 
         print(f"{self._capitalize_first(target_item_alias)} has been added to your inventory.")
 
-    def _hit_creature(self, target_alias):
-        ids = self._find_ids_by_alias(target_alias)
+    def _attack_creature(self, creature_id):
+        creature_data: Creature = self._get_data_by_id(creature_id)
+        creature_alias = creature_data.alias[0]
 
-        if self._is_keyword(target_alias):
-            print(f"This action is not allowed with {target_alias}.")
+        if creature_id not in self.game_state.creatures:
+            print(f"You can't attack the {creature_alias}.")
             return
 
-        if not self._check_found_one_id_only(ids, target_alias):
-            return
+        self._hero_attack_turn(creature_data)
+        self._creature_attack_turn(creature_data)
 
-        target_id = ids[0]
-        if target_id not in self.game_state.creatures:
-            print(f"You can't attack the {target_alias}.")
-            return
-
-        target_creature = self.game_state.creatures[target_id]
-
-        self._hero_attack_turn(target_creature)
-        self._creature_attack_turn(target_creature)
-
-        hero = self.game_state.hero
-        if hero.health <= 0:
-            self._end_game(f"GAME OVER. You were killed by {target_creature.alias[0]}. Better luck next time.")
 
     def _hero_attack_turn(self, target_creature: Creature):
         hero = self.game_state.hero
@@ -280,21 +263,23 @@ class CommandRunner:
             f"You hit the {target_alias} for {damage} damage! "
             f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
-    def _creature_attack_turn(self, target_creature):
+    def _creature_attack_turn(self, creature_data):
         hero = self.game_state.hero
-        target_alias = target_creature.alias[0]
+        creature_alias = creature_data.alias[0]
 
-        if target_creature.health <= 0:
-            print(f"{self._capitalize_first(target_alias)} is DEAD!")
-            for loot in target_creature.drops:
+        if creature_data.health <= 0:
+            print(f"{self._capitalize_first(creature_alias)} is DEAD!")
+            for loot in creature_data.drops:
                 self.spawn_item(loot)
-        # ak ešte žije
         # todo: vsetky prisery v miestnosti su na rade s utokom ?
-        if target_creature.health > 0:
-            total_damage = self._count_total_hero_damage(target_creature)
+        if creature_data.health > 0:
+            total_damage = self._count_total_hero_damage(creature_data)
             hero.health -= total_damage
-            print(f"{self._capitalize_first(target_alias)} hit you for {total_damage} damage! "
+            print(f"{self._capitalize_first(creature_alias)} hit you for {total_damage} damage! "
                   f"You have {hero.health} HP left.")
+
+        if hero.health <= 0:
+            self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
 
     def _count_total_hero_damage(self, creature):
         hero = self.game_state.hero
@@ -434,7 +419,9 @@ class CommandRunner:
 
     def run_internal_command(self, commands, target_id=None):
         for c in commands:
-            if c == "command_spawn_item" and target_id:
+            if c == "command_attack_creature":
+                self._attack_creature(target_id)
+            elif c == "command_spawn_item" and target_id:
                 self.spawn_item(commands[c])
             elif c == "command_despawn_item":
                 self.despawn_item(commands[c])
