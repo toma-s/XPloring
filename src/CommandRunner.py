@@ -146,7 +146,6 @@ class CommandRunner:
                     foundIds.append(item_id)
         return foundIds
 
-
     def _find_item_ids_by_alias_in_room(self, room_id, target_alias) -> [str]:
         room: Room = self.game_state.rooms[room_id]
         item_ids_in_room = room.items
@@ -194,7 +193,6 @@ class CommandRunner:
             else:
                 self.display("You can't examine this.")
 
-
     def _move_to_direction(self, target):
         hero = self.game_state.hero
         rooms = self.game_state.rooms
@@ -215,7 +213,6 @@ class CommandRunner:
                 self.move_to(room_id)
         else:
             print(f"You are not allowed to go {target}.")
-
 
     def _item_take(self, target_item_alias):
         hero = self.game_state.hero

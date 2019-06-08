@@ -5,7 +5,6 @@ import io
 
 from CommandRunner import CommandRunner
 from GameState import GameState
-from InputHandler import InputHandler
 
 
 class TestInput(unittest.TestCase):
@@ -14,10 +13,6 @@ class TestInput(unittest.TestCase):
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
         self.cr = CommandRunner(self.game_state)
-
-        self.map_capital_alias = '../game_states/game_capital_alias.json'
-        self.game_state_capital_alias = GameState(self.map_capital_alias)
-        self.cr_capital_alias = CommandRunner(self.game_state_capital_alias)
 
     def tearDown(self) -> None:
         del self.game_state
@@ -46,7 +41,6 @@ class TestInput(unittest.TestCase):
                           "Hahahahahaha you fool :P\n"
         self.assertEqual(expected_output, result_output)
 
-
     def test_attach_dragon(self):
         self.cr.execute(["go", "west"])
 
@@ -56,33 +50,3 @@ class TestInput(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "Action \"attach\" is not allowed with \"dragon\".\n"
         self.assertEqual(expected_output, result_output)
-
-    def test_capital_alias_capital(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("take Helmet")
-            self.cr_capital_alias.execute(commands_to_run)
-        result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n"
-        self.assertEqual(expected_output, result_output)
-
-    def test_capital_alias_lower(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("take helmet")
-            self.cr_capital_alias.execute(commands_to_run)
-        result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n"
-        self.assertEqual(expected_output, result_output)
-
-    def test_capital_alias_lower_capital_two_times(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.cr_capital_alias.execute(["take", "helmet"])
-            self.cr_capital_alias.execute(["take", "Helmet"])
-        result_output = stdout.getvalue()
-        expected_output = "You grabbed the Helmet.\n" \
-                          "There is no such thing as \"Helmet\".\n"
-        self.assertEqual(expected_output, result_output)
-
-

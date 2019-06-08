@@ -1,22 +1,54 @@
 {
   "rooms": {
-    "#room1": {
-      "description": "Room #1",
+    "#room": {
+      "description": "Room",
       "directions": {
       },
       "items": [
-        "#helmet"
+        "#helmet",
+        "#envelope",
+        "#potion",
+        "#sword"
       ],
       "creatures": []
     }
   },
   "creatures": {},
   "items": {
-    "regular": {},
-    "consumable": {}
+    "regular": {
+      "#envelope": {
+        "description": "Regular Item Envelope",
+        "alias": [
+          "Envelope"
+        ],
+        "actions": {
+        }
+      }
+    },
+    "consumable": {
+      "#potion": {
+        "description": "Regular Item Potion",
+        "alias": [
+          "Potion"
+        ],
+        "actions": {
+        },
+        "value": 10
+      }
+    }
   },
   "equipment": {
-    "weapons": {},
+    "weapons": {
+      "#sword": {
+        "damage": 10,
+        "alias": [
+          "Sword"
+        ],
+        "slot": "hand",
+        "in_use": false,
+        "description": "Weapon Equipment Sword"
+      }
+    },
     "armour": {
       "#helmet": {
         "alias": [
@@ -26,14 +58,14 @@
         "resistance": 5,
         "durability": 10,
         "in_use": false,
-        "description": "Helmet Equipment #1"
+        "description": "Helmet Equipment"
       }
     }
   },
   "transition_objects": {},
   "hero": {
     "health": 100,
-    "location": "#room1",
+    "location": "#room",
     "right_hand": "none",
     "left_hand": "none",
     "head": "none",
