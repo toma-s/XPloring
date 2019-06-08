@@ -1,0 +1,97 @@
+{
+  "rooms": {
+    "#room": {
+      "description": "Room",
+      "directions": {
+      },
+      "items": [
+        "#helmet",
+        "#envelope",
+        "#potion",
+        "#sword"
+      ],
+      "creatures": [
+        "#creature"
+      ]
+    }
+  },
+  "creatures": {
+    "#creature": {
+      "alias": [
+        "Green Dragon"
+      ],
+      "health": 50,
+      "damage": 10,
+      "drops": [],
+      "description": "Green Dragon Creature"
+    }
+  },
+  "items": {
+    "regular": {
+      "#envelope": {
+        "description": "Regular Item Envelope",
+        "alias": [
+          "Envelope"
+        ],
+        "actions": {
+        }
+      }
+    },
+    "consumable": {
+      "#potion": {
+        "description": "Regular Item Potion",
+        "alias": [
+          "Potion"
+        ],
+        "actions": {
+        },
+        "value": 10
+      }
+    }
+  },
+  "equipment": {
+    "weapons": {
+      "#sword": {
+        "damage": 10,
+        "alias": [
+          "Sword"
+        ],
+        "slot": "hand",
+        "in_use": false,
+        "description": "Weapon Equipment Sword"
+      }
+    },
+    "armour": {
+      "#helmet": {
+        "alias": [
+          "Helmet"
+        ],
+        "slot": "head",
+        "resistance": 5,
+        "durability": 10,
+        "in_use": false,
+        "description": "Helmet Equipment"
+      }
+    }
+  },
+  "transition_objects": {},
+  "hero": {
+    "health": 100,
+    "location": "#room",
+    "right_hand": "none",
+    "left_hand": "none",
+    "head": "none",
+    "chest": "none",
+    "legs": "none",
+    "actions": {
+      "attack": "hit creature",
+      "examine": "display game_item",
+      "take": "item_take game_item",
+      "equip": "equip game_item",
+      "inventory": "display inventory",
+      "status": "display self",
+      "look": "display room"
+    },
+    "inventory": []
+  }
+}

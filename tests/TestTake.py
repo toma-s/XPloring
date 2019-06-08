@@ -4,6 +4,7 @@ import unittest
 
 from CommandRunner import CommandRunner
 from GameState import GameState
+from InputHandler import InputHandler
 
 
 class TestTake(unittest.TestCase):
@@ -17,12 +18,19 @@ class TestTake(unittest.TestCase):
         self.game_state2keys = GameState(self.map2keys)
         self.cr2keys = CommandRunner(self.game_state2keys)
 
+        self.map_capital_alias = '../game_states/game_capital_alias.json'
+        self.game_state_capital_alias = GameState(self.map_capital_alias)
+        self.cr_capital_alias = CommandRunner(self.game_state_capital_alias)
+
     def tearDown(self) -> None:
         del self.game_state
         del self.cr
 
         del self.game_state2keys
         del self.cr2keys
+
+        del self.game_state_capital_alias
+        del self.cr_capital_alias
 
     def test_take(self):
         stdout = io.StringIO()
@@ -140,4 +148,126 @@ class TestTake(unittest.TestCase):
             self.cr2keys.execute(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
+        self.assertEqual(expected_output, result_output)
+
+    # TESTS ON DIFFERENT CASES
+
+    # regular item
+
+    def test_alias_capital_regular_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take Envelope")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Envelope.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_regular_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take envelope")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Envelope.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_capital_regular_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "envelope"])
+            self.cr_capital_alias.execute(["take", "Envelope"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Envelope.\n" \
+                          "There is no such thing as \"Envelope\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    # consumable item
+
+    def test_alias_capital_consumable_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take Potion")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Potion.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_consumable_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take potion")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Potion.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_capital_consumable_item(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "potion"])
+            self.cr_capital_alias.execute(["take", "Potion"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Potion.\n" \
+                          "There is no such thing as \"Potion\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    # equipment weapon
+
+    def test_alias_capital_equipment_weapon(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take Sword")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Sword.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_equipment_weapon(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take sword")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Sword.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_capital_equipment_weapon(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "sword"])
+            self.cr_capital_alias.execute(["take", "Sword"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Sword.\n" \
+                          "There is no such thing as \"Sword\".\n"
+        self.assertEqual(expected_output, result_output)
+
+    # equipment armour
+
+    def test_alias_capital_equipment_armour(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take Helmet")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_equipment_armour(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            commands_to_run = InputHandler().parse_user_input("take helmet")
+            self.cr_capital_alias.execute(commands_to_run)
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_alias_lower_capital_equipment_armour(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.cr_capital_alias.execute(["take", "helmet"])
+            self.cr_capital_alias.execute(["take", "Helmet"])
+        result_output = stdout.getvalue()
+        expected_output = "You grabbed the Helmet.\n" \
+                          "There is no such thing as \"Helmet\".\n"
         self.assertEqual(expected_output, result_output)
