@@ -142,6 +142,7 @@
     }
   },
   "equipment": {
+
     "weapons": {
       "#equipment_steel_sword": {
         "damage": 30,
@@ -150,7 +151,9 @@
         ],
         "slot": "hand",
         "in_use": false,
-        "description": "Simple sword for fighting"
+        "description": "Simple sword for fighting",
+        "actions": {
+        }
       }
     },
     "armour": {
@@ -162,7 +165,9 @@
         ],
         "slot": "head",
         "in_use": false,
-        "description": "Good ol' steel helmet"
+        "description": "Good ol' steel helmet",
+        "actions": {
+        }
       },
       "#equipment_golden_chestplate": {
         "resistance": 3,
@@ -172,7 +177,9 @@
         ],
         "slot": "chest",
         "in_use": false,
-        "description": "Lannister's army chestplate"
+        "description": "Lannister's army chestplate",
+        "actions": {
+        }
       }
     }
   },

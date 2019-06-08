@@ -27,7 +27,9 @@
         "resistance": 5,
         "durability": 10,
         "in_use": false,
-        "description": "Helmet Equipment #1"
+        "description": "Helmet Equipment #1",
+        "actions": {
+        }
       },
       "#helmet2": {
         "alias": [
@@ -37,7 +39,9 @@
         "resistance": 5,
         "durability": 10,
         "in_use": false,
-        "description": "Helmet Equipment #2"
+        "description": "Helmet Equipment #2",
+        "actions": {
+        }
       }
     }
   },

@@ -92,7 +92,9 @@
         "slot": "hand",
         "in_use": false,
         "damage": 50,
-        "description": "Weapon Equipment"
+        "description": "Weapon Equipment",
+        "actions": {
+        }
       }
     },
     "armour": {
@@ -104,7 +106,9 @@
         "resistance": 5,
         "durability": 10,
         "in_use": false,
-        "description": "Armour Equipment"
+        "description": "Armour Equipment",
+        "actions": {
+        }
       }
     }
   },
