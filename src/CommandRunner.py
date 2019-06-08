@@ -15,12 +15,12 @@ class CommandRunner:
     def __init__(self, map: GameState):
         self.game_state = map
 
-    def single_command(self, command):
+    def single_command(self, action_name):
         hero = self.game_state.hero
         rooms = self.game_state.rooms
 
-        if command in hero.actions:
-            verb, noun = tuple(hero.actions[command].replace(",", '').split(" "))
+        if action_name in hero.actions:
+            verb, noun = tuple(hero.actions[action_name].replace(",", '').split(" "))
             if verb == "display":
                 if noun == "room":
                     self.display(rooms[hero.location])
@@ -47,9 +47,9 @@ class CommandRunner:
 
         self._handle_target_action(action_name, target_alias)
 
-    def _handle_hero_action(self, action, target_alias):
+    def _handle_hero_action(self, action_name, target_alias):
         hero = self.game_state.hero
-        verb, noun = tuple(hero.actions[action].replace(",", "").split(" "))
+        verb, noun = tuple(hero.actions[action_name].replace(",", "").split(" "))
 
         if verb == "move_to":
             if noun == "direction":
@@ -62,6 +62,8 @@ class CommandRunner:
         elif verb == "hit":
             if noun == "creature":
                 self._hit_creature(target_alias)
+        else:
+            print(f"You can't {action_name}")
 
 
 
@@ -363,10 +365,12 @@ class CommandRunner:
     def execute(self, commands):
         ignored = {"the", "on", "a", "an", "this", "that"}
         commands = [command for command in commands if command not in ignored]
+        action_name = commands[0]
+        target_alias = " ".join(commands[1:])
         if len(commands) == 1:
-            self.single_command(commands[0])
+            self.single_command(action_name)
         else:
-            self.double_command(commands[0], " ".join(commands[1:]))
+            self.double_command(action_name, target_alias)
 
     def discover_room(self):
         items = self.game_state.items
