@@ -45,7 +45,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "envelope"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the envelope.\n"
+        expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_consumable_item(self):
@@ -53,7 +53,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "potion"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the potion.\n"
+        expected_output = "Potion has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_equipment_weapon(self):
@@ -61,7 +61,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the sword.\n"
+        expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_equipment_armour(self):
@@ -69,7 +69,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "helmet"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the helmet.\n"
+        expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_direction(self):
@@ -77,7 +77,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "west"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"take\" is not associated with \"west\".\n"
+        expected_output = "Action \"take\" is not allowed with west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_creature(self):
@@ -86,7 +86,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "dragon"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"take\" is not associated with \"dragon\".\n"
+        expected_output = "Action \"take\" is not allowed with dragon.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_inventory(self):
@@ -94,7 +94,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"take\" is not associated with \"inventory\".\n"
+        expected_output = "Action \"take\" is not allowed with inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_item_in_inventory(self):
@@ -103,8 +103,8 @@ class TestTake(unittest.TestCase):
             self.cr.execute(["take", "sword"])
             self.cr.execute(["take", "sword"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the sword.\n" \
-                          "There is no such thing as \"sword\".\n"
+        expected_output = "Sword has been added to your inventory.\n" \
+                          "Sword is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_key(self):
@@ -121,7 +121,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "key"])
         result_output = stdout.getvalue()
-        expected_output = "You grabbed the key.\n"
+        expected_output = "Key has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_key_ambiguous(self):
@@ -138,7 +138,7 @@ class TestTake(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["take", "door"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"take\" is not associated with \"door\".\n"
+        expected_output = "Action \"take\" is not allowed with door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door_ambiguous(self):
