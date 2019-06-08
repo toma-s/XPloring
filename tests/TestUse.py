@@ -97,13 +97,13 @@ class TestUse(unittest.TestCase):
         self.cr.execute(["equip", "sword"])
         self.cr.execute(["equip", "chestplate"])
         self.cr.execute(["go", "west"])
-        self.cr.execute(["use", "dragon"])
-        self.cr.execute(["use", "dragon"])
+        self.cr.execute(["attack", "dragon"])
+        self.cr.execute(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["use", "key"])
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as key.\n"
+        expected_output = "Action \"use\" is not allowed with key.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_key_ambiguous(self):
