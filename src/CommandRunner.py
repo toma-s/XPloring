@@ -487,18 +487,22 @@ class CommandRunner:
             inventory.remove(item_id)
 
     def use_item(self, item_id):
-        item = self.game_state.items[item_id]
+        item_data = self.game_state.items[item_id]
         hero = self.game_state.hero
 
-        if item.value > 0 and hero.health == 100:
+        if not self._is_item_in_inventory(item_id):
+            print(f"You do not have it in your inventory.")
+            return
+
+        if item_data.value > 0 and hero.health == 100:
             print(f"You are fully healed, you don't need healing.")
             return
-        if item.value < 0:
-            will_heal = item.value
+        if item_data.value < 0:
+            will_heal = item_data.value
         else:
             need_heal = 100 - hero.health
-            if need_heal >= item.value:
-                will_heal = item.value
+            if need_heal >= item_data.value:
+                will_heal = item_data.value
             else:
                 will_heal = need_heal
 
@@ -506,7 +510,7 @@ class CommandRunner:
         sign = "+"
         if will_heal < 0:
             sign = ""
-        print(f"You used {item.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
+        print(f"You used {item_data.alias[0]}. {sign}{will_heal} health. Current health is {hero.health} health.")
         hero.inventory.remove(item_id)
 
     def heal(self):
