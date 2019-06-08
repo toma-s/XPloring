@@ -1,7 +1,7 @@
 import unittest
 
 from src.GameState import GameState
-from src.CommandExecutor import CommandExecutor
+from src.CommandHandler import CommandHandler
 
 
 class TestMoving(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestMoving(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandExecutor(self.game_state)
+        self.cr = CommandHandler(self.game_state)
 
     def tearDown(self) -> None:
         del self.game_state

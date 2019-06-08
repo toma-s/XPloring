@@ -10,12 +10,12 @@ from game_item.Weapon import Weapon
 from game_item.Armour import Armour
 
 
-class CommandExecutor:
+class CommandHandler:
 
     def __init__(self, game_state: GameState):
         self.game_state = game_state
         # TODO
-        # self.internal_command_runner = InternalCommandExecutor(map)
+        # self.internal_command_handler = InternalCommandHandler(map)
         # self.finder = Finder(map)
 
     def single_command(self, action_name):

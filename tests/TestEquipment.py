@@ -2,7 +2,7 @@ import contextlib
 import io
 import unittest
 
-from CommandExecutor import CommandExecutor
+from CommandHandler import CommandHandler
 from GameState import GameState
 
 
@@ -11,11 +11,11 @@ class TestEquipment(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandExecutor(self.game_state)
+        self.cr = CommandHandler(self.game_state)
 
         self.map_two_helmets = '../game_states/game_two_helmets.json'
         self.game_two_helmets = GameState(self.map_two_helmets)
-        self.cr_two_helmets = CommandExecutor(self.game_two_helmets)
+        self.cr_two_helmets = CommandHandler(self.game_two_helmets)
 
     def tearDown(self) -> None:
         del self.game_state

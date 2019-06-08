@@ -1,7 +1,7 @@
 from GameStateSaver import GameStateSaver
 from src.GameState import GameState
 from src.InputHandler import InputHandler
-from src.CommandExecutor import CommandExecutor
+from src.CommandHandler import CommandHandler
 from src.GUI import GUI
 import re
 import sys
@@ -20,7 +20,7 @@ class Game:
         self.GUI = GUI(self)
         self.game_state = map
         self.input_handler = InputHandler()
-        self.command_runner = CommandExecutor(self.game_state)
+        self.command_runner = CommandHandler(self.game_state)
 
     def run_console(self):
         room = self.game_state.rooms[self.game_state.hero.location]
