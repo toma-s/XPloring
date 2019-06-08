@@ -76,7 +76,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "west"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the west.\n"
+        expected_output = "This action is not allowed with west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_creature(self):
@@ -93,7 +93,7 @@ class TestEquip(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["equip", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "You can't equip the inventory.\n"
+        expected_output = "This action is not allowed with inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_item_not_in_inventory(self):

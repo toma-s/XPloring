@@ -63,8 +63,12 @@ class CommandRunner:
 
     def _handle_target_action(self, action_name, target_alias):
         ids = self._find_ids_by_alias(target_alias)
+        if self._is_keyword(target_alias):
+            print(f"This action is not allowed with {target_alias}.")
+            return
         if not self._check_found_one_id_only(ids, target_alias):
             return
+
         id = ids[0]
         data = None
         if id in self.game_state.items:
@@ -177,6 +181,9 @@ class CommandRunner:
             return None
 
     def _display_item(self, target_alias):
+        if self._is_keyword(target_alias):
+            print(f"This action is not allowed with {target_alias}.")
+            return
         ids = self._find_ids_by_alias(target_alias)
         if self._check_found_one_id_only(ids, target_alias):
             id = ids[0]
@@ -236,6 +243,10 @@ class CommandRunner:
 
     def _hit_creature(self, target_alias):
         ids = self._find_ids_by_alias(target_alias)
+
+        if self._is_keyword(target_alias):
+            print(f"This action is not allowed with {target_alias}.")
+            return
 
         if not self._check_found_one_id_only(ids, target_alias):
             return
@@ -567,3 +578,10 @@ class CommandRunner:
     @staticmethod
     def _capitalize_first(input: str):
         return input[0].capitalize() + input[1:]
+
+    @staticmethod
+    def _is_keyword(target_alias):
+        if target_alias == "inventory":
+            return True
+        if target_alias in commands_directions:
+            return True

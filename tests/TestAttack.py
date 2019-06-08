@@ -77,7 +77,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "west"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"attack\" is not allowed with west.\n"
+        expected_output = "This action is not allowed with west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_creature(self):
@@ -95,7 +95,7 @@ class TestAttack(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.cr.execute(["attack", "inventory"])
         result_output = stdout.getvalue()
-        expected_output = "Action \"attack\" is not allowed with inventory.\n"
+        expected_output = "This action is not allowed with inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_key(self):
