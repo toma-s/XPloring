@@ -195,7 +195,6 @@
       "go": "move_to direction",
       "attack": "hit creature",
       "inventory": "display inventory",
-      "heal": "heal self",
       "status": "display self"
     },
     "inventory": []

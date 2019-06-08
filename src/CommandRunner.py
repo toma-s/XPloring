@@ -31,10 +31,6 @@ class CommandRunner:
                 if noun == "self":
                     self.display("status")
                     return
-            elif verb == "heal":
-                if noun == "self":
-                    self.heal()
-                    return
 
         print("I don't understand. Try again.")
 
@@ -64,8 +60,6 @@ class CommandRunner:
                 self._hit_creature(target_alias)
         else:
             print(f"You can't {action_name}")
-
-
 
     def _handle_target_action(self, action_name, target_alias):
         ids = self._find_ids_by_alias(target_alias)
@@ -513,16 +507,6 @@ class CommandRunner:
         print(f"You have consumed {item_data.alias[0]}. "
               f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
         hero.inventory.remove(item_id)
-
-    def heal(self):
-        hero = self.game_state.hero
-
-        for item in hero.inventory:
-            if item in self.game_state.items and isinstance(self.game_state.items[item], Consumable):
-                if self.game_state.items[item].value > 0:
-                    self.use_item(item)
-                    return
-        print(f"You don't have anything you could use for healing in your inventory")
 
     def show_status(self):
         hero = self.game_state.hero
