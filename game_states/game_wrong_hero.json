@@ -1,6 +1,7 @@
 {
   "rooms": {
     "#room_dummy": {
+      "alias": "room",
       "description": "Dummy room.",
       "directions": {
       },

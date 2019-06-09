@@ -1,6 +1,7 @@
 {
   "rooms": {
     "#room1": {
+      "alias": "room1",
       "description": "Room #1",
       "directions": {
         "west": {
@@ -15,6 +16,7 @@
       ]
     },
     "#room2": {
+      "alias": "room2",
       "description": "Room #2",
       "directions": {
         "east": {

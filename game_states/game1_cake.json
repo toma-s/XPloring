@@ -1,7 +1,8 @@
 {
   "rooms": {
     "#room_entrance": {
-      "description": "Entrance room.",
+      "alias": "entrance",
+      "description": "Here your journey to freedom begins.",
       "directions": {
         "north": {
           "room_id": "#room_crossroad"
@@ -14,6 +15,7 @@
       "creatures": []
     },
     "#room_crossroad": {
+      "alias": "crossroad",
       "description": "A room with 3 doors",
       "directions": {
         "west": {
@@ -33,6 +35,7 @@
       ]
     },
     "#room_armory": {
+      "alias": "armory",
       "description": "Armory. Unfortunately, it was pillaged some time ago by angry peasants.",
       "directions": {
         "east": {
@@ -45,6 +48,7 @@
       ]
     },
     "#room_kitchen": {
+      "alias": "kitchen",
       "description": "Kitchen.",
       "directions": {
         "west": {
@@ -63,6 +67,7 @@
       ]
     },
     "#room_exit": {
+      "alias": "exit",
       "description": "The End",
       "directions": {},
       "items": [],

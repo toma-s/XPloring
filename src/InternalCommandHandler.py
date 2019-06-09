@@ -316,6 +316,8 @@ class InternalCommandHandler:
         creatures = self.game_state.creatures
         room = self.game_state.rooms[self.game_state.hero.location]
 
+        print(f"{self._capitalize_first(room.alias)} room. {room.description}")
+
         # items in room
         for i in room.items:
             if i in items:
@@ -325,7 +327,7 @@ class InternalCommandHandler:
 
         # entities in room
         if not room.creatures:
-            print("There's nothing scary here.")
+            print("There are no enemies around.")
         else:
             for c in room.creatures:
                 print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")

@@ -1,6 +1,7 @@
 class Room:
 
     def __init__(self, data: dict):
+        self.alias = data['alias']
         self.description = data['description']
         self.directions = data['directions']
         self.items = data['items']

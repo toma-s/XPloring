@@ -36,7 +36,7 @@ class TestInventory(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("look")
         result_output = stdout.getvalue()
-        expected_output = "Entrance room.\n" \
+        expected_output = "Entrance room. Here your journey to freedom begins.\n" \
                           "There is a key. This key opens armory door.\n" \
                           "There is a key. This key opens kitchen door.\n" \
                           "There are no enemies around.\n" \
@@ -49,7 +49,7 @@ class TestInventory(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("look")
         result_output = stdout.getvalue()
-        expected_output = "Crossroad room.\n" \
+        expected_output = "Crossroad room. A room with 3 doors\n" \
                           "There are no enemies around.\n" \
                           "There is door to the WEST.\n" \
                           "There is door to the EAST.\n" \
