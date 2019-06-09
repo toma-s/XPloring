@@ -186,11 +186,8 @@ class InternalCommandHandler:
 
         setattr(hero, equipment_data.slot, None)
 
-        equipment_data.in_use = False
-
-        # hero.inventory.remove(equipment_id)
         self._remove_item_from_inventory(equipment_id)
-        print(f"Your {self._capitalize_first(equipment_data.alias[0])} has broke!")
+        print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
 
     def spawn_item(self, item_id):
         items = self.game_state.items
@@ -278,7 +275,6 @@ class InternalCommandHandler:
         setattr(hero, equipment_data.slot, item_id)
 
         print(f"Item equipped")
-        equipment_data.in_use = True
 
     def _unequip_item(self, item_id):
         if not self._is_item_equipped(item_id):
@@ -293,7 +289,6 @@ class InternalCommandHandler:
             return True
 
         print(f"Item unequipped.")
-        equipment_data.in_use = False
 
     def _is_item_equipped(self, item_id: str) -> bool:
         if item_id not in self.game_state.equipment:

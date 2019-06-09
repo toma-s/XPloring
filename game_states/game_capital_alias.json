@@ -55,7 +55,7 @@
           "Sword"
         ],
         "slot": "right_hand",
-        "in_use": false,
+
         "description": "Weapon Equipment Sword",
         "actions": {}
       }
@@ -68,7 +68,7 @@
         "slot": "head",
         "resistance": 5,
         "durability": 10,
-        "in_use": false,
+
         "description": "Helmet Equipment",
         "actions": {}
       }

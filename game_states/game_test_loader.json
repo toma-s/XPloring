@@ -90,7 +90,7 @@
           "weapon equipment"
         ],
         "slot": "right_hand",
-        "in_use": false,
+
         "damage": 50,
         "description": "Weapon Equipment",
         "actions": {}
@@ -104,7 +104,7 @@
         "slot": "head",
         "resistance": 5,
         "durability": 10,
-        "in_use": false,
+
         "description": "Armour Equipment",
         "actions": {}
       }

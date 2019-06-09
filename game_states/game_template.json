@@ -90,7 +90,7 @@
           ""
         ],
         "slot": "",
-        "in_use": false,
+
         "damage": 0,
         "description": ""
       }
@@ -103,7 +103,7 @@
         "slot": "",
         "resistance": 0,
         "durability": 0,
-        "in_use": false,
+
         "description": ""
       }
     }

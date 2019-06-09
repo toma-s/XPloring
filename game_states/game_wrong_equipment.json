@@ -26,9 +26,7 @@
           "dummy armour"
         ],
         "slot": "head",
-        "resistance": 1,
         "durability": 10,
-        "in_use_BUG": false,
         "description": "Dummy armour",
         "actions": {}
       }
