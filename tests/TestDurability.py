@@ -55,4 +55,4 @@ class TestInventory(unittest.TestCase):
         self.ih.handle_user_input("hit dragon")
         self.ih.handle_user_input("hit dragon")
         helmet_id = self.game_state.hero.head
-        self.assertEqual("none", helmet_id)
+        self.assertEqual(None, helmet_id)
