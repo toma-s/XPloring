@@ -94,7 +94,7 @@ class Game:
         print("Basic commands:")
         print("Type LOOK for more information about the environment.")
         print("Type INVENTORY to check out the collected items.")
-        print("Type EQUIP to arm yourself an item from the inventory.")
+        print("Type EQUIP <item> to arm yourself an item from the inventory.")
         print("Type STATUS to show your HP, Attack Power and equipment.")
         print("Type EXAMINE <item> to learn more about an item.")
         print("Type SAVE to save current game.")
