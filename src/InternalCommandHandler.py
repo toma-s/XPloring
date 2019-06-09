@@ -274,33 +274,16 @@ class InternalCommandHandler:
         if item_id not in hero.inventory:
             print(f"You don't have that in your inventory.")
             return
-
-        item_data = self.game_state.equipment[item_id]
-
-        if hero.right_hand == item_id or hero.left_hand == item_id or hero.head == item_id \
-                or hero.chest == item_id or hero.legs == item_id:
+        if self._is_item_equipped(item_id):
             print(f"It is already equipped.")
             return
 
-        if item_data.slot == "right_hand":
-            if hero.right_hand is not None:
-                equipment[hero.right_hand].in_use = False
-            hero.right_hand = item_id
-        elif item_data.slot == "head":
-            if hero.head is not None:
-                equipment[hero.head].in_use = False
-            hero.head = item_id
-        elif item_data.slot == "chest":
-            if hero.chest is not None:
-                equipment[hero.chest].in_use = False
-            hero.chest = item_id
-        elif item_data.slot == "legs":
-            if hero.legs is not None:
-                equipment[hero.legs].in_use = False
-            hero.legs = item_id
+        equipment_data: Equipment = self.game_state.equipment[item_id]
+
+        setattr(hero, equipment_data.slot, item_id)
 
         print(f"Item equipped")
-        item_data.in_use = True
+        equipment_data.in_use = True
 
     def _unequip_item(self, item_id):
         if not self._is_item_equipped(item_id):
