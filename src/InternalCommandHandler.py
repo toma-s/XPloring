@@ -187,9 +187,10 @@ class InternalCommandHandler:
         setattr(hero, equipment_data.slot, None)
 
         equipment_data.in_use = False
-        hero.inventory.remove(equipment_id)
-        print(f"Ouch! {equipment_data.alias[0]} has been destroyed!")
-        print(f"You've dropped {equipment_data.alias[0]}")
+
+        # hero.inventory.remove(equipment_id)
+        self._remove_item_from_inventory(equipment_id)
+        print(f"Your {self._capitalize_first(equipment_data.alias[0])} has broke!")
 
     def spawn_item(self, item_id):
         items = self.game_state.items
