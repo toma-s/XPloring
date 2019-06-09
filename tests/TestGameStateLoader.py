@@ -94,7 +94,7 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_add_item_to_inventory": None
                 },
                 "drop": {
-                    "": None
+                    "command_drop_item": None
                 }
             }, item1.actions
         )
@@ -116,7 +116,7 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_add_item_to_inventory": None
                 },
                 "drop": {
-                    "": None
+                    "command_drop_item": None
                 }
             }, item2.actions
         )

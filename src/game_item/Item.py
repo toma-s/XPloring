@@ -9,7 +9,7 @@ class Item:
             "command_add_item_to_inventory": None
         },
         "drop": {
-            "": None
+            "command_drop_item": None
         }
     }
 

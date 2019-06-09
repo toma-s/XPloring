@@ -60,6 +60,7 @@ class InternalCommandHandler:
                     return
 
             elif command == "command_use_item":
+                # TODO refactor - use_item
                 self.use_item(target_id)
 
             elif command == "command_equip":
@@ -67,6 +68,9 @@ class InternalCommandHandler:
 
             elif command == "command_unequip":
                 self._unequip_item(target_id)
+
+            elif command == "command_drop_item":
+                self._drop_item(target_id)
 
             elif command == "command_show_room":
                 self._show_hero_room()
@@ -299,6 +303,10 @@ class InternalCommandHandler:
         if item_in_slot == item_id:
             return True
         return False
+
+    def _drop_item(self, item_id):
+        # todo
+        ...
 
     def _show_hero_room(self):
         items = self.game_state.items
