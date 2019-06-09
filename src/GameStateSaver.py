@@ -109,7 +109,7 @@ class GameStateSaver:
         hero = dict()
         hero_data = self.game_state.hero
         hero["health"] = hero_data.health
-        hero["damage"] = hero_data.damage
+        hero["base_damage"] = hero_data.base_damage
         hero["location"] = hero_data.location
         hero["right_hand"] = hero_data.right_hand
         hero["left_hand"] = hero_data.left_hand

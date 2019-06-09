@@ -84,7 +84,7 @@ class TestCombat(unittest.TestCase):
         self.ih.execute_commands(["go", "west"])
         for i in range(3):
             self.ih.execute_commands(["attack", "dragon"])
-        self.assertTrue(self.game_state.equipment["#equipment_steel_helmet"].durability <= 0)
+        self.assertTrue(self.game_state.equipment["#equipment_gladiator_helmet"].durability <= 0)
 
     def testKillCreatureChestplateDurability(self):
         self.ih.execute_commands(["take", "helmet"])
@@ -94,7 +94,7 @@ class TestCombat(unittest.TestCase):
         self.ih.execute_commands(["go", "west"])
         for i in range(4):
             self.ih.execute_commands(["attack", "dragon"])
-        self.assertTrue(self.game_state.equipment["#equipment_golden_chestplate"].durability <= 0)
+        self.assertTrue(self.game_state.equipment["#equipment_steel_chestplate"].durability <= 0)
 
     def testFullArmorCreatureKillGetKey(self):
         self.ih.execute_commands(["take", "helmet"])
@@ -103,9 +103,9 @@ class TestCombat(unittest.TestCase):
         self.ih.execute_commands(["equip", "chestplate"])
         self.ih.execute_commands(["take", "sword"])
         self.ih.execute_commands(["equip", "sword"])
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
-        self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
-        self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
+        self.assertEqual("#equipment_silver_sword", self.game_state.hero.right_hand)
+        self.assertEqual("#equipment_steel_chestplate", self.game_state.hero.chest)
+        self.assertEqual("#equipment_gladiator_helmet", self.game_state.hero.head)
         self.ih.execute_commands(["go", "west"])
         for i in range(2):
             self.ih.execute_commands(["attack", "dragon"])
@@ -121,9 +121,9 @@ class TestCombat(unittest.TestCase):
         self.ih.execute_commands(["equip", "chestplate"])
         self.ih.execute_commands(["take", "sword"])
         self.ih.execute_commands(["equip", "sword"])
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
-        self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
-        self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
+        self.assertEqual("#equipment_silver_sword", self.game_state.hero.right_hand)
+        self.assertEqual("#equipment_steel_chestplate", self.game_state.hero.chest)
+        self.assertEqual("#equipment_gladiator_helmet", self.game_state.hero.head)
         self.ih.execute_commands(["go", "west"])
         for i in range(2):
             self.ih.execute_commands(["attack", "dragon"])

@@ -30,7 +30,6 @@ class InputHandler:
         return parsed_words
 
     def execute_commands(self, commands: [str]) -> None:
-
         action_name = commands[0]
         target_alias = " ".join(commands[1:])
         if len(commands) == 1:
@@ -45,8 +44,6 @@ class InputHandler:
             self.internal_command_handler.handle_internal_command(action_data)
         else:
             print(f"I don't understand that command.")
-
-
 
     def double_command(self, action_name: str, target_alias: str) -> None:
         hero = self.game_state.hero

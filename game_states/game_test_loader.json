@@ -89,7 +89,7 @@
         "alias": [
           "weapon equipment"
         ],
-        "slot": "hand",
+        "slot": "right_hand",
         "in_use": false,
         "damage": 50,
         "description": "Weapon Equipment",
@@ -114,13 +114,13 @@
   },
   "hero": {
     "health": 100,
-    "damage": 1,
+    "base_damage": 1,
     "location": "#room1",
     "right_hand": "#weapon1",
-    "left_hand": "none",
+    "left_hand": null,
     "head": "#armour1",
-    "chest": "none",
-    "legs": "none",
+    "chest": null,
+    "legs": null,
     "actions": {},
     "inventory": [
       "#item1"

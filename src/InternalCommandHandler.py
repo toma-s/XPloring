@@ -65,6 +65,9 @@ class InternalCommandHandler:
             elif command == "command_equip":
                 self._equip_item(target_id)
 
+            elif command == "command_unequip":
+                self._unequip_item(target_id)
+
             elif command == "command_show_room":
                 self._show_hero_room()
 
@@ -135,8 +138,8 @@ class InternalCommandHandler:
         if target_creature.health <= 0:
             print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
-        damage = hero.damage
-        if hero.right_hand != "none":
+        damage = hero.base_damage
+        if hero.right_hand is not None:
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage
         print(f"You hit the {target_alias} for {damage} damage! "
@@ -166,7 +169,7 @@ class InternalCommandHandler:
         total_armor_resist = 0
         # todo: shield do left hand?
         for armor in hero.head, hero.chest, hero.legs:
-            if armor != "none":
+            if armor is not None:
                 self.game_state.equipment[armor].durability -= creature.damage // 2
                 if self.game_state.equipment[armor].durability <= 0:
                     self._drop_item(armor)
@@ -181,13 +184,13 @@ class InternalCommandHandler:
         item = equipment[target]
 
         if item.slot == "hand":
-            hero.right_hand = "none"
+            hero.right_hand = None
         elif item.slot == "head":
-            hero.head = "none"
+            hero.head = None
         elif item.slot == "chest":
-            hero.chest = "none"
+            hero.chest = None
         elif item.slot == "legs":
-            hero.legs = "none"
+            hero.legs = None
 
         item.in_use = False
         hero.inventory.remove(target)
@@ -271,33 +274,41 @@ class InternalCommandHandler:
         if item_id not in hero.inventory:
             print(f"You don't have that in your inventory.")
             return
-
-        item_data = self.game_state.equipment[item_id]
-
-        if hero.right_hand == item_id or hero.left_hand == item_id or hero.head == item_id \
-                or hero.chest == item_id or hero.legs == item_id:
+        if self._is_item_equipped(item_id):
             print(f"It is already equipped.")
             return
 
-        if item_data.slot == "hand":
-            if hero.right_hand != "none":
-                equipment[hero.right_hand].in_use = False
-            hero.right_hand = item_id
-        elif item_data.slot == "head":
-            if hero.head != "none":
-                equipment[hero.head].in_use = False
-            hero.head = item_id
-        elif item_data.slot == "chest":
-            if hero.chest != "none":
-                equipment[hero.chest].in_use = False
-            hero.chest = item_id
-        elif item_data.slot == "legs":
-            if hero.legs != "none":
-                equipment[hero.legs].in_use = False
-            hero.legs = item_id
+        equipment_data: Equipment = self.game_state.equipment[item_id]
+
+        setattr(hero, equipment_data.slot, item_id)
 
         print(f"Item equipped")
-        item_data.in_use = True
+        equipment_data.in_use = True
+
+    def _unequip_item(self, item_id):
+        if not self._is_item_equipped(item_id):
+            print(f"It is not equipped.")
+            return
+        hero = self.game_state.hero
+        equipment_data: Equipment = self.game_state.equipment[item_id]
+        setattr(hero, equipment_data.slot, None)
+
+        item_in_slot = getattr(hero, equipment_data.slot)
+        if item_in_slot == item_id:
+            return True
+
+        print(f"Item unequipped.")
+        equipment_data.in_use = False
+
+    def _is_item_equipped(self, item_id: str) -> bool:
+        if item_id not in self.game_state.equipment:
+            return False
+        data: Equipment = self.finder.get_data_by_id(item_id)
+        hero = self.game_state.hero
+        item_in_slot = getattr(hero, data.slot)
+        if item_in_slot == item_id:
+            return True
+        return False
 
     def _show_hero_room(self):
         items = self.game_state.items
@@ -329,7 +340,7 @@ class InternalCommandHandler:
             hero: Hero = self.game_state.hero
             weapon_id = getattr(hero, slot_name)
             info = "none"
-            if weapon_id != "none":
+            if weapon_id is not None:
                 weapon_data = self.game_state.equipment[weapon_id]
                 info = weapon_data.description
                 info += f" {weapon_data.damage} ATK"
@@ -340,7 +351,7 @@ class InternalCommandHandler:
             hero: Hero = self.game_state.hero
             armour_id = getattr(hero, slot_name)
             info = "none"
-            if armour_id != "none":
+            if armour_id is not None:
                 armour_data = self.game_state.equipment[armour_id]
                 info = armour_data.description
                 info += f" {armour_data.resistance} DEF"
@@ -351,7 +362,7 @@ class InternalCommandHandler:
         hero: Hero = self.game_state.hero
         print(f"----- HERO STATUS -----")
         print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero.damage} ATK")
+        print(f"Attack Power: {hero.base_damage} ATK")
         _print_weapon("right_hand")
         _print_weapon("left_hand")
         _print_armour("head")

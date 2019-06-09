@@ -31,7 +31,7 @@ class TestItems(unittest.TestCase):
     def test_internal_take_item(self):
         self.ih.execute_commands(["take", "sword"])
         room_items = self.game_state.rooms[self.game_state.hero.location].items
-        self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it still in the room ???")
+        self.assertNotIn("#equipment_silver_sword", room_items, "You took the sword, why is it still in the room ???")
 
     def test_go_throught_locked_door(self):
         self.ih.execute_commands(["go", "west"])
@@ -42,7 +42,7 @@ class TestItems(unittest.TestCase):
     def test_take_sword(self):
         self.ih.execute_commands(["take", "sword"])
         self.assertEqual(1, len(self.game_state.hero.inventory))
-        self.assertIn("#equipment_steel_sword", self.game_state.hero.inventory)
+        self.assertIn("#equipment_silver_sword", self.game_state.hero.inventory)
 
     def test_open_nonexisting_item(self):
         stdout = io.StringIO()

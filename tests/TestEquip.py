@@ -112,7 +112,7 @@ class TestEquip(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual("none", self.game_state.hero.right_hand)
+        self.assertEqual(None, self.game_state.hero.right_hand)
 
     def test_equip_key(self):
         self.ih.execute_commands(["take", "helmet"])
