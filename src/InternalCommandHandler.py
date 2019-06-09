@@ -135,7 +135,7 @@ class InternalCommandHandler:
         if target_creature.health <= 0:
             print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
-        damage = hero.damage
+        damage = hero.base_damage
         if hero.right_hand != "none":
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage

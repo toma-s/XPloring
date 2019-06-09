@@ -77,7 +77,7 @@
   "transition_objects": {},
   "hero": {
     "health": 100,
-    "damage": 1,
+    "base_damage": 1,
     "location": "#room",
     "right_hand": "none",
     "left_hand": "none",

@@ -183,7 +183,7 @@
   },
   "hero": {
     "health": 100,
-    "damage": 1,
+    "base_damage": 1,
     "location": "#room_entrance",
     "right_hand": "none",
     "left_hand": "none",
