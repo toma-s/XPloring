@@ -189,12 +189,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-      "look": "display room",
-      "go": "move_to direction",
-      "inventory": "display inventory",
-      "status": "display self"
-    },
+    "actions": {},
     "inventory": []
   }
 }

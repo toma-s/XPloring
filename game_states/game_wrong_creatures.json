@@ -44,8 +44,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-    },
+    "actions": {},
     "inventory": []
   }
 }

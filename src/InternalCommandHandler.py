@@ -1,10 +1,13 @@
 from Finder import Finder
 from GameState import GameState
+from game_item.Armour import Armour
 from game_item.Creature import Creature
 from game_item.Equipment import Equipment
+from game_item.Hero import Hero
 from game_item.Item import Item
 from game_item.Room import Room
 from game_item.TransitionObject import TransitionObject
+from game_item.Weapon import Weapon
 
 
 class InternalCommandHandler:
@@ -14,57 +17,97 @@ class InternalCommandHandler:
         self.finder = Finder(game_state)
 
     def handle_internal_command(self, commands, target_id=None):
-        for c in commands:
-            if c == "command_show_message":
-                message = commands[c]
+        for command in commands:
+            if command == "command_move_direction":
+                self._move_to_direction(target_id)
+
+            elif command == "command_show_message":
+                message = commands[command]
                 print(f"{message}")
 
-            elif c == "command_show_description":
+            elif command == "command_show_description":
                 data = self.finder.get_data_by_id(target_id)
                 print(f"{data.description}")
 
-            elif c == "command_set_description":
-                new_description: str = commands[c]
+            elif command == "command_set_description":
+                new_description: str = commands[command]
                 self._set_description(target_id, new_description)
 
-            elif c == "command_set_unlocked":
-                unlocked: bool = commands[c]
+            elif command == "command_set_unlocked":
+                unlocked: bool = commands[command]
                 self._set_unlocked(target_id, unlocked)
 
-            elif c == "command_attack_creature":
+            elif command == "command_attack_creature":
                 self._attack_creature(target_id)
 
-            elif c == "command_spawn_item":
-                item_id = commands[c]
+            elif command == "command_spawn_item":
+                item_id = commands[command]
                 self.spawn_item(item_id)
 
-            elif c == "command_despawn_item":
-                item_id = commands[c]
+            elif command == "command_despawn_item":
+                item_id = commands[command]
                 self._despawn_item(item_id)
 
-            elif c == "command_add_item_to_inventory":
+            elif command == "command_add_item_to_inventory":
                 self._item_take(target_id)
 
-            elif c == "command_remove_item_from_inventory":
-                self._remove_item_from_inventory(commands[c])
+            elif command == "command_remove_item_from_inventory":
+                self._remove_item_from_inventory(commands[command])
 
-            elif c == "command_required_item":
-                item_id = commands[c]
+            elif command == "command_required_item":
+                item_id = commands[command]
                 if not self._required_item_in_inventory(item_id):
                     return
 
-            elif c == "command_use_item":
+            elif command == "command_use_item":
                 self.use_item(target_id)
 
-            elif c == "command_equip":
+            elif command == "command_equip":
                 self._equip_item(target_id)
 
-            elif c == "command_good_end":
-                end_massage = commands[c]
+            elif command == "command_show_room":
+                self._show_hero_room()
+
+            elif command == "command_show_status":
+                self._show_hero_status()
+
+            elif command == "command_show_inventory":
+                self._show_hero_inventory()
+
+            elif command == "command_good_end":
+                end_massage = commands[command]
                 self._end_game(end_massage)
+
             else:
-                print(f"Unknown internal command {c}")
-                return
+                print("I don't understand that command.")
+
+    def _move_to_direction(self, direction_name):
+        hero = self.game_state.hero
+        rooms = self.game_state.rooms
+        transition_objects = self.game_state.transition_objects
+
+        if direction_name in rooms[hero.location].directions:
+            room_id = rooms[hero.location].directions[direction_name]["room_id"]
+
+            direction_data = rooms[hero.location].directions[direction_name]
+
+            if "trans_obj_id" in direction_data:
+                trans_obj = transition_objects[direction_data["trans_obj_id"]]
+                if not trans_obj.unlocked:
+                    print(trans_obj.description)
+                else:
+                    self.move_to(room_id)
+            else:
+                self.move_to(room_id)
+        else:
+            print(f"You are not allowed to go {direction_name}.")
+
+    def move_to(self, room_id):
+        self.game_state.hero.location = room_id
+        rooms = self.game_state.rooms
+        print(f"{rooms[room_id].description}")
+        if rooms[room_id].auto_commands is not None:
+            self.handle_internal_command(rooms[room_id].auto_commands, room_id)
 
     def _set_description(self, target_id, description_message: str):
         target_data = self.finder.get_data_by_id(target_id)
@@ -255,6 +298,83 @@ class InternalCommandHandler:
 
         print(f"Item equipped")
         item_data.in_use = True
+
+    def _show_hero_room(self):
+        items = self.game_state.items
+        equipment = self.game_state.equipment
+        creatures = self.game_state.creatures
+        room = self.game_state.rooms[self.game_state.hero.location]
+
+        # items in room
+        for i in room.items:
+            if i in items:
+                print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
+            elif i in equipment:
+                print(f"There is a {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
+
+        # entities in room
+        if not room.creatures:
+            print("There's nothing scary here.")
+        else:
+            for c in room.creatures:
+                print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")
+
+        # direction from room
+        for d in room.directions:
+            print(f"You can GO {d.upper()}.")
+
+    def _show_hero_status(self):
+
+        def _print_weapon(slot_name: str):
+            hero: Hero = self.game_state.hero
+            weapon_id = getattr(hero, slot_name)
+            info = "none"
+            if weapon_id != "none":
+                weapon_data = self.game_state.equipment[weapon_id]
+                info = weapon_data.description
+                info += f" {weapon_data.damage} ATK"
+            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
+            print(f"{slot_print}: {info}")
+
+        def _print_armour(slot_name: str):
+            hero: Hero = self.game_state.hero
+            armour_id = getattr(hero, slot_name)
+            info = "none"
+            if armour_id != "none":
+                armour_data = self.game_state.equipment[armour_id]
+                info = armour_data.description
+                info += f" {armour_data.resistance} DEF"
+                info += f" {armour_data.durability} Durability"
+            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
+            print(f"{slot_print}: {info}")
+
+        hero: Hero = self.game_state.hero
+        print(f"----- HERO STATUS -----")
+        print(f"Health: {hero.health} HP")
+        print(f"Attack Power: {hero.damage} ATK")
+        _print_weapon("right_hand")
+        _print_weapon("left_hand")
+        _print_armour("head")
+        _print_armour("chest")
+        _print_armour("legs")
+        print(f"-----------------------")
+
+    def _show_hero_inventory(self):
+        hero = self.game_state.hero
+        if len(hero.inventory) == 0:
+            print(f"Your inventory is empty.")
+            return
+
+        for inv_item in hero.inventory:
+            if inv_item in self.game_state.items:
+                it = self.game_state.items[inv_item]
+            else:
+                it = self.game_state.equipment[inv_item]
+            res = f"{it.alias[0]} - {it.description}"
+            if isinstance(it, Armour) or isinstance(it, Weapon):
+                if it.in_use:
+                    res += " [EQUIPPED]"
+            print(res)
 
     def _end_game(self, end_message):
         print(end_message)

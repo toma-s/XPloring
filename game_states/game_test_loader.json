@@ -93,8 +93,7 @@
         "in_use": false,
         "damage": 50,
         "description": "Weapon Equipment",
-        "actions": {
-        }
+        "actions": {}
       }
     },
     "armour": {
@@ -107,8 +106,7 @@
         "durability": 10,
         "in_use": false,
         "description": "Armour Equipment",
-        "actions": {
-        }
+        "actions": {}
       }
     }
   },
@@ -123,8 +121,7 @@
     "head": "#armour1",
     "chest": "none",
     "legs": "none",
-    "actions": {
-    },
+    "actions": {},
     "inventory": [
       "#item1"
     ]

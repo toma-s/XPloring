@@ -28,8 +28,7 @@
         "durability": 10,
         "in_use": false,
         "description": "Helmet Equipment #1",
-        "actions": {
-        }
+        "actions": {}
       },
       "#helmet2": {
         "alias": [
@@ -40,8 +39,7 @@
         "durability": 10,
         "in_use": false,
         "description": "Helmet Equipment #2",
-        "actions": {
-        }
+        "actions": {}
       }
     }
   },
@@ -55,10 +53,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-      "inventory": "display inventory",
-      "status": "display self"
-    },
+    "actions": {},
     "inventory": []
   }
 }

@@ -34,24 +34,24 @@ class TestEquip(unittest.TestCase):
     def test_equip(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip"])
+            self.cr.handle_commands(["equip"])
         result_output = stdout.getvalue()
-        expected_output = "You don't know how to do that.\n"
+        expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_regular_item_room(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "envelope"])
+            self.cr.handle_commands(["equip", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_regular_item_inv(self):
-        self.cr.execute(["take", "envelope"])
+        self.cr.handle_commands(["take", "envelope"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "envelope"])
+            self.cr.handle_commands(["equip", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -59,7 +59,7 @@ class TestEquip(unittest.TestCase):
     def test_equip_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "bandage"])
+            self.cr.handle_commands(["equip", "bandage"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the bandage.\n"
         self.assertEqual(expected_output, result_output)
@@ -67,7 +67,7 @@ class TestEquip(unittest.TestCase):
     def test_equip_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
+            self.cr.handle_commands(["equip", "sword"])
         result_output = stdout.getvalue()
         expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -75,7 +75,7 @@ class TestEquip(unittest.TestCase):
     def test_equip_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "helmet"])
+            self.cr.handle_commands(["equip", "helmet"])
         result_output = stdout.getvalue()
         expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -83,16 +83,16 @@ class TestEquip(unittest.TestCase):
     def test_equip_direction(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "west"])
+            self.cr.handle_commands(["equip", "west"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_creature(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "dragon"])
+            self.cr.handle_commands(["equip", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the dragon.\n"
         self.assertEqual(expected_output, result_output)
@@ -100,7 +100,7 @@ class TestEquip(unittest.TestCase):
     def test_equip_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "inventory"])
+            self.cr.handle_commands(["equip", "inventory"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -108,25 +108,25 @@ class TestEquip(unittest.TestCase):
     def test_equip_item_not_in_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
+            self.cr.handle_commands(["equip", "sword"])
         result_output = stdout.getvalue()
         expected_output = "You don't have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("none", self.game_state.hero.right_hand)
 
     def test_equip_key(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["equip", "sword"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["go", "west"])
-        self.cr.execute(["attack", "dragon"])
-        self.cr.execute(["attack", "dragon"])
+        self.cr.handle_commands(["take", "helmet"])
+        self.cr.handle_commands(["take", "sword"])
+        self.cr.handle_commands(["take", "chestplate"])
+        self.cr.handle_commands(["equip", "helmet"])
+        self.cr.handle_commands(["equip", "sword"])
+        self.cr.handle_commands(["equip", "chestplate"])
+        self.cr.handle_commands(["go", "west"])
+        self.cr.handle_commands(["attack", "dragon"])
+        self.cr.handle_commands(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "key"])
+            self.cr.handle_commands(["equip", "key"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the key.\n"
         self.assertEqual(expected_output, result_output)
@@ -134,25 +134,25 @@ class TestEquip(unittest.TestCase):
     def test_equip_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["equip", "key"])
+            self.cr1.handle_commands(["equip", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "door"])
+            self.cr.handle_commands(["equip", "door"])
         result_output = stdout.getvalue()
         expected_output = "Action \"equip\" is not allowed with the door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_equip_door_ambiguous(self):
-        self.cr1.execute(["go", "north"])
+        self.cr1.handle_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["equip", "door"])
+            self.cr1.handle_commands(["equip", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

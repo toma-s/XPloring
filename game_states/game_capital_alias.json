@@ -33,8 +33,7 @@
         "alias": [
           "Envelope"
         ],
-        "actions": {
-        }
+        "actions": {}
       }
     },
     "consumable": {
@@ -43,8 +42,7 @@
         "alias": [
           "Bandage"
         ],
-        "actions": {
-        },
+        "actions": {},
         "value": 10
       }
     }
@@ -59,8 +57,7 @@
         "slot": "hand",
         "in_use": false,
         "description": "Weapon Equipment Sword",
-        "actions": {
-        }
+        "actions": {}
       }
     },
     "armour": {
@@ -73,8 +70,7 @@
         "durability": 10,
         "in_use": false,
         "description": "Helmet Equipment",
-        "actions": {
-        }
+        "actions": {}
       }
     }
   },
@@ -88,12 +84,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-      "equip": "equip game_item",
-      "inventory": "display inventory",
-      "status": "display self",
-      "look": "display room"
-    },
+    "actions": {},
     "inventory": []
   }
 }

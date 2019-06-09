@@ -35,15 +35,15 @@ class TestExamine(unittest.TestCase):
     def test_examine(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine"])
+            self.cr.handle_commands(["examine"])
         result_output = stdout.getvalue()
-        expected_output = "You don't know how to do that.\n"
+        expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "envelope"])
+            self.cr.handle_commands(["examine", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "OPEN to get letter from inside\n"
         self.assertEqual(expected_output, result_output)
@@ -51,7 +51,7 @@ class TestExamine(unittest.TestCase):
     def test_examine_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "bandage"])
+            self.cr.handle_commands(["examine", "bandage"])
         result_output = stdout.getvalue()
         expected_output = "You can USE bandage to reduce swelling or slow heavy bleeding.\n"
         self.assertEqual(expected_output, result_output)
@@ -59,7 +59,7 @@ class TestExamine(unittest.TestCase):
     def test_examine_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "sword"])
+            self.cr.handle_commands(["examine", "sword"])
         result_output = stdout.getvalue()
         expected_output = "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use\n"
         self.assertEqual(expected_output, result_output)
@@ -67,7 +67,7 @@ class TestExamine(unittest.TestCase):
     def test_examine_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "helmet"])
+            self.cr.handle_commands(["examine", "helmet"])
         result_output = stdout.getvalue()
         expected_output = "Gladiator helmet made of steel\n"
         self.assertEqual(expected_output, result_output)
@@ -75,16 +75,16 @@ class TestExamine(unittest.TestCase):
     def test_examine_direction(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "west"])
+            self.cr.handle_commands(["examine", "west"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_creature(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "dragon"])
+            self.cr.handle_commands(["examine", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Big green dragon\n"
         self.assertEqual(expected_output, result_output)
@@ -92,24 +92,24 @@ class TestExamine(unittest.TestCase):
     def test_examine_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "inventory"])
+            self.cr.handle_commands(["examine", "inventory"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_key(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["equip", "sword"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["go", "west"])
-        self.cr.execute(["attack", "dragon"])
-        self.cr.execute(["attack", "dragon"])
+        self.cr.handle_commands(["take", "helmet"])
+        self.cr.handle_commands(["take", "sword"])
+        self.cr.handle_commands(["take", "chestplate"])
+        self.cr.handle_commands(["equip", "helmet"])
+        self.cr.handle_commands(["equip", "sword"])
+        self.cr.handle_commands(["equip", "chestplate"])
+        self.cr.handle_commands(["go", "west"])
+        self.cr.handle_commands(["attack", "dragon"])
+        self.cr.handle_commands(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "key"])
+            self.cr.handle_commands(["examine", "key"])
         result_output = stdout.getvalue()
         expected_output = "Use this key to unlock the door in the arena\n"
         self.assertEqual(expected_output, result_output)
@@ -117,25 +117,25 @@ class TestExamine(unittest.TestCase):
     def test_examine_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["examine", "key"])
+            self.cr1.handle_commands(["examine", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["examine", "door"])
+            self.cr.handle_commands(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = "Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door_ambiguous(self):
-        self.cr1.execute(["go", "north"])
+        self.cr1.handle_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["examine", "door"])
+            self.cr1.handle_commands(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
@@ -148,7 +148,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine Envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Regular Item Envelope\n"
         self.assertEqual(expected_output, result_output)
@@ -157,7 +157,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Regular Item Envelope\n"
         self.assertEqual(expected_output, result_output)
@@ -168,7 +168,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine Bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Regular Item Bandage\n"
         self.assertEqual(expected_output, result_output)
@@ -177,7 +177,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Regular Item Bandage\n"
         self.assertEqual(expected_output, result_output)
@@ -188,7 +188,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine Sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Weapon Equipment Sword\n"
         self.assertEqual(expected_output, result_output)
@@ -197,7 +197,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Weapon Equipment Sword\n"
         self.assertEqual(expected_output, result_output)
@@ -208,7 +208,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine Helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet Equipment\n"
         self.assertEqual(expected_output, result_output)
@@ -217,7 +217,7 @@ class TestExamine(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("examine helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet Equipment\n"
         self.assertEqual(expected_output, result_output)

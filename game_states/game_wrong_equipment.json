@@ -30,8 +30,7 @@
         "durability": 10,
         "in_use_BUG": false,
         "description": "Dummy armour",
-        "actions": {
-        }
+        "actions": {}
       }
     }
   },
@@ -46,8 +45,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-    },
+    "actions": {},
     "inventory": []
   }
 }

@@ -49,7 +49,7 @@ class Game:
                 return
 
             commands_to_run = self.input_handler.parse_user_input(user_input)
-            self.command_runner.execute(commands_to_run)
+            self.command_runner.handle_commands(commands_to_run)
 
     def run_gui(self):
         room = self.game_state.rooms[self.game_state.hero.location]
@@ -82,7 +82,7 @@ class Game:
 
             else:
                 commands_to_run = self.input_handler.parse_user_input(user_input)
-                self.command_runner.execute(commands_to_run)
+                self.command_runner.handle_commands(commands_to_run)
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)

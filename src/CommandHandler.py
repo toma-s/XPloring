@@ -15,33 +15,29 @@ class CommandHandler:
         self.internal_command_handler = InternalCommandHandler(game_state)
         self.finder = Finder(game_state)
 
-    def single_command(self, action_name):
-        hero = self.game_state.hero
+    def handle_commands(self, commands: [str]) -> None:
+        ignored = {"the", "on", "a", "an", "this", "that"}
+        commands = [command for command in commands if command not in ignored]
+        action_name = commands[0]
+        target_alias = " ".join(commands[1:])
+        if len(commands) == 1:
+            self.single_command(action_name)
+        else:
+            self.double_command(action_name, target_alias)
 
+    def single_command(self, action_name: str) -> None:
+        hero = self.game_state.hero
+        if action_name not in hero.actions:
+            print(f"I don't understand that command.")
+            return
+        action_data = hero.actions[action_name]
+        self.internal_command_handler.handle_internal_command(action_data)
+
+    def double_command(self, action_name: str, target_alias: str) -> None:
+        hero = self.game_state.hero
         if action_name in hero.actions:
-            verb, noun = tuple(hero.actions[action_name].replace(",", '').split(" "))
-            if verb == "display":
-                if noun == "room":
-                    self.discover_room()
-                    return
-                if noun == "inventory":
-                    self.show_inventory()
-                    return
-                if noun == "self":
-                    self.show_status()
-                    return
-
-        print("You don't know how to do that.")
-
-    def double_command(self, action_name, target_alias):
-        hero = self.game_state.hero
-
-        # if action_name in hero.actions:
-        #     self._handle_hero_action(action_name, target_alias)
-        #     return
-        # TODO hero.actions (go, inventory, status)
-        if action_name == "go":
-            self._move_to_direction(target_alias)
+            action_data = hero.actions[action_name]
+            self.internal_command_handler.handle_internal_command(action_data, target_alias)
             return
 
         if self._is_keyword(target_alias):
@@ -61,16 +57,6 @@ class CommandHandler:
         action_data = data.actions[action_name]
         self.internal_command_handler.handle_internal_command(action_data, target_id)
 
-    def _handle_hero_action(self, action_name, target_alias):
-        hero = self.game_state.hero
-        verb, noun = tuple(hero.actions[action_name].replace(",", "").split(" "))
-
-        if verb == "move_to":
-            if noun == "direction":
-                self._move_to_direction(target_alias)
-        else:
-            print(f"You don't know how to {action_name}")
-
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:
             print(f"There is no such thing as {target_alias}.")
@@ -79,123 +65,6 @@ class CommandHandler:
             print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")
             return False
         return True
-
-    def discover_room(self):
-        items = self.game_state.items
-        equipment = self.game_state.equipment
-        creatures = self.game_state.creatures
-        room = self.game_state.rooms[self.game_state.hero.location]
-
-        # items in room
-        for i in room.items:
-            if i in items:
-                print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
-            elif i in equipment:
-                print(f"There is a {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
-
-        # entities in room
-        if not room.creatures:
-            print("There's nothing scary here.")
-        else:
-            for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")
-
-        # direction from room
-        for d in room.directions:
-            print(f"You can GO {d.upper()}.")
-
-    def _move_to_direction(self, direction_name):
-        hero = self.game_state.hero
-        rooms = self.game_state.rooms
-        transition_objects = self.game_state.transition_objects
-
-        if direction_name in rooms[hero.location].directions:
-            room_id = rooms[hero.location].directions[direction_name]["room_id"]
-
-            direction_data = rooms[hero.location].directions[direction_name]
-
-            if "trans_obj_id" in direction_data:
-                trans_obj = transition_objects[direction_data["trans_obj_id"]]
-                if not trans_obj.unlocked:
-                    print(trans_obj.description)
-                else:
-                    self.move_to(room_id)
-            else:
-                self.move_to(room_id)
-        else:
-            print(f"You are not allowed to go {direction_name}.")
-
-    def execute(self, commands):
-        ignored = {"the", "on", "a", "an", "this", "that"}
-        commands = [command for command in commands if command not in ignored]
-        action_name = commands[0]
-        target_alias = " ".join(commands[1:])
-        if len(commands) == 1:
-            self.single_command(action_name)
-        else:
-            self.double_command(action_name, target_alias)
-
-    def move_to(self, room_id):
-        self.game_state.hero.location = room_id
-        rooms = self.game_state.rooms
-        print(f"{rooms[room_id].description}")
-        if rooms[room_id].auto_commands is not None:
-            self.internal_command_handler.handle_internal_command(rooms[room_id].auto_commands, room_id)
-
-    def show_status(self):
-
-        def _print_weapon(slot_name: str):
-            hero: Hero = self.game_state.hero
-            weapon_id = getattr(hero, slot_name)
-            info = "none"
-            if weapon_id != "none":
-                weapon_data = self.game_state.equipment[weapon_id]
-                info = weapon_data.description
-                info += f" {weapon_data.damage} ATK"
-            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info}")
-
-        def _print_armour(slot_name: str):
-            hero: Hero = self.game_state.hero
-            armour_id = getattr(hero, slot_name)
-            info = "none"
-            if armour_id != "none":
-                armour_data = self.game_state.equipment[armour_id]
-                info = armour_data.description
-                info += f" {armour_data.resistance} DEF"
-                info += f" {armour_data.durability} Durability"
-            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info}")
-
-        print(f"----- HERO STATUS -----")
-        print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero.damage} ATK")
-
-        _print_weapon("right_hand")
-        _print_weapon("left_hand")
-
-        _print_armour("head")
-        _print_armour("chest")
-        _print_armour("legs")
-
-        print(f"-----------------------")
-
-    def show_inventory(self):
-        hero = self.game_state.hero
-        if len(hero.inventory) == 0:
-            print(f"Your inventory is empty")
-            return
-
-        for item in hero.inventory:
-            if item in self.game_state.items:
-                it = self.game_state.items[item]
-            else:
-                it = self.game_state.equipment[item]
-            res = f"{it.alias[0]} - {it.description}"
-            if isinstance(it, Armour) or isinstance(it, Weapon):
-                if it.in_use:
-                    res += " [EQUIPPED]"
-            print(res)
 
 
     @staticmethod

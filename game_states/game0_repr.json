@@ -153,8 +153,7 @@
         "slot": "hand",
         "in_use": false,
         "description": "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use",
-        "actions": {
-        }
+        "actions": {}
       }
     },
     "armour": {
@@ -167,8 +166,7 @@
         "slot": "head",
         "in_use": false,
         "description": "Gladiator helmet made of steel",
-        "actions": {
-        }
+        "actions": {}
       },
       "#equipment_golden_chestplate": {
         "resistance": 3,
@@ -179,8 +177,7 @@
         "slot": "chest",
         "in_use": false,
         "description": "Steel chestplate armor",
-        "actions": {
-        }
+        "actions": {}
       }
     }
   },
@@ -193,12 +190,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-      "look": "display room",
-      "go": "move_to direction",
-      "inventory": "display inventory",
-      "status": "display self"
-    },
+    "actions": {},
     "inventory": []
   }
 }

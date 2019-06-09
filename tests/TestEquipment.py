@@ -22,34 +22,34 @@ class TestEquipment(unittest.TestCase):
         del self.cr
 
     def test_equip_item_in_inventory(self):
-        self.cr.execute(["take", "sword"])
+        self.cr.handle_commands(["take", "sword"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
+            self.cr.handle_commands(["equip", "sword"])
         result_output = stdout.getvalue()
         expected_output = "Item equipped\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
 
     def test_equip_same_item_twice(self):
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
+        self.cr.handle_commands(["take", "sword"])
+        self.cr.handle_commands(["equip", "sword"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "sword"])
+            self.cr.handle_commands(["equip", "sword"])
         result_output = stdout.getvalue()
         expected_output = "It is already equipped.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
 
     def test_equip_occupied_slot(self):
-        self.cr_two_helmets.execute(["take", "helmet1"])
-        self.cr_two_helmets.execute(["equip", "helmet1"])
+        self.cr_two_helmets.handle_commands(["take", "helmet1"])
+        self.cr_two_helmets.handle_commands(["equip", "helmet1"])
         self.assertEqual("#helmet1", self.game_two_helmets.hero.head)
-        self.cr_two_helmets.execute(["take", "helmet2"])
+        self.cr_two_helmets.handle_commands(["take", "helmet2"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr_two_helmets.execute(["equip", "helmet2"])
+            self.cr_two_helmets.handle_commands(["equip", "helmet2"])
         result_output = stdout.getvalue()
         expected_output = "Item equipped\n"
         self.assertEqual(expected_output, result_output)
@@ -57,18 +57,18 @@ class TestEquipment(unittest.TestCase):
         self.assertIn("#helmet2", self.game_two_helmets.hero.inventory)
 
     def test_equip_already_equipped(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["equip", "sword"])
+        self.cr.handle_commands(["take", "helmet"])
+        self.cr.handle_commands(["equip", "helmet"])
+        self.cr.handle_commands(["take", "chestplate"])
+        self.cr.handle_commands(["equip", "chestplate"])
+        self.cr.handle_commands(["take", "sword"])
+        self.cr.handle_commands(["equip", "sword"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["equip", "helmet"])
-            self.cr.execute(["equip", "chestplate"])
-            self.cr.execute(["equip", "sword"])
+            self.cr.handle_commands(["equip", "helmet"])
+            self.cr.handle_commands(["equip", "chestplate"])
+            self.cr.handle_commands(["equip", "sword"])
         result_output = stdout.getvalue()
         expected_output = f"It is already equipped.\nIt is already equipped.\nIt is already equipped.\n"
         self.assertEqual(expected_output, result_output)

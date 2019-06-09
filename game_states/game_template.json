@@ -119,8 +119,7 @@
     "head": "#",
     "chest": "none",
     "legs": "none",
-    "actions": {
-    },
+    "actions": {},
     "inventory": [
       "#"
     ]

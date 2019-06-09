@@ -35,15 +35,15 @@ class TestTake(unittest.TestCase):
     def test_take(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take"])
+            self.cr.handle_commands(["take"])
         result_output = stdout.getvalue()
-        expected_output = "You don't know how to do that.\n"
+        expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "envelope"])
+            self.cr.handle_commands(["take", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -51,7 +51,7 @@ class TestTake(unittest.TestCase):
     def test_take_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "bandage"])
+            self.cr.handle_commands(["take", "bandage"])
         result_output = stdout.getvalue()
         expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -59,7 +59,7 @@ class TestTake(unittest.TestCase):
     def test_take_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "sword"])
+            self.cr.handle_commands(["take", "sword"])
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -67,7 +67,7 @@ class TestTake(unittest.TestCase):
     def test_take_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "helmet"])
+            self.cr.handle_commands(["take", "helmet"])
         result_output = stdout.getvalue()
         expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -75,16 +75,16 @@ class TestTake(unittest.TestCase):
     def test_take_direction(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "west"])
+            self.cr.handle_commands(["take", "west"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_creature(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "dragon"])
+            self.cr.handle_commands(["take", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "Action \"take\" is not allowed with the dragon.\n"
         self.assertEqual(expected_output, result_output)
@@ -92,7 +92,7 @@ class TestTake(unittest.TestCase):
     def test_take_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "inventory"])
+            self.cr.handle_commands(["take", "inventory"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -100,26 +100,26 @@ class TestTake(unittest.TestCase):
     def test_take_item_in_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "sword"])
-            self.cr.execute(["take", "sword"])
+            self.cr.handle_commands(["take", "sword"])
+            self.cr.handle_commands(["take", "sword"])
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n" \
                           "Sword is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_key(self):
-        self.cr.execute(["take", "helmet"])
-        self.cr.execute(["take", "sword"])
-        self.cr.execute(["take", "chestplate"])
-        self.cr.execute(["equip", "helmet"])
-        self.cr.execute(["equip", "sword"])
-        self.cr.execute(["equip", "chestplate"])
-        self.cr.execute(["go", "west"])
-        self.cr.execute(["attack", "dragon"])
-        self.cr.execute(["attack", "dragon"])
+        self.cr.handle_commands(["take", "helmet"])
+        self.cr.handle_commands(["take", "sword"])
+        self.cr.handle_commands(["take", "chestplate"])
+        self.cr.handle_commands(["equip", "helmet"])
+        self.cr.handle_commands(["equip", "sword"])
+        self.cr.handle_commands(["equip", "chestplate"])
+        self.cr.handle_commands(["go", "west"])
+        self.cr.handle_commands(["attack", "dragon"])
+        self.cr.handle_commands(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "key"])
+            self.cr.handle_commands(["take", "key"])
         result_output = stdout.getvalue()
         expected_output = "Key has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -127,25 +127,25 @@ class TestTake(unittest.TestCase):
     def test_take_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["take", "key"])
+            self.cr1.handle_commands(["take", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_door(self):
-        self.cr.execute(["go", "west"])
+        self.cr.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.execute(["take", "door"])
+            self.cr.handle_commands(["take", "door"])
         result_output = stdout.getvalue()
         expected_output = "Action \"take\" is not allowed with the door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_door_ambiguous(self):
-        self.cr1.execute(["go", "north"])
+        self.cr1.handle_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.execute(["examine", "door"])
+            self.cr1.handle_commands(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
@@ -158,7 +158,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take Envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -167,7 +167,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Envelope has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -176,9 +176,9 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
             commands_to_run = InputHandler().parse_user_input("take Envelope")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Envelope has been added to your inventory.\n" \
                           "Envelope is already in your inventory.\n"
@@ -190,7 +190,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take Bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -199,7 +199,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Bandage has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -208,9 +208,9 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
             commands_to_run = InputHandler().parse_user_input("take Bandage")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Bandage has been added to your inventory.\n"\
                           "Bandage is already in your inventory.\n"
@@ -222,7 +222,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take Sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -231,7 +231,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -240,9 +240,9 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
             commands_to_run = InputHandler().parse_user_input("take Sword")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Sword has been added to your inventory.\n" \
                           "Sword is already in your inventory.\n"
@@ -254,7 +254,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take Helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -263,7 +263,7 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet has been added to your inventory.\n"
         self.assertEqual(expected_output, result_output)
@@ -272,9 +272,9 @@ class TestTake(unittest.TestCase):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             commands_to_run = InputHandler().parse_user_input("take helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
             commands_to_run = InputHandler().parse_user_input("take Helmet")
-            self.cr_capital_alias.execute(commands_to_run)
+            self.cr_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "Helmet has been added to your inventory.\n" \
                           "Helmet is already in your inventory.\n"
