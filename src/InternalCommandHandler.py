@@ -339,30 +339,35 @@ class InternalCommandHandler:
         def _print_weapon(slot_name: str):
             hero: Hero = self.game_state.hero
             weapon_id = getattr(hero, slot_name)
-            info = "none"
+            info_print = "nothing"
             if weapon_id is not None:
                 weapon_data = self.game_state.equipment[weapon_id]
-                info = weapon_data.description
-                info += f" {weapon_data.damage} ATK"
+                info_print = weapon_data.description
+                info_print += f" {weapon_data.damage} ATK"
             slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info}")
+            print(f"{slot_print}: {info_print}")
 
         def _print_armour(slot_name: str):
             hero: Hero = self.game_state.hero
             armour_id = getattr(hero, slot_name)
-            info = "none"
+            info_print = "nothing"
             if armour_id is not None:
                 armour_data = self.game_state.equipment[armour_id]
-                info = armour_data.description
-                info += f" {armour_data.resistance} DEF"
-                info += f" {armour_data.durability} Durability"
+                info_print = armour_data.description
+                info_print += f" {armour_data.resistance} DEF"
+                info_print += f" {armour_data.durability} Durability"
             slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info}")
+            print(f"{slot_print}: {info_print}")
 
         hero: Hero = self.game_state.hero
+        hero_damage = hero.base_damage
+        if hero.right_hand is not None:
+            weapon_data: Weapon = self.game_state.equipment[hero.right_hand]
+            hero_damage = weapon_data.damage
+
         print(f"----- HERO STATUS -----")
         print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero.base_damage} ATK")
+        print(f"Attack Power: {hero_damage} ATK")
         _print_weapon("right_hand")
         _print_weapon("left_hand")
         _print_armour("head")
