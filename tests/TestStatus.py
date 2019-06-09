@@ -39,11 +39,11 @@ class TestInventory(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: none\n" \
-                          "Left hand: none\n" \
-                          "Head: none\n" \
-                          "Chest: none\n" \
-                          "Legs: none\n" \
+                          "Right hand: nothing\n" \
+                          "Left hand: nothing\n" \
+                          "Head: nothing\n" \
+                          "Chest: nothing\n" \
+                          "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
@@ -57,11 +57,11 @@ class TestInventory(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 90 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: none\n" \
-                          "Left hand: none\n" \
-                          "Head: none\n" \
-                          "Chest: none\n" \
-                          "Legs: none\n" \
+                          "Right hand: nothing\n" \
+                          "Left hand: nothing\n" \
+                          "Head: nothing\n" \
+                          "Chest: nothing\n" \
+                          "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
@@ -77,10 +77,10 @@ class TestInventory(unittest.TestCase):
                           "Attack Power: 30 ATK\n" \
                           "Right hand: Sword made of pure silver with a straight " \
                           "double-edged blade and a grip for two-handed use 30 ATK\n" \
-                          "Left hand: none\n" \
-                          "Head: none\n" \
-                          "Chest: none\n" \
-                          "Legs: none\n" \
+                          "Left hand: nothing\n" \
+                          "Head: nothing\n" \
+                          "Chest: nothing\n" \
+                          "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
@@ -94,11 +94,11 @@ class TestInventory(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: none\n" \
-                          "Left hand: none\n" \
+                          "Right hand: nothing\n" \
+                          "Left hand: nothing\n" \
                           "Head: Gladiator helmet made of steel 2 DEF 12 Durability\n" \
-                          "Chest: none\n" \
-                          "Legs: none\n" \
+                          "Chest: nothing\n" \
+                          "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
@@ -112,10 +112,10 @@ class TestInventory(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: none\n" \
-                          "Left hand: none\n" \
-                          "Head: none\n" \
+                          "Right hand: nothing\n" \
+                          "Left hand: nothing\n" \
+                          "Head: nothing\n" \
                           "Chest: Steel chestplate armor 3 DEF 18 Durability\n" \
-                          "Legs: none\n" \
+                          "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
