@@ -180,25 +180,16 @@ class InternalCommandHandler:
         if armor_data.durability <= 0:
             self._equipment_destruction(armor_id)
 
-    def _equipment_destruction(self, target):
+    def _equipment_destruction(self, equipment_id):
         hero = self.game_state.hero
-        equipment = self.game_state.equipment
+        equipment_data = self.game_state.equipment[equipment_id]
 
-        item = equipment[target]
+        setattr(hero, equipment_data.slot, None)
 
-        if item.slot == "hand":
-            hero.right_hand = None
-        elif item.slot == "head":
-            hero.head = None
-        elif item.slot == "chest":
-            hero.chest = None
-        elif item.slot == "legs":
-            hero.legs = None
-
-        item.in_use = False
-        hero.inventory.remove(target)
-        print(f"Ouch! {item.alias[0]} has been destroyed!")
-        print(f"You've dropped {item.alias[0]}")
+        equipment_data.in_use = False
+        hero.inventory.remove(equipment_id)
+        print(f"Ouch! {equipment_data.alias[0]} has been destroyed!")
+        print(f"You've dropped {equipment_data.alias[0]}")
 
     def spawn_item(self, item_id):
         items = self.game_state.items

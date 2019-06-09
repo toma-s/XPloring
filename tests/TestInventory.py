@@ -131,7 +131,7 @@ class TestInventory(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
         self.assertEqual(0, len(self.game_state.hero.inventory))
 
-    def test_inventory_equip_drop_sword(self):
+    def test_inventory_drop_equip_sword(self):
         self.ih.handle_user_input("take sword")
         self.assertEqual(1, len(self.game_state.hero.inventory))
         self.ih.handle_user_input("equip sword")
@@ -145,7 +145,7 @@ class TestInventory(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
         self.assertEqual(0, len(self.game_state.hero.inventory))
 
-    def test_inventory_equip_drop_two_armour(self):
+    def test_inventory_drop_equip_two_armour(self):
         self.ih.handle_user_input("take gladiator helmet")
         self.ih.handle_user_input("equip steel helmet")
         self.ih.handle_user_input("take steel chestplate")
