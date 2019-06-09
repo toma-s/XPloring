@@ -316,6 +316,8 @@ class InternalCommandHandler:
         creatures = self.game_state.creatures
         room = self.game_state.rooms[self.game_state.hero.location]
 
+        print(f"{self._capitalize_first(room.alias)} room. {room.description}")
+
         # items in room
         for i in room.items:
             if i in items:
@@ -325,14 +327,19 @@ class InternalCommandHandler:
 
         # entities in room
         if not room.creatures:
-            print("There's nothing scary here.")
+            print("There are no enemies around.")
         else:
             for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. {self._capitalize_first(creatures[c].description)}.")
+                print(f"There is a {creatures[c].alias[0]} here. "
+                      f"{self._capitalize_first(creatures[c].description)}.")
 
         # direction from room
-        for d in room.directions:
-            print(f"You can GO {d.upper()}.")
+        for direction, value in room.directions.items():
+            if "trans_obj_id" in value.keys():
+                print(f"There is door to the {direction.upper()}.")
+            else:
+                room_in_dir = self.game_state.rooms[value["room_id"]].alias
+                print(f"There is {room_in_dir} room to the {direction.upper()}.")
 
     def _show_hero_status(self):
 

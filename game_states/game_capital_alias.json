@@ -1,6 +1,7 @@
 {
   "rooms": {
     "#room": {
+      "alias": "room",
       "description": "Room",
       "directions": {
       },

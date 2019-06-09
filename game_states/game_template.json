@@ -1,6 +1,7 @@
 {
   "rooms": {
     "#": {
+      "alias": "",
       "description": "",
       "directions": {
         "west": {
@@ -15,6 +16,7 @@
       ]
     },
     "#": {
+      "alias": "",
       "description": "",
       "directions": {
         "east": {
