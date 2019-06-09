@@ -89,6 +89,9 @@ class TestGameStateLoader(unittest.TestCase):
                 },
                 "take": {
                     "command_add_item_to_inventory": None
+                },
+                "examine": {
+                    "command_show_description": None
                 }
             }, item1.actions
         )
@@ -105,6 +108,9 @@ class TestGameStateLoader(unittest.TestCase):
                 },
                 "take": {
                     "command_add_item_to_inventory": None
+                },
+                "examine": {
+                    "command_show_description": None
                 }
             }, item2.actions
         )
@@ -141,5 +147,20 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertEqual("#armour1", hero.head)
         self.assertEqual("none", hero.chest)
         self.assertEqual("none", hero.legs)
-        self.assertDictEqual(dict(), hero.actions)
         self.assertListEqual(["#item1"], hero.inventory)
+
+        expected_hero_actions = {
+            "go": {
+                "command_move_direction": None
+            },
+            "look": {
+                "command_show_room": None
+            },
+            "status": {
+                "command_show_status": None
+            },
+            "inventory": {
+                "command_show_inventory": None
+            }
+        }
+        self.assertDictEqual(expected_hero_actions, hero.actions)

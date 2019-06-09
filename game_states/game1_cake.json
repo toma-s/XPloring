@@ -114,7 +114,7 @@
         "actions": {
           "eat": {
             "command_use_item": true,
-            "command_display": "The cake is a lie ...",
+            "command_show_message": "The cake is a lie ...",
             "command_spawn_item": "#item_doorkey_exit"
           }
         }
@@ -189,14 +189,7 @@
     "head": "none",
     "chest": "none",
     "legs": "none",
-    "actions": {
-      "examine": "display game_item",
-      "look": "display room",
-      "go": "move_to direction",
-      "attack": "hit creature",
-      "inventory": "display inventory",
-      "status": "display self"
-    },
+    "actions": {},
     "inventory": []
   }
 }
