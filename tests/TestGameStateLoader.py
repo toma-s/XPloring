@@ -87,11 +87,14 @@ class TestGameStateLoader(unittest.TestCase):
                 "open": {
                     "command_spawn_item": "#item2"
                 },
+                "examine": {
+                    "command_show_description": None
+                },
                 "take": {
                     "command_add_item_to_inventory": None
                 },
-                "examine": {
-                    "command_show_description": None
+                "drop": {
+                    "": None
                 }
             }, item1.actions
         )
@@ -106,11 +109,14 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_required_item": "#item1",
                     "command_use_item": True
                 },
+                "examine": {
+                    "command_show_description": None
+                },
                 "take": {
                     "command_add_item_to_inventory": None
                 },
-                "examine": {
-                    "command_show_description": None
+                "drop": {
+                    "": None
                 }
             }, item2.actions
         )
