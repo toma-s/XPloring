@@ -89,7 +89,7 @@
         "alias": [
           "weapon equipment"
         ],
-        "slot": "hand",
+        "slot": "right_hand",
         "in_use": false,
         "damage": 50,
         "description": "Weapon Equipment",

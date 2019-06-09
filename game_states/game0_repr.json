@@ -9,11 +9,11 @@
       },
       "items": [
         "#item_envelope",
-        "#equipment_steel_sword",
+        "#equipment_silver_sword",
         "#item_bandage",
-        "#equipment_steel_helmet",
+        "#equipment_gladiator_helmet",
         "#item_poison_bottle",
-        "#equipment_golden_chestplate"
+        "#equipment_steel_chestplate"
       ],
       "creatures": []
     },
@@ -145,34 +145,34 @@
   },
   "equipment": {
     "weapons": {
-      "#equipment_steel_sword": {
+      "#equipment_silver_sword": {
         "damage": 30,
         "alias": [
-          "sword"
+          "sword", "silver sword"
         ],
-        "slot": "hand",
+        "slot": "right_hand",
         "in_use": false,
         "description": "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use",
         "actions": {}
       }
     },
     "armour": {
-      "#equipment_steel_helmet": {
+      "#equipment_gladiator_helmet": {
         "resistance": 2,
         "durability": 12,
         "alias": [
-          "helmet"
+          "helmet", "gladiator helmet", "steel helmet"
         ],
         "slot": "head",
         "in_use": false,
         "description": "Gladiator helmet made of steel",
         "actions": {}
       },
-      "#equipment_golden_chestplate": {
+      "#equipment_steel_chestplate": {
         "resistance": 3,
         "durability": 18,
         "alias":[
-          "chestplate"
+          "chestplate", "steel chestplate"
         ],
         "slot": "chest",
         "in_use": false,

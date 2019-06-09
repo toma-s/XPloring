@@ -133,7 +133,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertIsInstance(weapon1, Weapon)
         self.assertEqual("Weapon Equipment", weapon1.description)
         self.assertListEqual(["weapon equipment"], weapon1.alias)
-        self.assertEqual("hand", weapon1.slot)
+        self.assertEqual("right_hand", weapon1.slot)
         self.assertEqual(False, weapon1.in_use)
         self.assertEqual(50, weapon1.damage)
 

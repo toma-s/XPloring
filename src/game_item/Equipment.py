@@ -6,6 +6,9 @@ class Equipment(Item):
     equipment_actions = {
         "equip": {
             "command_equip": None
+        },
+        "unequip": {
+            "command_unequip": None
         }
     }
 

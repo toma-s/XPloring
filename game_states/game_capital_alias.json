@@ -54,7 +54,7 @@
         "alias": [
           "Sword"
         ],
-        "slot": "hand",
+        "slot": "right_hand",
         "in_use": false,
         "description": "Weapon Equipment Sword",
         "actions": {}

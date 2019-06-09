@@ -29,7 +29,7 @@ class TestEquipment(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "Item equipped\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
+        self.assertEqual("#equipment_silver_sword", self.game_state.hero.right_hand)
 
     def test_equip_same_item_twice(self):
         self.ih.execute_commands(["take", "sword"])
@@ -40,7 +40,7 @@ class TestEquipment(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "It is already equipped.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
+        self.assertEqual("#equipment_silver_sword", self.game_state.hero.right_hand)
 
     def test_equip_occupied_slot(self):
         self.ih_two_helmets.execute_commands(["take", "helmet1"])

@@ -30,7 +30,6 @@ class TestMoving(unittest.TestCase):
         self.assertEqual("#room_arena", self.game_state.hero.location)
         self.ih.execute_commands(["go", "east"])
 
-
     def test_do_south(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -61,6 +60,22 @@ class TestMoving(unittest.TestCase):
             self.ih.execute_commands(["do", "east"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the east.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_go_no_direction(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("go")
+        result_output = stdout.getvalue()
+        expected_output = "I don't understand that command.\n"
+        self.assertEqual(expected_output, result_output)
+
+    def test_move_no_direction(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("move")
+        result_output = stdout.getvalue()
+        expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
 
 if __name__ == '__main__':

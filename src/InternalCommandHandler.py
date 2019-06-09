@@ -65,6 +65,9 @@ class InternalCommandHandler:
             elif command == "command_equip":
                 self._equip_item(target_id)
 
+            elif command == "command_unequip":
+                self._unequip_item(target_id)
+
             elif command == "command_show_room":
                 self._show_hero_room()
 
@@ -279,7 +282,7 @@ class InternalCommandHandler:
             print(f"It is already equipped.")
             return
 
-        if item_data.slot == "hand":
+        if item_data.slot == "right_hand":
             if hero.right_hand is not None:
                 equipment[hero.right_hand].in_use = False
             hero.right_hand = item_id
@@ -298,6 +301,31 @@ class InternalCommandHandler:
 
         print(f"Item equipped")
         item_data.in_use = True
+
+    def _unequip_item(self, item_id):
+        if not self._is_item_equipped(item_id):
+            print(f"It is not equipped.")
+            return
+        hero = self.game_state.hero
+        equipment_data: Equipment = self.game_state.equipment[item_id]
+        setattr(hero, equipment_data.slot, None)
+
+        item_in_slot = getattr(hero, equipment_data.slot)
+        if item_in_slot == item_id:
+            return True
+
+        print(f"Item unequipped.")
+        equipment_data.in_use = False
+
+    def _is_item_equipped(self, item_id: str) -> bool:
+        if item_id not in self.game_state.equipment:
+            return False
+        data: Equipment = self.finder.get_data_by_id(item_id)
+        hero = self.game_state.hero
+        item_in_slot = getattr(hero, data.slot)
+        if item_in_slot == item_id:
+            return True
+        return False
 
     def _show_hero_room(self):
         items = self.game_state.items
