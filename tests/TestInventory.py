@@ -34,7 +34,7 @@ class TestInventory(unittest.TestCase):
     def test_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.execute_commands(["inventory"])
+            self.ih.handle_user_input("inventory")
         result_output = stdout.getvalue()
         expected_output = "Your inventory is empty.\n"
         self.assertEqual(expected_output, result_output)
@@ -48,10 +48,10 @@ class TestInventory(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
 
     def test_inventory_sword(self):
-        self.ih.execute_commands(["take", "sword"])
+        self.ih.handle_user_input("take sword")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.execute_commands(["inventory"])
+            self.ih.handle_user_input("inventory")
         result_output = stdout.getvalue()
         expected_output = "sword - Sword made of pure silver with a straight " \
                           "double-edged blade and a grip for two-handed use\n"

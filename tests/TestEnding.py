@@ -29,18 +29,18 @@ class TestInput(unittest.TestCase):
     # -- Good End --
 
     def test_game1_escape_good_end(self):
-        self.ih1.execute_commands(["take", "kitchen key"])
-        self.ih1.execute_commands(["go", "north"])
-        self.ih1.execute_commands(["unlock", "kitchen door"])
-        self.ih1.execute_commands(["go", "east"])
-        self.ih1.execute_commands(["take", "cake"])
-        self.ih1.execute_commands(["eat", "cake"])
-        self.ih1.execute_commands(["take", "key"])
-        self.ih1.execute_commands(["unlock", "heavy metal door"])
+        self.ih1.handle_user_input("take kitchen key")
+        self.ih1.handle_user_input("go north")
+        self.ih1.handle_user_input("unlock kitchen door")
+        self.ih1.handle_user_input("go east")
+        self.ih1.handle_user_input("take cake")
+        self.ih1.handle_user_input("eat cake")
+        self.ih1.handle_user_input("take key")
+        self.ih1.handle_user_input("unlock heavy metal door")
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
-            self.ih1.execute_commands(["go", "east"])
+            self.ih1.handle_user_input("go east")
         result_output = stdout.getvalue()
         expected_output = "The End\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
@@ -48,18 +48,18 @@ class TestInput(unittest.TestCase):
 
 
     def test_game0_escape_good_end(self):
-        self.ih.execute_commands(["take", "sword"])
-        self.ih.execute_commands(["equip", "sword"])
-        self.ih.execute_commands(["go", "west"])
+        self.ih.handle_user_input("take sword")
+        self.ih.handle_user_input("equip sword")
+        self.ih.handle_user_input("go west")
         for i in range(2):
-            self.ih.execute_commands(["attack", "dragon"])
-        self.ih.execute_commands(["take", "key"])
-        self.ih.execute_commands(["unlock", "door"])
+            self.ih.handle_user_input("attack dragon")
+        self.ih.handle_user_input("take key")
+        self.ih.handle_user_input("unlock door")
 
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
-            self.ih.execute_commands(["go", "north"])
+            self.ih.handle_user_input("go north")
         result_output = stdout.getvalue()
         expected_output = "The end\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
@@ -69,16 +69,16 @@ class TestInput(unittest.TestCase):
     # -- Bad End --
 
     def test_hero_dead_bad_end(self):
-        self.ih.execute_commands(["go", "west"])
+        self.ih.handle_user_input("go west")
         for i in range(9):
-            self.ih.execute_commands(["attack", "dragon"])
+            self.ih.handle_user_input("attack dragon")
 
         self.assertEqual(51, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(10, self.game_state.hero.health)
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
-            self.ih.execute_commands(["attack", "dragon"])
+            self.ih.handle_user_input("attack dragon")
         result_output = stdout.getvalue()
         expected_output = "You hit the green dragon for 1 damage! " \
                           "Green dragon has 50 HP left.\n" \
@@ -90,18 +90,18 @@ class TestInput(unittest.TestCase):
         self.assertEqual('0', str(e.exception))
 
     def test_hero_dead_helmet_overkill_bad_end(self):
-        self.ih.execute_commands(["take", "helmet"])
-        self.ih.execute_commands(["equip", "helmet"])
-        self.ih.execute_commands(["go", "west"])
+        self.ih.handle_user_input("take helmet")
+        self.ih.handle_user_input("equip helmet")
+        self.ih.handle_user_input("go west")
         for i in range(10):
-            self.ih.execute_commands(["attack", "dragon"])
+            self.ih.handle_user_input("attack dragon")
 
         self.assertEqual(50, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(6, self.game_state.hero.health)
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
-            self.ih.execute_commands(["attack", "dragon"])
+            self.ih.handle_user_input("attack dragon")
         result_output = stdout.getvalue()
         expected_output = "You hit the green dragon for 1 damage! " \
                           "Green dragon has 49 HP left.\n" \
