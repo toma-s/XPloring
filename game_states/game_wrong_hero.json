@@ -29,11 +29,11 @@
     "health": 100,
     "base_damage": 1,
     "location_BUG": "#room_dummy",
-    "right_hand": "none",
-    "left_hand": "none",
-    "head": "none",
-    "chest": "none",
-    "legs": "none",
+    "right_hand": null,
+    "left_hand": null,
+    "head": null,
+    "chest": null,
+    "legs": null,
     "actions": {},
     "inventory": []
   }

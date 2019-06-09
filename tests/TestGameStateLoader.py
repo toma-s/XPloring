@@ -143,10 +143,10 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertEqual(100, hero.health)
         self.assertEqual("#room1", hero.location)
         self.assertEqual("#weapon1", hero.right_hand)
-        self.assertEqual("none", hero.left_hand)
+        self.assertEqual(None, hero.left_hand)
         self.assertEqual("#armour1", hero.head)
-        self.assertEqual("none", hero.chest)
-        self.assertEqual("none", hero.legs)
+        self.assertEqual(None, hero.chest)
+        self.assertEqual(None, hero.legs)
         self.assertListEqual(["#item1"], hero.inventory)
 
         expected_hero_actions = {

@@ -136,7 +136,7 @@ class InternalCommandHandler:
             print(f"{self._capitalize_first(target_alias)} is already dead.")
             return
         damage = hero.base_damage
-        if hero.right_hand != "none":
+        if hero.right_hand is not None:
             damage = self.game_state.equipment[hero.right_hand].damage
         target_creature.health -= damage
         print(f"You hit the {target_alias} for {damage} damage! "
@@ -166,7 +166,7 @@ class InternalCommandHandler:
         total_armor_resist = 0
         # todo: shield do left hand?
         for armor in hero.head, hero.chest, hero.legs:
-            if armor != "none":
+            if armor is not None:
                 self.game_state.equipment[armor].durability -= creature.damage // 2
                 if self.game_state.equipment[armor].durability <= 0:
                     self._drop_item(armor)
@@ -181,13 +181,13 @@ class InternalCommandHandler:
         item = equipment[target]
 
         if item.slot == "hand":
-            hero.right_hand = "none"
+            hero.right_hand = None
         elif item.slot == "head":
-            hero.head = "none"
+            hero.head = None
         elif item.slot == "chest":
-            hero.chest = "none"
+            hero.chest = None
         elif item.slot == "legs":
-            hero.legs = "none"
+            hero.legs = None
 
         item.in_use = False
         hero.inventory.remove(target)
@@ -280,19 +280,19 @@ class InternalCommandHandler:
             return
 
         if item_data.slot == "hand":
-            if hero.right_hand != "none":
+            if hero.right_hand is not None:
                 equipment[hero.right_hand].in_use = False
             hero.right_hand = item_id
         elif item_data.slot == "head":
-            if hero.head != "none":
+            if hero.head is not None:
                 equipment[hero.head].in_use = False
             hero.head = item_id
         elif item_data.slot == "chest":
-            if hero.chest != "none":
+            if hero.chest is not None:
                 equipment[hero.chest].in_use = False
             hero.chest = item_id
         elif item_data.slot == "legs":
-            if hero.legs != "none":
+            if hero.legs is not None:
                 equipment[hero.legs].in_use = False
             hero.legs = item_id
 
@@ -329,7 +329,7 @@ class InternalCommandHandler:
             hero: Hero = self.game_state.hero
             weapon_id = getattr(hero, slot_name)
             info = "none"
-            if weapon_id != "none":
+            if weapon_id is not None:
                 weapon_data = self.game_state.equipment[weapon_id]
                 info = weapon_data.description
                 info += f" {weapon_data.damage} ATK"
@@ -340,7 +340,7 @@ class InternalCommandHandler:
             hero: Hero = self.game_state.hero
             armour_id = getattr(hero, slot_name)
             info = "none"
-            if armour_id != "none":
+            if armour_id is not None:
                 armour_data = self.game_state.equipment[armour_id]
                 info = armour_data.description
                 info += f" {armour_data.resistance} DEF"
