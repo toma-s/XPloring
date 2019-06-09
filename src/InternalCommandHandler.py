@@ -163,21 +163,24 @@ class InternalCommandHandler:
         if hero.health <= 0:
             self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
 
-
-    def _count_total_hero_damage(self, creature):
+    def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
         total_armor_resist = 0
         # todo: shield do left hand?
-        for armor in hero.head, hero.chest, hero.legs:
-            if armor is not None:
-                self.game_state.equipment[armor].durability -= creature.damage // 2
-                if self.game_state.equipment[armor].durability <= 0:
-                    self._drop_item(armor)
-                total_armor_resist += self.game_state.equipment[armor].resistance
-        total_damage = creature.damage - total_armor_resist
+        for armor_id in hero.head, hero.chest, hero.legs:
+            if armor_id is not None:
+                self._armor_durability_loss(armor_id, creature_data.damage)
+                total_armor_resist += self.game_state.equipment[armor_id].resistance
+        total_damage = creature_data.damage - total_armor_resist
         return total_damage
 
-    def _drop_item(self, target):
+    def _armor_durability_loss(self, armor_id, damage_value):
+        armor_data: Armour = self.game_state.equipment[armor_id]
+        armor_data.durability = armor_data.durability - (damage_value // 2)
+        if armor_data.durability <= 0:
+            self._equipment_destruction(armor_id)
+
+    def _equipment_destruction(self, target):
         hero = self.game_state.hero
         equipment = self.game_state.equipment
 
