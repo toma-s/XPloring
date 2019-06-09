@@ -30,9 +30,9 @@ def _get_config_files():
 
 def let_user_pick(options, item_name):
     while True:
-        print("Please choose %s:" % item_name)
+        print(f"Please choose {item_name}:")
         for idx, element in enumerate(options):
-            print("{}) {}".format(idx + 1, element))
+            print(f"{idx + 1}) {element}")
         chosen_i = input("Enter number: ")
         if not valid_choice(chosen_i, len(options)):
             continue
@@ -43,7 +43,7 @@ def valid_choice(choice, max_limit):
     if not choice.isdigit():
         print("Not a number\n")
         return False
-    if 0 >= int(choice) or int(choice) > max_limit:
+    if int(choice) <= 0 or int(choice) > max_limit:
         print("Number out of range\n")
         return False
     return True

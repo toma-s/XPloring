@@ -35,5 +35,5 @@ class GUI:
         self.text_output.configure(state='disabled')
         self.text_output.see("end")
 
-    def enterPressed(self,e):
+    def enterPressed(self, e):
         self.game.react_to_input(self.getInput())
