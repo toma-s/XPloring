@@ -3,7 +3,7 @@ import contextlib
 import io
 
 from src.GameState import GameState
-from src.CommandHandler import CommandHandler
+from src.InputHandler import InputHandler
 
 
 class TestCombat(unittest.TestCase):
@@ -11,125 +11,125 @@ class TestCombat(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandHandler(self.game_state)
+        self.ih = InputHandler(self.game_state)
 
     def tearDown(self) -> None:
         del self.game_state
-        del self.cr
+        del self.ih
 
     def test_attack_dragon(self):
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "You hit the green dragon for 1 damage! Green dragon has 59 HP left.\n" \
                           "Green dragon hit you for 10 damage! You have 90 HP left.\n"
         self.assertEqual(expected_output, result_output)
 
     def testHitCreatureWithFist(self):
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
         self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(100, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(59, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
 
     def testHitCreatureWithFistThanWithSword(self):
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["go", "west"])
         self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(100, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(59, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
-        self.cr.handle_commands(["equip", "sword"])
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(29, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(80, self.game_state.hero.health)
 
     def testKillDragon(self):
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["equip", "sword"])
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["go", "west"])
         self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(100, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(30, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
 
     def testGetKey(self):
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["equip", "sword"])
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["go", "west"])
         self.assertEqual(60, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(100, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(30, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
         self.assertEqual(90, self.game_state.hero.health)
         self.assertIn("#item_doorkey_exit", self.game_state.rooms[self.game_state.hero.location].items)
 
     def testKillCreatureHelmetDurability(self):
-        self.cr.handle_commands(["take", "helmet"])
-        self.cr.handle_commands(["equip", "helmet"])
-        self.cr.handle_commands(["take", "chestplate"])
-        self.cr.handle_commands(["equip", "chestplate"])
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["take", "helmet"])
+        self.ih.handle_commands(["equip", "helmet"])
+        self.ih.handle_commands(["take", "chestplate"])
+        self.ih.handle_commands(["equip", "chestplate"])
+        self.ih.handle_commands(["go", "west"])
         for i in range(3):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         self.assertTrue(self.game_state.equipment["#equipment_steel_helmet"].durability <= 0)
 
     def testKillCreatureChestplateDurability(self):
-        self.cr.handle_commands(["take", "helmet"])
-        self.cr.handle_commands(["equip", "helmet"])
-        self.cr.handle_commands(["take", "chestplate"])
-        self.cr.handle_commands(["equip", "chestplate"])
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["take", "helmet"])
+        self.ih.handle_commands(["equip", "helmet"])
+        self.ih.handle_commands(["take", "chestplate"])
+        self.ih.handle_commands(["equip", "chestplate"])
+        self.ih.handle_commands(["go", "west"])
         for i in range(4):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         self.assertTrue(self.game_state.equipment["#equipment_golden_chestplate"].durability <= 0)
 
     def testFullArmorCreatureKillGetKey(self):
-        self.cr.handle_commands(["take", "helmet"])
-        self.cr.handle_commands(["equip", "helmet"])
-        self.cr.handle_commands(["take", "chestplate"])
-        self.cr.handle_commands(["equip", "chestplate"])
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["take", "helmet"])
+        self.ih.handle_commands(["equip", "helmet"])
+        self.ih.handle_commands(["take", "chestplate"])
+        self.ih.handle_commands(["equip", "chestplate"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["equip", "sword"])
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
         self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
         for i in range(2):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
-        self.cr.handle_commands(["look"])
-        self.cr.handle_commands(["take", "key"])
+        self.ih.handle_commands(["look"])
+        self.ih.handle_commands(["take", "key"])
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
 
     def testFullArmorCreatureKillGetKeyOpenDoor(self):
-        self.cr.handle_commands(["take", "helmet"])
-        self.cr.handle_commands(["equip", "helmet"])
-        self.cr.handle_commands(["take", "chestplate"])
-        self.cr.handle_commands(["equip", "chestplate"])
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["take", "helmet"])
+        self.ih.handle_commands(["equip", "helmet"])
+        self.ih.handle_commands(["take", "chestplate"])
+        self.ih.handle_commands(["equip", "chestplate"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["equip", "sword"])
         self.assertEqual("#equipment_steel_sword", self.game_state.hero.right_hand)
         self.assertEqual("#equipment_golden_chestplate", self.game_state.hero.chest)
         self.assertEqual("#equipment_steel_helmet", self.game_state.hero.head)
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
         for i in range(2):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
-        self.cr.handle_commands(["look"])
-        self.cr.handle_commands(["take", "key"])
+        self.ih.handle_commands(["look"])
+        self.ih.handle_commands(["take", "key"])
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
-        self.cr.handle_commands(["unlock", "door"])
+        self.ih.handle_commands(["unlock", "door"])
         self.assertEqual("#room_arena", self.game_state.hero.location)

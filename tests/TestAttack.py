@@ -2,7 +2,7 @@ import contextlib
 import io
 import unittest
 
-from CommandHandler import CommandHandler
+from InputHandler import InputHandler
 from GameState import GameState
 from InputHandler import InputHandler
 
@@ -12,30 +12,30 @@ class TestAttack(unittest.TestCase):
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
         self.game_state = GameState(self.map0)
-        self.cr = CommandHandler(self.game_state)
+        self.ih = InputHandler(self.game_state)
 
         self.map1 = '../game_states/game1_cake.json'
         self.game_state1 = GameState(self.map1)
-        self.cr1 = CommandHandler(self.game_state1)
+        self.ih1 = InputHandler(self.game_state1)
 
         self.map_capital_alias = '../game_states/game_capital_alias.json'
         self.game_state_capital_alias = GameState(self.map_capital_alias)
-        self.cr_capital_alias = CommandHandler(self.game_state_capital_alias)
+        self.ih_capital_alias = InputHandler(self.game_state_capital_alias)
 
     def tearDown(self) -> None:
         del self.game_state
-        del self.cr
+        del self.ih
 
         del self.game_state1
-        del self.cr1
+        del self.ih1
 
         del self.game_state_capital_alias
-        del self.cr_capital_alias
+        del self.ih_capital_alias
 
     def test_attack(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack"])
+            self.ih.handle_commands(["attack"])
         result_output = stdout.getvalue()
         expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
@@ -43,7 +43,7 @@ class TestAttack(unittest.TestCase):
     def test_attack_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "envelope"])
+            self.ih.handle_commands(["attack", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -51,7 +51,7 @@ class TestAttack(unittest.TestCase):
     def test_attack_consumable_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "bandage"])
+            self.ih.handle_commands(["attack", "bandage"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the bandage.\n"
         self.assertEqual(expected_output, result_output)
@@ -59,7 +59,7 @@ class TestAttack(unittest.TestCase):
     def test_attack_equipment_weapon(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "sword"])
+            self.ih.handle_commands(["attack", "sword"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the sword.\n"
         self.assertEqual(expected_output, result_output)
@@ -67,7 +67,7 @@ class TestAttack(unittest.TestCase):
     def test_attack_equipment_armour(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "helmet"])
+            self.ih.handle_commands(["attack", "helmet"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the helmet.\n"
         self.assertEqual(expected_output, result_output)
@@ -75,16 +75,16 @@ class TestAttack(unittest.TestCase):
     def test_attack_direction(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "west"])
+            self.ih.handle_commands(["attack", "west"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the west.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_creature(self):
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "dragon"])
+            self.ih.handle_commands(["attack", "dragon"])
         result_output = stdout.getvalue()
         expected_output = "You hit the green dragon for 1 damage! Green dragon has 59 HP left.\n" \
                           "Green dragon hit you for 10 damage! You have 90 HP left.\n"
@@ -93,24 +93,24 @@ class TestAttack(unittest.TestCase):
     def test_attack_inventory(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "inventory"])
+            self.ih.handle_commands(["attack", "inventory"])
         result_output = stdout.getvalue()
         expected_output = "This action is not allowed with the inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_key(self):
-        self.cr.handle_commands(["take", "helmet"])
-        self.cr.handle_commands(["take", "sword"])
-        self.cr.handle_commands(["take", "chestplate"])
-        self.cr.handle_commands(["equip", "helmet"])
-        self.cr.handle_commands(["equip", "sword"])
-        self.cr.handle_commands(["equip", "chestplate"])
-        self.cr.handle_commands(["go", "west"])
-        self.cr.handle_commands(["attack", "dragon"])
-        self.cr.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["take", "helmet"])
+        self.ih.handle_commands(["take", "sword"])
+        self.ih.handle_commands(["take", "chestplate"])
+        self.ih.handle_commands(["equip", "helmet"])
+        self.ih.handle_commands(["equip", "sword"])
+        self.ih.handle_commands(["equip", "chestplate"])
+        self.ih.handle_commands(["go", "west"])
+        self.ih.handle_commands(["attack", "dragon"])
+        self.ih.handle_commands(["attack", "dragon"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "key"])
+            self.ih.handle_commands(["attack", "key"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the key.\n"
         self.assertEqual(expected_output, result_output)
@@ -118,25 +118,25 @@ class TestAttack(unittest.TestCase):
     def test_attack_key_ambiguous(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.handle_commands(["attack", "key"])
+            self.ih1.handle_commands(["attack", "key"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"key\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_door(self):
-        self.cr.handle_commands(["go", "west"])
+        self.ih.handle_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr.handle_commands(["attack", "door"])
+            self.ih.handle_commands(["attack", "door"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the door.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_door_ambiguous(self):
-        self.cr1.handle_commands(["go", "north"])
+        self.ih1.handle_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.cr1.handle_commands(["attack", "door"])
+            self.ih1.handle_commands(["attack", "door"])
         result_output = stdout.getvalue()
         expected_output = "There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
@@ -148,8 +148,8 @@ class TestAttack(unittest.TestCase):
     def test_alias_capital_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("attack Green Dragon")
-            self.cr_capital_alias.handle_commands(commands_to_run)
+            commands_to_run = self.ih_capital_alias.parse_user_input("attack Green Dragon")
+            self.ih_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "You hit the Green Dragon for 1 damage! " \
                           "Green Dragon has 49 HP left.\n" \
@@ -160,8 +160,8 @@ class TestAttack(unittest.TestCase):
     def test_alias_lower_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("attack green dragon")
-            self.cr_capital_alias.handle_commands(commands_to_run)
+            commands_to_run = self.ih_capital_alias.parse_user_input("attack green dragon")
+            self.ih_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "You hit the Green Dragon for 1 damage! " \
                           "Green Dragon has 49 HP left.\n" \
@@ -172,8 +172,8 @@ class TestAttack(unittest.TestCase):
     def test_alias_lower_capital_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            commands_to_run = InputHandler().parse_user_input("attack green Dragon")
-            self.cr_capital_alias.handle_commands(commands_to_run)
+            commands_to_run = self.ih_capital_alias.parse_user_input("attack green Dragon")
+            self.ih_capital_alias.handle_commands(commands_to_run)
         result_output = stdout.getvalue()
         expected_output = "You hit the Green Dragon for 1 damage! " \
                           "Green Dragon has 49 HP left.\n" \
