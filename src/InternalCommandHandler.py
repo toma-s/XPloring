@@ -362,7 +362,7 @@ class InternalCommandHandler:
         hero: Hero = self.game_state.hero
         print(f"----- HERO STATUS -----")
         print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero.damage} ATK")
+        print(f"Attack Power: {hero.base_damage} ATK")
         _print_weapon("right_hand")
         _print_weapon("left_hand")
         _print_armour("head")
