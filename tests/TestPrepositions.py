@@ -31,18 +31,6 @@ class TestInventory(unittest.TestCase):
         del self.game_state_capital_alias
         del self.ih_capital_alias
 
-    def test_look_at(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_user_input("look around")
-        result_output = stdout.getvalue()
-        expected_output = "Entrance room.\n" \
-                          "There is a key. This key opens armory door.\n" \
-                          "There is a key. This key opens kitchen door.\n" \
-                          "There are no enemies around.\n" \
-                          "There is crossroad room to the NORTH.\n"
-        self.assertEqual(expected_output, result_output)
-
     def test_look_whatever(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
