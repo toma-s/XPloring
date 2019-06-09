@@ -2,7 +2,6 @@ import contextlib
 import io
 import unittest
 
-from InputHandler import InputHandler
 from GameState import GameState
 from InputHandler import InputHandler
 
