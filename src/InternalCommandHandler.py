@@ -381,16 +381,12 @@ class InternalCommandHandler:
             print(f"Your inventory is empty.")
             return
 
-        for inv_item in hero.inventory:
-            if inv_item in self.game_state.items:
-                it = self.game_state.items[inv_item]
-            else:
-                it = self.game_state.equipment[inv_item]
-            res = f"{it.alias[0]} - {it.description}"
-            if isinstance(it, Armour) or isinstance(it, Weapon):
-                if it.in_use:
-                    res += " [EQUIPPED]"
-            print(res)
+        for item_id in hero.inventory:
+            item_data = self.finder.get_data_by_id(item_id)
+            item_print = f"{item_data.alias[0]} - {item_data.description}"
+            if self._is_item_equipped(item_id):
+                item_print += " [EQUIPPED]"
+            print(item_print)
 
     def _end_game(self, end_message):
         print(end_message)
