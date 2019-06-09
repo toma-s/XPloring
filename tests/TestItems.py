@@ -22,32 +22,32 @@ class TestItems(unittest.TestCase):
         del self.ih
 
     def test_internal_spawn_item(self):
-        self.ih.handle_commands(["open", "envelope"])
+        self.ih.execute_commands(["open", "envelope"])
         room_items = self.game_state.rooms[self.game_state.hero.location].items
         self.assertIn("#item_letter", room_items, "Letter should appear in room after opening an envelope")
         self.assertNotIn("#item_envelope", room_items, "After envelope was opened it should have disappeared")
 
 
     def test_internal_take_item(self):
-        self.ih.handle_commands(["take", "sword"])
+        self.ih.execute_commands(["take", "sword"])
         room_items = self.game_state.rooms[self.game_state.hero.location].items
         self.assertNotIn("#equipment_steel_sword", room_items, "You took the sword, why is it still in the room ???")
 
     def test_go_throught_locked_door(self):
-        self.ih.handle_commands(["go", "west"])
+        self.ih.execute_commands(["go", "west"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
-        self.ih.handle_commands(["go", "north"])
+        self.ih.execute_commands(["go", "north"])
         self.assertEqual("#room_arena", self.game_state.hero.location)
 
     def test_take_sword(self):
-        self.ih.handle_commands(["take", "sword"])
+        self.ih.execute_commands(["take", "sword"])
         self.assertEqual(1, len(self.game_state.hero.inventory))
         self.assertIn("#equipment_steel_sword", self.game_state.hero.inventory)
 
     def test_open_nonexisting_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["open", "envel"])
+            self.ih.execute_commands(["open", "envel"])
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as envel.\n"
         self.assertEqual(expected_output, result_output)
@@ -55,7 +55,7 @@ class TestItems(unittest.TestCase):
     def test_nonexisting_action_ope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["ope", "envelope"])
+            self.ih.execute_commands(["ope", "envelope"])
         result_output = stdout.getvalue()
         expected_output = f"Action \"ope\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -63,7 +63,7 @@ class TestItems(unittest.TestCase):
     def test_both_nonexisting_ope_enveep(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["ope", "enveep"])
+            self.ih.execute_commands(["ope", "enveep"])
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as enveep.\n"
         self.assertEqual(expected_output, result_output)
@@ -71,30 +71,30 @@ class TestItems(unittest.TestCase):
     def test_read_envelope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["read", "envelope"])
+            self.ih.execute_commands(["read", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Action \"read\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_read_letter(self):
-        self.ih.handle_commands(["open", "envelope"])
+        self.ih.execute_commands(["open", "envelope"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["read", "letter"])
+            self.ih.execute_commands(["read", "letter"])
         result_output = stdout.getvalue()
         expected_output = "A green dragon guards a key to the exit door.\n"\
                           "You must kill the dragon and take the key from its dead body.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_envelope_room(self):
-        self.ih.handle_commands(["open", "envelope"])
+        self.ih.execute_commands(["open", "envelope"])
 
         self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
         self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["open", "envelope"])
+            self.ih.execute_commands(["open", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -102,15 +102,15 @@ class TestItems(unittest.TestCase):
 
 
     def test_open_envelope_inventory(self):
-        self.ih.handle_commands(["take", "envelope"])
-        self.ih.handle_commands(["open", "envelope"])
+        self.ih.execute_commands(["take", "envelope"])
+        self.ih.execute_commands(["open", "envelope"])
 
         self.assertNotIn("#item_envelope", self.game_state.rooms['#room_entrance'].items)
         self.assertIn("#item_letter", self.game_state.rooms['#room_entrance'].items)
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["open", "envelope"])
+            self.ih.execute_commands(["open", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -118,7 +118,7 @@ class TestItems(unittest.TestCase):
         def test_take_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.ih1.handle_commands(["take", "key"])
+                self.ih1.execute_commands(["take", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)
@@ -126,7 +126,7 @@ class TestItems(unittest.TestCase):
         def test_examine_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.ih1.handle_commands(["examine", "key"])
+                self.ih1.execute_commands(["examine", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)
@@ -134,7 +134,7 @@ class TestItems(unittest.TestCase):
         def test_nonexistent_action_keys_with_same_alias(self):
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):
-                self.ih1.handle_commands(["read", "key"])
+                self.ih1.execute_commands(["read", "key"])
             result_output = stdout.getvalue()
             expected_output = f"There are 2 \"key\". You have to be more specific.\n"
             self.assertEqual(expected_output, result_output)
@@ -144,7 +144,7 @@ class TestItems(unittest.TestCase):
     def test_attack_envelope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["attack", "envelope"])
+            self.ih.execute_commands(["attack", "envelope"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
@@ -152,17 +152,17 @@ class TestItems(unittest.TestCase):
     def test_attack_helmet(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["attack", "helmet"])
+            self.ih.execute_commands(["attack", "helmet"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the helmet.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_attack_door(self):
-        self.ih.handle_commands(["go", "west"])
+        self.ih.execute_commands(["go", "west"])
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["attack", "door"])
+            self.ih.execute_commands(["attack", "door"])
         result_output = stdout.getvalue()
         expected_output = "Action \"attack\" is not allowed with the door.\n"
         self.assertEqual(expected_output, result_output)
@@ -170,7 +170,7 @@ class TestItems(unittest.TestCase):
     def test_attack_nonexistent(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["attack", "nothing"])
+            self.ih.execute_commands(["attack", "nothing"])
         result_output = stdout.getvalue()
         expected_output = "There is no such thing as nothing.\n"
         self.assertEqual(expected_output, result_output)

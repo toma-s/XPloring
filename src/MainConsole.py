@@ -43,7 +43,7 @@ def valid_choice(choice, max_limit):
     if not choice.isdigit():
         print("Not a number\n")
         return False
-    if  int(choice) <= 0 or int(choice) > max_limit:
+    if int(choice) <= 0 or int(choice) > max_limit:
         print("Number out of range\n")
         return False
     return True

@@ -14,18 +14,23 @@ class InputHandler:
         self.internal_command_handler = InternalCommandHandler(game_state)
         self.finder = Finder(game_state)
 
+    def handle_user_input(self, user_input: str) -> None:
+        commands_to_run = self.parse_user_input(user_input)
+        self.execute_commands(commands_to_run)
+
     def parse_user_input(self, user_input):
         user_input_words = user_input.strip().lower().split(" ")
+        ignored_words = {"the", "to", "on", "a", "an", "this", "that", "these", "those"}
         parsed_words = []
         for word in user_input_words:
-            ignored = {"the", "to", "on", "a", "an", "this", "that", "these", "those"}
-            if word in ignored:
+            if word in ignored_words:
                 continue
             checked_word = self.match_keyword(word)
             parsed_words.append(checked_word)
         return parsed_words
 
-    def handle_commands(self, commands: [str]) -> None:
+    def execute_commands(self, commands: [str]) -> None:
+
         action_name = commands[0]
         target_alias = " ".join(commands[1:])
         if len(commands) == 1:
@@ -35,11 +40,13 @@ class InputHandler:
 
     def single_command(self, action_name: str) -> None:
         hero = self.game_state.hero
-        if action_name not in hero.actions:
+        if action_name in hero.actions:
+            action_data = hero.actions[action_name]
+            self.internal_command_handler.handle_internal_command(action_data)
+        else:
             print(f"I don't understand that command.")
-            return
-        action_data = hero.actions[action_name]
-        self.internal_command_handler.handle_internal_command(action_data)
+
+
 
     def double_command(self, action_name: str, target_alias: str) -> None:
         hero = self.game_state.hero

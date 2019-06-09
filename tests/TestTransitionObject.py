@@ -27,28 +27,28 @@ class TestInput(unittest.TestCase):
 
     # -- game0 (arena)--
     def test_examine_arena_door(self):
-        self.ih.handle_commands(["go", "west"])
+        self.ih.execute_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["examine", "door"])
+            self.ih.execute_commands(["examine", "door"])
         result_output = stdout.getvalue()
         expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_arena_door(self):
-        self.ih.handle_commands(["go", "west"])
+        self.ih.execute_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["open", "door"])
+            self.ih.execute_commands(["open", "door"])
         result_output = stdout.getvalue()
         expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_arena_door_nokey(self):
-        self.ih.handle_commands(["go", "west"])
+        self.ih.execute_commands(["go", "west"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_commands(["unlock", "door"])
+            self.ih.execute_commands(["unlock", "door"])
         result_output = stdout.getvalue()
         expected_output = f"You don't have a required item to do this action.\n"
         self.assertEqual(expected_output, result_output)
@@ -57,76 +57,76 @@ class TestInput(unittest.TestCase):
     # -- game1 --
 
     def test_open_doors_with_same_alias(self):
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["open", "door"])
+            self.ih1.execute_commands(["open", "door"])
         result_output = stdout.getvalue()
         expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_armory_door(self):
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["examine", "armory door"])
+            self.ih1.execute_commands(["examine", "armory door"])
         result_output = stdout.getvalue()
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_locked_door_nokey(self):
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["open", "armory door"])
+            self.ih1.execute_commands(["open", "armory door"])
         result_output = stdout.getvalue()
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_locked_door_haskey(self):
-        self.ih1.handle_commands(["take", "armory key"])
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["take", "armory key"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["open", "armory door"])
+            self.ih1.execute_commands(["open", "armory door"])
         result_output = stdout.getvalue()
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_armory_door_nokey(self):
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["unlock", "armory door"])
+            self.ih1.execute_commands(["unlock", "armory door"])
         result_output = stdout.getvalue()
         expected_output = f"You don't have a required item to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_armory_door_has_key(self):
-        self.ih1.handle_commands(["take", "armory key"])
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["take", "armory key"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["unlock", "armory door"])
+            self.ih1.execute_commands(["unlock", "armory door"])
         result_output = stdout.getvalue()
         expected_output = f"Armory door is unlocked, you may go through.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_doors_with_same_alias_nokey(self):
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["unlock", "door"])
+            self.ih1.execute_commands(["unlock", "door"])
         result_output = stdout.getvalue()
         expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_doors_with_same_alias_haskey(self):
-        self.ih1.handle_commands(["take", "armory key"])
-        self.ih1.handle_commands(["go", "north"])
+        self.ih1.execute_commands(["take", "armory key"])
+        self.ih1.execute_commands(["go", "north"])
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih1.handle_commands(["unlock", "door"])
+            self.ih1.execute_commands(["unlock", "door"])
         result_output = stdout.getvalue()
         expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)

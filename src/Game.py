@@ -48,8 +48,7 @@ class Game:
             if re.match("^q$|^Q$|^quit$|^QUIT$", user_input):
                 return
 
-            commands_to_run = self.input_handler.parse_user_input(user_input)
-            self.input_handler.handle_commands(commands_to_run)
+            self.input_handler.handle_user_input(user_input)
 
     def run_gui(self):
         room = self.game_state.rooms[self.game_state.hero.location]
@@ -83,8 +82,7 @@ class Game:
                 sys.exit(0)
 
             else:
-                commands_to_run = self.input_handler.parse_user_input(user_input)
-                self.input_handler.handle_commands(commands_to_run)
+                self.input_handler.handle_user_input(user_input)
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)
