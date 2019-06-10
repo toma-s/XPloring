@@ -34,7 +34,7 @@ class TestInventory(unittest.TestCase):
     def test_durability_helmet(self):
         self.ih.handle_user_input("take helmet")
         self.ih.handle_user_input("equip helmet")
-        helmet_id = self.game_state.hero.head
+        helmet_id = self.game_state.hero.head_slot
         result_durability = self.game_state.equipment[helmet_id].durability
         self.assertEqual(12, result_durability)
         self.assertEqual("#equipment_gladiator_helmet", helmet_id)
@@ -45,7 +45,7 @@ class TestInventory(unittest.TestCase):
         self.ih.handle_user_input("equip helmet")
         self.ih.handle_user_input("go west")
         self.ih.handle_user_input("hit dragon")
-        helmet_id = self.game_state.hero.head
+        helmet_id = self.game_state.hero.head_slot
         result_durability = self.game_state.equipment[helmet_id].durability
         self.assertEqual(7, result_durability)
         self.assertEqual("#equipment_gladiator_helmet", helmet_id)
@@ -58,7 +58,7 @@ class TestInventory(unittest.TestCase):
         self.ih.handle_user_input("hit dragon")
         self.ih.handle_user_input("hit dragon")
         self.ih.handle_user_input("hit dragon")
-        helmet_id = self.game_state.hero.head
+        helmet_id = self.game_state.hero.head_slot
         self.assertEqual(None, helmet_id)
         self.assertEqual(0, len(self.game_state.hero.inventory))
 
@@ -71,8 +71,8 @@ class TestInventory(unittest.TestCase):
         self.ih.handle_user_input("hit dragon")
         self.ih.handle_user_input("hit dragon")
         self.ih.handle_user_input("status")
-        helmet_id = self.game_state.hero.head
-        chestplate_id = self.game_state.hero.chest
+        helmet_id = self.game_state.hero.head_slot
+        chestplate_id = self.game_state.hero.chest_slot
         self.assertEqual("#equipment_gladiator_helmet", helmet_id)
         self.assertEqual("#equipment_steel_chestplate", chestplate_id)
         self.assertEqual(2, len(self.game_state.hero.inventory))

@@ -130,7 +130,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertIsInstance(armour1, Armour)
         self.assertEqual("Armour Equipment", armour1.description)
         self.assertListEqual(["armour equipment"], armour1.alias)
-        self.assertEqual("head", armour1.slot)
+        self.assertEqual("head_slot", armour1.slot)
 
         self.assertEqual(5, armour1.resistance)
         self.assertEqual(10, armour1.durability)
@@ -139,7 +139,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertIsInstance(weapon1, Weapon)
         self.assertEqual("Weapon Equipment", weapon1.description)
         self.assertListEqual(["weapon equipment"], weapon1.alias)
-        self.assertEqual("right_hand", weapon1.slot)
+        self.assertEqual("weapon_slot", weapon1.slot)
         self.assertEqual(50, weapon1.damage)
 
     def test_create_hero(self):
@@ -147,11 +147,10 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertIsInstance(hero, Hero)
         self.assertEqual(100, hero.health)
         self.assertEqual("#room1", hero.location)
-        self.assertEqual("#weapon1", hero.right_hand)
-        self.assertEqual(None, hero.left_hand)
-        self.assertEqual("#armour1", hero.head)
-        self.assertEqual(None, hero.chest)
-        self.assertEqual(None, hero.legs)
+        self.assertEqual("#weapon1", hero.weapon_slot)
+        self.assertEqual("#armour1", hero.head_slot)
+        self.assertEqual(None, hero.chest_slot)
+        self.assertEqual(None, hero.legs_slot)
         self.assertListEqual(["#item1"], hero.inventory)
 
         expected_hero_actions = {

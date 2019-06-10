@@ -123,11 +123,10 @@
     "health": 0,
     "base_damage": 1,
     "location": "#",
-    "right_hand": "#",
-    "left_hand": null,
-    "head": "#",
-    "chest": null,
-    "legs": null,
+    "weapon_slot": "#",
+    "head_slot": "#",
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": [
       "#"

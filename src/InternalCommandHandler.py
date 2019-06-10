@@ -165,8 +165,8 @@ class InternalCommandHandler:
         creature_alias = creature_data.alias[0]
         hero = self.game_state.hero
         hero_attack_power = hero.base_damage
-        if hero.right_hand is not None:
-            hero_attack_power = self.game_state.equipment[hero.right_hand].damage
+        if hero.weapon_slot is not None:
+            hero_attack_power = self.game_state.equipment[hero.weapon_slot].damage
         creature_data.health -= hero_attack_power
         print(f"You hit the {creature_alias} for {hero_attack_power} damage! "
               f"{self._capitalize_first(creature_alias)} has {creature_data.health} HP left.")
@@ -196,8 +196,8 @@ class InternalCommandHandler:
     def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
         total_armor_resist = 0
-        # todo: shield do left hand?
-        for armor_id in hero.head, hero.chest, hero.legs:
+
+        for armor_id in hero.head_slot, hero.chest_slot, hero.legs_slot:
             if armor_id is not None:
                 self._armor_durability_loss(armor_id, creature_data.damage)
                 total_armor_resist += self.game_state.equipment[armor_id].resistance
@@ -392,41 +392,38 @@ class InternalCommandHandler:
 
     def _show_hero_status(self):
 
-        def _print_weapon(slot_name: str):
-            weapon_id = getattr(hero, slot_name)
+        def _print_weapon(slot_id: str, slot_name):
+            weapon_id = getattr(hero, slot_id)
             info_print = "nothing"
             if weapon_id is not None:
                 weapon_data = self.game_state.equipment[weapon_id]
                 info_print = weapon_data.description
                 info_print += f" {weapon_data.damage} ATK"
-            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info_print}")
+            print(f"{slot_name}: {info_print}")
 
-        def _print_armour(slot_name: str):
-            armour_id = getattr(hero, slot_name)
+        def _print_armour(slot_id: str, slot_name: str):
+            armour_id = getattr(hero, slot_id)
             info_print = "nothing"
             if armour_id is not None:
                 armour_data = self.game_state.equipment[armour_id]
                 info_print = armour_data.description
                 info_print += f" {armour_data.resistance} DEF"
                 info_print += f" {armour_data.durability} Durability"
-            slot_print = self._capitalize_first(slot_name.replace('_', ' '))
-            print(f"{slot_print}: {info_print}")
+            print(f"{slot_name}: {info_print}")
 
         hero: Hero = self.game_state.hero
         hero_damage = hero.base_damage
-        if hero.right_hand is not None:
-            weapon_data: Weapon = self.game_state.equipment[hero.right_hand]
+        if hero.weapon_slot is not None:
+            weapon_data: Weapon = self.game_state.equipment[hero.weapon_slot]
             hero_damage = weapon_data.damage
 
         print(f"----- HERO STATUS -----")
         print(f"Health: {hero.health} HP")
         print(f"Attack Power: {hero_damage} ATK")
-        _print_weapon("right_hand")
-        _print_weapon("left_hand")
-        _print_armour("head")
-        _print_armour("chest")
-        _print_armour("legs")
+        _print_weapon("weapon_slot", "Weapon")
+        _print_armour("head_slot", "Head")
+        _print_armour("chest_slot", "Chest")
+        _print_armour("legs_slot", "Legs")
         print(f"-----------------------")
 
     def _show_hero_inventory(self):

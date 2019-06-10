@@ -101,7 +101,7 @@ class TestDrop(unittest.TestCase):
         self.ih.handle_user_input("take sword")
         self.assertEqual(1, len(self.game_state.hero.inventory))
         self.ih.handle_user_input("equip sword")
-        self.assertEqual("#equipment_silver_sword", self.game_state.hero.right_hand)
+        self.assertEqual("#equipment_silver_sword", self.game_state.hero.weapon_slot)
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("drop sword")
@@ -109,7 +109,7 @@ class TestDrop(unittest.TestCase):
         expected_output = "Item unequipped.\n"\
                           "Item removed from inventory.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual(None, self.game_state.hero.right_hand)
+        self.assertEqual(None, self.game_state.hero.weapon_slot)
         self.assertEqual(0, len(self.game_state.hero.inventory))
 
 

@@ -123,11 +123,10 @@ class GameStateSaver:
         hero["health"] = hero_data.health
         hero["base_damage"] = hero_data.base_damage
         hero["location"] = hero_data.location
-        hero["right_hand"] = hero_data.right_hand
-        hero["left_hand"] = hero_data.left_hand
-        hero["head"] = hero_data.head
-        hero["chest"] = hero_data.chest
-        hero["legs"] = hero_data.legs
+        hero["weapon_slot"] = hero_data.weapon_slot
+        hero["head_slot"] = hero_data.head_slot
+        hero["chest_slot"] = hero_data.chest_slot
+        hero["legs_slot"] = hero_data.legs_slot
         hero["actions"] = self._get_custom_hero_actions()
         hero["inventory"] = [inventory_item for inventory_item in hero_data.inventory]
         return hero
