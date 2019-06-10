@@ -42,6 +42,7 @@ class GameStateSaver:
             rooms[key]["directions"] = room.directions
             rooms[key]["items"] = room.items
             rooms[key]["creatures"] = [creature for creature in room.creatures]
+            rooms[key]["items"] = room.actions
             if room.auto_actions is not None:
                 rooms[key]["auto_actions"] = room.auto_actions
         return rooms

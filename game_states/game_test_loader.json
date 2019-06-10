@@ -13,7 +13,8 @@
       ],
       "creatures": [
         "#creature1"
-      ]
+      ],
+      "actions": {}
     },
     "#room2": {
       "alias": "room2",
@@ -28,7 +29,8 @@
       ],
       "creatures": [
         "#creature2"
-      ]
+      ],
+      "actions": {}
     }
   },
   "creatures": {

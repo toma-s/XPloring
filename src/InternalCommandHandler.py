@@ -17,7 +17,7 @@ class InternalCommandHandler:
         self.finder = Finder(game_state)
 
     def handle_internal_command(self, ic_name, ic_arg, target_id) -> bool:
-        success = True
+        allow_next_command = True
 
         if ic_name == "command_move_direction" and target_id:
             self.move_to_direction(target_id)
@@ -57,13 +57,12 @@ class InternalCommandHandler:
         elif ic_name == "command_required_item":
             item_id = ic_arg
             if not self._required_item_in_inventory(item_id):
-                success = False
+                allow_next_command = False
 
         elif ic_name == "command_consume_item":
-            # TODO refactor - use_item
             self.consume_item(target_id)
 
-        elif ic_name == "command_equip":
+        elif ic_name == "command_equip" and target_id:
             self._equip_item(target_id)
 
         elif ic_name == "command_unequip":
@@ -87,8 +86,8 @@ class InternalCommandHandler:
 
         else:
             print("I don't understand that command.")
-            success = False
-        return success
+            allow_next_command = False
+        return allow_next_command
 
     def move_to_direction(self, direction_name):
         hero = self.game_state.hero
@@ -219,11 +218,6 @@ class InternalCommandHandler:
 
         self._remove_item_from_inventory(equipment_id)
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
-
-
-    def _hero_hp_reduction(self, damage_value, attacker_alias):
-        ...
-
 
     def _spawn_item(self, item_id):
         room = self.game_state.rooms[self.game_state.hero.location]

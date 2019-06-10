@@ -9,7 +9,8 @@
         "#helmet1",
         "#helmet2"
       ],
-      "creatures": []
+      "creatures": [],
+      "actions": {}
     }
   },
   "creatures": {},

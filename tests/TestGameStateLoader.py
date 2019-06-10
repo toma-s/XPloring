@@ -155,9 +155,6 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["#item1"], hero.inventory)
 
         expected_hero_actions = {
-            "go": {
-                "command_move_direction": None
-            },
             "look": {
                 "command_show_room": None
             },

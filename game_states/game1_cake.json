@@ -12,7 +12,8 @@
         "#item_doorkey_armory",
         "#item_doorkey_kitchen"
       ],
-      "creatures": []
+      "creatures": [],
+      "actions": {}
     },
     "#room_crossroad": {
       "alias": "crossroad",
@@ -31,8 +32,8 @@
         }
       },
       "items": [],
-      "creatures": [
-      ]
+      "creatures": [],
+      "actions": {}
     },
     "#room_armory": {
       "alias": "armory",
@@ -45,7 +46,8 @@
       },
       "items": [],
       "creatures": [
-      ]
+      ],
+      "actions": {}
     },
     "#room_kitchen": {
       "alias": "kitchen",
@@ -63,8 +65,8 @@
       "items": [
         "#item_cake"
       ],
-      "creatures": [
-      ]
+      "creatures": [],
+      "actions": {}
     },
     "#room_exit": {
       "alias": "exit",
@@ -72,6 +74,7 @@
       "directions": {},
       "items": [],
       "creatures": [],
+      "actions": {},
       "auto_actions": {
         "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
