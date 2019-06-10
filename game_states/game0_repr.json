@@ -140,7 +140,8 @@
         "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences",
         "alias": [
           "unlabelled bottle",
-          "bottle"
+          "bottle",
+          "strange bottle"
         ],
         "actions": {
           "use": {
