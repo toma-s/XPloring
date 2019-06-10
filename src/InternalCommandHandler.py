@@ -281,6 +281,7 @@ class InternalCommandHandler:
     def _consume_item_harmful_effect(self, consumable_data: Consumable):
         hero = self.game_state.hero
         harm_amount = consumable_data.value
+
         hero.health += harm_amount
 
         consumable_alias = consumable_data.alias[0]
