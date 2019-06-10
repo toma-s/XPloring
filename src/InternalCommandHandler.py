@@ -60,7 +60,7 @@ class InternalCommandHandler:
 
             elif command == "command_use_item":
                 # TODO refactor - use_item
-                self.use_item(target_id)
+                self.consume_item(target_id)
 
             elif command == "command_equip":
                 self._equip_item(target_id)
@@ -259,7 +259,7 @@ class InternalCommandHandler:
         print(f"You don't have a required item to do this action.")
         return False
 
-    def use_item(self, item_id):
+    def consume_item(self, item_id):
         item_data = self.game_state.items[item_id]
         hero = self.game_state.hero
 

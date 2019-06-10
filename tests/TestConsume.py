@@ -79,16 +79,36 @@ class TestConsume(unittest.TestCase):
         self.assertEqual(expected_output, result_output)
         self.assertEqual(25, self.game_state.hero.health)
 
-    def test_use_bandage(self):
+    def test_use_bandage_full_hp(self):
+        self.ih.handle_user_input("take bandage")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        self.assertEqual(100, self.game_state.hero.health)
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_user_input("take bandage")
             self.ih.handle_user_input("use bandage")
         result_output = stdout.getvalue()
-        expected_output = "Bandage has been added to your inventory.\n" \
-                          "You are fully healed, you don't need healing.\n"
+        expected_output = "You are fully healed, you don't need healing.\n"
         self.assertEqual(expected_output, result_output)
+        self.assertEqual(1, len(self.game_state.hero.inventory))
         self.assertEqual(100, self.game_state.hero.health)
+
+    def test_use_bandage_full_hp(self):
+        self.ih.handle_user_input("take bottle")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        self.ih.handle_user_input("drink bottle")
+        self.assertEqual(0, len(self.game_state.hero.inventory))
+        self.assertEqual(25, self.game_state.hero.health)
+
+        self.ih.handle_user_input("take bandage")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("use bandage")
+        result_output = stdout.getvalue()
+        expected_output = "You have consumed bandage. +25 HP. Current health is 50 HP.\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual(50, self.game_state.hero.health)
+        self.assertEqual(0, len(self.game_state.hero.inventory))
 
     def test_eat_cake(self):
         self.ih1.handle_user_input("take kitchen key")
