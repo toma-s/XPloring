@@ -190,7 +190,8 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih_capital_alias.handle_user_input("examine Sword")
         result_output = stdout.getvalue()
-        expected_output = "Weapon Equipment Sword\n"
+        expected_output = "Weapon Equipment Sword\n" \
+                          "DMG: 10\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_equipment_weapon(self):
@@ -198,7 +199,8 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih_capital_alias.handle_user_input("examine sword")
         result_output = stdout.getvalue()
-        expected_output = "Weapon Equipment Sword\n"
+        expected_output = "Weapon Equipment Sword\n" \
+                          "DMG: 10\n"
         self.assertEqual(expected_output, result_output)
 
     # equipment armour
@@ -208,7 +210,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih_capital_alias.handle_user_input("examine Helmet")
         result_output = stdout.getvalue()
-        expected_output = "Helmet Equipment\n"
+        expected_output = "Helmet Equipment\n" \
+                          "Durability: 10\n" \
+                          "Resistance: 5\n"
         self.assertEqual(expected_output, result_output)
 
     def test_alias_lower_equipment_armour(self):
@@ -216,5 +220,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih_capital_alias.handle_user_input("examine helmet")
         result_output = stdout.getvalue()
-        expected_output = "Helmet Equipment\n"
+        expected_output = "Helmet Equipment\n" \
+                          "Durability: 10\n" \
+                          "Resistance: 5\n"
         self.assertEqual(expected_output, result_output)
