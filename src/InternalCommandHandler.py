@@ -26,18 +26,7 @@ class InternalCommandHandler:
                 print(f"{message}")
 
             elif command == "command_show_description":
-                data = self.finder.get_data_by_id(target_id)
-                print(f"{data.description}")
-                target = self.finder.get_data_by_id(target_id)
-                if isinstance(target, Weapon):
-                    print(f"DMG: {target.damage}")
-                elif isinstance(target, Armour):
-                    print(f"Durability: {target.durability}")
-                    print(f"Resistance: {target.resistance}")
-                elif isinstance(target, Creature):
-                    print(f"HP: {target.health}")
-                    print(f"DMG: {target.damage}")
-
+                self._show_description(target_id)
 
             elif command == "command_set_description":
                 new_description: str = commands[command]
@@ -125,6 +114,18 @@ class InternalCommandHandler:
         print(f"{rooms[room_id].description}")
         if rooms[room_id].auto_commands is not None:
             self.handle_internal_command(rooms[room_id].auto_commands, room_id)
+
+    def _show_description(self, target_id):
+        target_data = self.finder.get_data_by_id(target_id)
+        print(f"{target_data.description}")
+        if isinstance(target_data, Weapon):
+            print(f"DMG: {target_data.damage}")
+        elif isinstance(target_data, Armour):
+            print(f"Durability: {target_data.durability}")
+            print(f"Resistance: {target_data.resistance}")
+        elif isinstance(target_data, Creature):
+            print(f"HP: {target_data.health}")
+            print(f"DMG: {target_data.damage}")
 
     def _set_description(self, target_id, description_message: str):
         target_data = self.finder.get_data_by_id(target_id)
@@ -354,7 +355,6 @@ class InternalCommandHandler:
     def _show_hero_status(self):
 
         def _print_weapon(slot_name: str):
-            hero: Hero = self.game_state.hero
             weapon_id = getattr(hero, slot_name)
             info_print = "nothing"
             if weapon_id is not None:
@@ -365,7 +365,6 @@ class InternalCommandHandler:
             print(f"{slot_print}: {info_print}")
 
         def _print_armour(slot_name: str):
-            hero: Hero = self.game_state.hero
             armour_id = getattr(hero, slot_name)
             info_print = "nothing"
             if armour_id is not None:
