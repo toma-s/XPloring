@@ -40,6 +40,14 @@ class TestTake(unittest.TestCase):
         expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
 
+    def test_take_the_sword(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("take the sword")
+        result_output = stdout.getvalue()
+        expected_output = "Sword has been added to your inventory.\n"
+        self.assertEqual(expected_output, result_output)
+
     def test_take_regular_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):

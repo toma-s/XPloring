@@ -60,6 +60,7 @@ class InternalCommandHandler:
                     return
 
             elif command == "command_use_item":
+                # TODO refactor - use_item
                 self.use_item(target_id)
 
             elif command == "command_equip":
@@ -67,6 +68,9 @@ class InternalCommandHandler:
 
             elif command == "command_unequip":
                 self._unequip_item(target_id)
+
+            elif command == "command_drop_item":
+                self._drop_item(target_id)
 
             elif command == "command_show_room":
                 self._show_hero_room()
@@ -163,39 +167,31 @@ class InternalCommandHandler:
         if hero.health <= 0:
             self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
 
-
-    def _count_total_hero_damage(self, creature):
+    def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
         total_armor_resist = 0
         # todo: shield do left hand?
-        for armor in hero.head, hero.chest, hero.legs:
-            if armor is not None:
-                self.game_state.equipment[armor].durability -= creature.damage // 2
-                if self.game_state.equipment[armor].durability <= 0:
-                    self._drop_item(armor)
-                total_armor_resist += self.game_state.equipment[armor].resistance
-        total_damage = creature.damage - total_armor_resist
+        for armor_id in hero.head, hero.chest, hero.legs:
+            if armor_id is not None:
+                self._armor_durability_loss(armor_id, creature_data.damage)
+                total_armor_resist += self.game_state.equipment[armor_id].resistance
+        total_damage = creature_data.damage - total_armor_resist
         return total_damage
 
-    def _drop_item(self, target):
+    def _armor_durability_loss(self, armor_id, damage_value):
+        armor_data: Armour = self.game_state.equipment[armor_id]
+        armor_data.durability = armor_data.durability - (damage_value // 2)
+        if armor_data.durability <= 0:
+            self._equipment_destruction(armor_id)
+
+    def _equipment_destruction(self, equipment_id):
         hero = self.game_state.hero
-        equipment = self.game_state.equipment
+        equipment_data = self.game_state.equipment[equipment_id]
 
-        item = equipment[target]
+        setattr(hero, equipment_data.slot, None)
 
-        if item.slot == "hand":
-            hero.right_hand = None
-        elif item.slot == "head":
-            hero.head = None
-        elif item.slot == "chest":
-            hero.chest = None
-        elif item.slot == "legs":
-            hero.legs = None
-
-        item.in_use = False
-        hero.inventory.remove(target)
-        print(f"Ouch! {item.alias[0]} has been destroyed!")
-        print(f"You've dropped {item.alias[0]}")
+        self._remove_item_from_inventory(equipment_id)
+        print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
 
     def spawn_item(self, item_id):
         items = self.game_state.items
@@ -283,7 +279,6 @@ class InternalCommandHandler:
         setattr(hero, equipment_data.slot, item_id)
 
         print(f"Item equipped")
-        equipment_data.in_use = True
 
     def _unequip_item(self, item_id):
         if not self._is_item_equipped(item_id):
@@ -298,7 +293,6 @@ class InternalCommandHandler:
             return True
 
         print(f"Item unequipped.")
-        equipment_data.in_use = False
 
     def _is_item_equipped(self, item_id: str) -> bool:
         if item_id not in self.game_state.equipment:
@@ -309,6 +303,10 @@ class InternalCommandHandler:
         if item_in_slot == item_id:
             return True
         return False
+
+    def _drop_item(self, item_id):
+        # todo
+        ...
 
     def _show_hero_room(self):
         items = self.game_state.items
@@ -388,16 +386,12 @@ class InternalCommandHandler:
             print(f"Your inventory is empty.")
             return
 
-        for inv_item in hero.inventory:
-            if inv_item in self.game_state.items:
-                it = self.game_state.items[inv_item]
-            else:
-                it = self.game_state.equipment[inv_item]
-            res = f"{it.alias[0]} - {it.description}"
-            if isinstance(it, Armour) or isinstance(it, Weapon):
-                if it.in_use:
-                    res += " [EQUIPPED]"
-            print(res)
+        for item_id in hero.inventory:
+            item_data = self.finder.get_data_by_id(item_id)
+            item_print = f"{item_data.alias[0]} - {item_data.description}"
+            if self._is_item_equipped(item_id):
+                item_print += " [EQUIPPED]"
+            print(item_print)
 
     def _end_game(self, end_message):
         print(end_message)

@@ -110,7 +110,6 @@ class TestCombat(unittest.TestCase):
         for i in range(2):
             self.ih.handle_user_input("attack dragon")
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
-        self.ih.handle_user_input("look")
         self.ih.handle_user_input("take key")
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
 
@@ -128,7 +127,6 @@ class TestCombat(unittest.TestCase):
         for i in range(2):
             self.ih.handle_user_input("attack dragon")
         self.assertEqual(0, self.game_state.creatures["#creature_dragon"].health)
-        self.ih.handle_user_input("look")
         self.ih.handle_user_input("take key")
         self.assertIn("#item_doorkey_exit", self.game_state.hero.inventory)
         self.ih.handle_user_input("unlock door")

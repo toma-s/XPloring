@@ -6,7 +6,7 @@ from GameState import GameState
 from InputHandler import InputHandler
 
 
-class TestInventory(unittest.TestCase):
+class TestLook(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -30,6 +30,14 @@ class TestInventory(unittest.TestCase):
 
         del self.game_state_capital_alias
         del self.ih_capital_alias
+
+    def test_look_whatever(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih1.handle_user_input("look whatever")
+        result_output = stdout.getvalue()
+        expected_output = "I don't understand that command.\n"
+        self.assertEqual(expected_output, result_output)
 
     def test_look_entrance(self):
         stdout = io.StringIO()

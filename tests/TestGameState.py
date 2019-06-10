@@ -67,7 +67,7 @@ class TestGameState(unittest.TestCase):
         self.assertEqual(expected_message, str(e.exception))
 
     def test_wrong_equipment(self):
-        expected_message = "Failed to read equipment data: cannot find key 'in_use'"
+        expected_message = "Failed to read equipment data: cannot find key 'resistance'"
         game_config = "game_wrong_equipment.json"
         with self.assertRaises(GameStateFileException) as e:
             GameState(join(self.parent_path, game_config))

@@ -154,7 +154,6 @@
           "sword", "silver sword"
         ],
         "slot": "right_hand",
-        "in_use": false,
         "description": "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use",
         "actions": {}
       }
@@ -167,7 +166,6 @@
           "helmet", "gladiator helmet", "steel helmet"
         ],
         "slot": "head",
-        "in_use": false,
         "description": "Gladiator helmet made of steel",
         "actions": {}
       },
@@ -178,7 +176,6 @@
           "chestplate", "steel chestplate"
         ],
         "slot": "chest",
-        "in_use": false,
         "description": "Steel chestplate armor",
         "actions": {}
       }

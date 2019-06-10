@@ -87,11 +87,14 @@ class TestGameStateLoader(unittest.TestCase):
                 "open": {
                     "command_spawn_item": "#item2"
                 },
+                "examine": {
+                    "command_show_description": None
+                },
                 "take": {
                     "command_add_item_to_inventory": None
                 },
-                "examine": {
-                    "command_show_description": None
+                "drop": {
+                    "command_drop_item": None
                 }
             }, item1.actions
         )
@@ -106,11 +109,14 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_required_item": "#item1",
                     "command_use_item": True
                 },
+                "examine": {
+                    "command_show_description": None
+                },
                 "take": {
                     "command_add_item_to_inventory": None
                 },
-                "examine": {
-                    "command_show_description": None
+                "drop": {
+                    "command_drop_item": None
                 }
             }, item2.actions
         )
@@ -125,7 +131,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertEqual("Armour Equipment", armour1.description)
         self.assertListEqual(["armour equipment"], armour1.alias)
         self.assertEqual("head", armour1.slot)
-        self.assertEqual(False, armour1.in_use)
+
         self.assertEqual(5, armour1.resistance)
         self.assertEqual(10, armour1.durability)
 
@@ -134,7 +140,6 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertEqual("Weapon Equipment", weapon1.description)
         self.assertListEqual(["weapon equipment"], weapon1.alias)
         self.assertEqual("right_hand", weapon1.slot)
-        self.assertEqual(False, weapon1.in_use)
         self.assertEqual(50, weapon1.damage)
 
     def test_create_hero(self):

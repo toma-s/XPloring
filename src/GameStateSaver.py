@@ -101,7 +101,6 @@ class GameStateSaver:
                 equipment[group_key][key]["damage"] = single_equipment.damage
             equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
             equipment[group_key][key]["slot"] = single_equipment.slot
-            equipment[group_key][key]["in_use"] = single_equipment.in_use
             equipment[group_key][key]["description"] = single_equipment.description
         return equipment
 

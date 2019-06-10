@@ -2,11 +2,14 @@
 class Item:
 
     item_actions = {
+        "examine": {
+            "command_show_description": None
+        },
         "take": {
             "command_add_item_to_inventory": None
         },
-        "examine": {
-            "command_show_description": None
+        "drop": {
+            "command_drop_item": None
         }
     }
 
