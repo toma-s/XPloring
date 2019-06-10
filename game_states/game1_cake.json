@@ -2,7 +2,7 @@
   "rooms": {
     "#room_entrance": {
       "alias": "entrance",
-      "description": "Here your journey to freedom begins.",
+      "description": "Your journey to freedom begins here.",
       "directions": {
         "north": {
           "room_id": "#room_crossroad"

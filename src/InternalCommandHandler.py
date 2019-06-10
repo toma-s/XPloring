@@ -329,16 +329,16 @@ class InternalCommandHandler:
         # items in room
         for i in room.items:
             if i in items:
-                print(f"There is a {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
+                print(f"There is {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
             elif i in equipment:
-                print(f"There is a {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
+                print(f"There is {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
 
         # entities in room
         if not room.creatures:
             print("There are no enemies around.")
         else:
             for c in room.creatures:
-                print(f"There is a {creatures[c].alias[0]} here. "
+                print(f"There is {creatures[c].alias[0]} here. "
                       f"{self._capitalize_first(creatures[c].description)}.")
 
         # direction from room
