@@ -57,7 +57,8 @@
       "drops": [
         "#item_doorkey_exit"
       ],
-      "description": "Big green dragon"
+      "description": "Big green dragon",
+      "actions": {}
     }
   },
   "transition_objects": {

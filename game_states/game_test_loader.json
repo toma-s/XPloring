@@ -41,7 +41,8 @@
       "drops": [
         "#item1"
       ],
-      "description": "Creature #1"
+      "description": "Creature #1",
+      "actions": {}
     },
     "#creature2": {
       "alias": [
@@ -52,7 +53,8 @@
       "drops": [
         "#item2"
       ],
-      "description": "Creature #2"
+      "description": "Creature #2",
+      "actions": {}
     }
   },
   "items": {

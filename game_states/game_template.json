@@ -41,7 +41,8 @@
       "drops": [
         "#"
       ],
-      "description": ""
+      "description": "",
+      "actions": {}
     },
     "#": {
       "alias": [
@@ -52,7 +53,8 @@
       "drops": [
         "#"
       ],
-      "description": ""
+      "description": "",
+      "actions": {}
     }
   },
   "items": {
