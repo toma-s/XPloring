@@ -66,7 +66,7 @@
       "alias": [
         "door"
       ],
-      "unlocked": false,
+      "locked": true,
       "description": "Exit door is locked, you need a key",
       "actions": {
         "open": {
@@ -74,7 +74,7 @@
         },
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
-          "command_set_unlocked": true,
+          "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "Exit door is unlocked, you can leave",
           "command_show_description": null

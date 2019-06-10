@@ -131,7 +131,7 @@
       "alias": [
         "armory door", "door to armory", "door"
       ],
-      "unlocked": false,
+      "locked": true,
       "description": "Armory door is locked, you need a key",
       "actions": {
         "open": {
@@ -139,7 +139,7 @@
         },
         "unlock": {
           "command_required_item": "#item_doorkey_armory",
-          "command_set_unlocked": true,
+          "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_armory",
           "command_set_description": "Armory door is unlocked, you may go through.",
           "command_show_description": null
@@ -150,7 +150,7 @@
       "alias": [
         "kitchen door", "door to kitchen", "door"
       ],
-      "unlocked": false,
+      "locked": true,
       "description": "Kitchen door is locked, you need a key",
       "actions": {
         "open": {
@@ -158,7 +158,7 @@
         },
         "unlock": {
           "command_required_item": "#item_doorkey_kitchen",
-          "command_set_unlocked": true,
+          "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_kitchen",
           "command_set_description": "Kitchen door is unlocked, you may go through.",
           "command_show_description": null
@@ -169,7 +169,7 @@
       "alias": [
         "exit door", "heavy metal door", "door"
       ],
-      "unlocked": false,
+      "locked": true,
       "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door.",
       "actions": {
         "open": {
@@ -177,7 +177,7 @@
         },
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
-          "command_set_unlocked": true,
+          "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "The heavy metal door is unlocked.\nBright daylight shines through the tiny gaps in the heavy metal door.\nYour freedom is right behind the door",
           "command_show_description": null

@@ -30,6 +30,12 @@ class TestMoving(unittest.TestCase):
         self.assertEqual("#room_arena", self.game_state.hero.location)
         self.ih.handle_user_input("go east")
 
+    def test_move_locked_door(self):
+        self.ih.handle_user_input("go west")
+        self.assertEqual("#room_arena", self.game_state.hero.location)
+        self.ih.handle_user_input("go north")
+        self.assertEqual("#room_arena", self.game_state.hero.location)
+
     def test_do_south(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):

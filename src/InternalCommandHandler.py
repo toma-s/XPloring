@@ -20,7 +20,7 @@ class InternalCommandHandler:
     def handle_internal_command(self, commands, target_id=None):
         for command in commands:
             if command == "command_move_direction":
-                self._move_to_direction(target_id)
+                self.move_to_direction(target_id)
 
             elif command == "command_show_message":
                 message = commands[command]
@@ -33,9 +33,9 @@ class InternalCommandHandler:
                 new_description: str = commands[command]
                 self._set_description(target_id, new_description)
 
-            elif command == "command_set_unlocked":
-                unlocked: bool = commands[command]
-                self._set_unlocked(target_id, unlocked)
+            elif command == "command_set_locked":
+                is_locked: bool = commands[command]
+                self._set_locked(target_id, is_locked)
 
             elif command == "command_attack_creature":
                 self.attack_creature(target_id)
@@ -88,28 +88,29 @@ class InternalCommandHandler:
             else:
                 print("I don't understand that command.")
 
-    def _move_to_direction(self, direction_name):
+    def move_to_direction(self, direction_name):
         hero = self.game_state.hero
-        rooms = self.game_state.rooms
-        transition_objects = self.game_state.transition_objects
+        hero_room_data: Room = self.game_state.rooms[hero.location]
 
-        if direction_name in rooms[hero.location].directions:
-            room_id = rooms[hero.location].directions[direction_name]["room_id"]
-
-            direction_data = rooms[hero.location].directions[direction_name]
-
-            if "trans_obj_id" in direction_data:
-                trans_obj = transition_objects[direction_data["trans_obj_id"]]
-                if not trans_obj.unlocked:
-                    print(trans_obj.description)
-                else:
-                    self.move_to(room_id)
-            else:
-                self.move_to(room_id)
-        else:
+        if direction_name not in hero_room_data.directions:
             print(f"You are not allowed to go {direction_name}.")
+            return
 
-    def move_to(self, room_id):
+        direction_data = hero_room_data.directions[direction_name]
+        target_room_id = direction_data["room_id"]
+
+        if "trans_obj_id" in direction_data:
+            trans_obj_id = direction_data["trans_obj_id"]
+            trans_obj: TransitionObject = self.game_state.transition_objects[trans_obj_id]
+            trans_obj_alias = trans_obj.alias[0]
+            if trans_obj.locked:
+                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked")
+                return
+
+        self._move_to(target_room_id)
+
+
+    def _move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
         print(f"{rooms[room_id].description}")
@@ -132,9 +133,9 @@ class InternalCommandHandler:
         target_data = self.finder.get_data_by_id(target_id)
         target_data.description = description_message
 
-    def _set_unlocked(self, target_id, is_unlocked: bool):
-        target_data = self.finder.get_data_by_id(target_id)
-        target_data.unlocked = is_unlocked
+    def _set_locked(self, target_id, is_locked: bool):
+        target_data = self.game_state.transition_objects[target_id]
+        target_data.locked = is_locked
 
     def attack_creature(self, target_creature_id):
         target_creature_data: Creature = self.finder.get_data_by_id(target_creature_id)

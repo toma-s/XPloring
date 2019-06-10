@@ -66,7 +66,7 @@ class GameStateSaver:
             transition_object = value
             transition_objects[key] = dict()
             transition_objects[key]["alias"] = [alias_item for alias_item in transition_object.alias]
-            transition_objects[key]["unlocked"] = transition_object.unlocked
+            transition_objects[key]["locked"] = transition_object.locked
             transition_objects[key]["description"] = transition_object.description
             actions = TransitionObject.trans_obj_actions.keys()
             transition_objects[key]["actions"] = self._get_custom_actions(transition_object, actions)
