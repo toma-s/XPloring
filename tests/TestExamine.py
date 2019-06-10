@@ -60,7 +60,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine sword")
         result_output = stdout.getvalue()
-        expected_output = "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use\n"
+        expected_output = "Sword made of pure silver with a straight double-edged" \
+                          " blade and a grip for two-handed use\n" \
+                          "DMG: 30\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_equipment_armour(self):
@@ -68,7 +70,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine helmet")
         result_output = stdout.getvalue()
-        expected_output = "Gladiator helmet made of steel\n"
+        expected_output = "Gladiator helmet made of steel\n" \
+                          "Durability: 12\n" \
+                          "Resistance: 2\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_direction(self):
@@ -85,7 +89,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine dragon")
         result_output = stdout.getvalue()
-        expected_output = "Big green dragon\n"
+        expected_output = "Big green dragon\n" \
+                          "HP: 60\n" \
+                          "DMG: 10\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_inventory(self):
