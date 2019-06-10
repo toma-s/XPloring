@@ -37,7 +37,7 @@ class TestConsume(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison.\n"
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_bottle_arena_room(self):
@@ -50,7 +50,7 @@ class TestConsume(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison.\n"
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_drink_bottle_entrance_room(self):
@@ -62,7 +62,7 @@ class TestConsume(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison.\n"
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_drink_bottle_arena_room(self):
@@ -75,7 +75,7 @@ class TestConsume(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is 25 HP.\n" \
-                          "It was a poison.\n"
+                          "It was a poison\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_bandage(self):

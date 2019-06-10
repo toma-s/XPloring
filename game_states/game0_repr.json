@@ -74,7 +74,7 @@
           "command_required_item": "#item_doorkey_exit",
           "command_set_unlocked": true,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
-          "command_set_description": "Exit door is unlocked, you can leave.",
+          "command_set_description": "Exit door is unlocked, you can leave",
           "command_show_description": null
         }
       }
@@ -117,7 +117,7 @@
     "consumable": {
       "#item_bandage": {
         "value": 25,
-        "description": "You can USE bandage to reduce swelling or slow heavy bleeding.",
+        "description": "You can USE bandage to reduce swelling or slow heavy bleeding",
         "alias": [
           "bandage", "bandages"
         ],
@@ -129,18 +129,18 @@
       },
       "#item_poison_bottle": {
         "value": -75,
-        "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences.",
+        "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences",
         "alias": [
           "unlabelled bottle", "bottle"
         ],
         "actions": {
           "use": {
             "command_use_item": true,
-            "command_show_message": "It was a poison."
+            "command_show_message": "It was a poison"
           },
           "drink": {
             "command_use_item": true,
-            "command_show_message": "It was a poison."
+            "command_show_message": "It was a poison"
           }
         }
       }

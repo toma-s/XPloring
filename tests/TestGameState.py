@@ -31,7 +31,7 @@ class TestGameState(unittest.TestCase):
     def test_wrong_format(self):
         expected_message = "Failed to parse JSON file: " \
                            "Expecting value: line 1 column 1 (char 0)"
-        game_config = "empty.txt"
+        game_config = "game_wrong_emptyfile.txt"
         with self.assertRaises(GameStateFileException) as e:
             GameState(join(self.parent_path, game_config))
         self.assertEqual(expected_message, str(e.exception))

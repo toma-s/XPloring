@@ -63,3 +63,19 @@ class TestLook(unittest.TestCase):
                           "There is door to the EAST.\n" \
                           "There is entrance room to the SOUTH.\n"
         self.assertEqual(expected_output, result_output)
+
+    def test_look_game0_entrance(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("look")
+        result_output = stdout.getvalue()
+        expected_output = "Entrance room. Entrance room, there are some things laying around in the room.\n" \
+                          "There is envelope. OPEN to get letter from inside.\n" \
+                          "There is sword. Sword made of pure silver with a straight double-edged blade and a grip for two-handed use.\n" \
+                          "There is bandage. You can USE bandage to reduce swelling or slow heavy bleeding.\n" \
+                          "There is helmet. Gladiator helmet made of steel.\n" \
+                          "There is unlabelled bottle. Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences.\n" \
+                          "There is chestplate. Steel chestplate armor.\n" \
+                          "There are no enemies around.\n" \
+                          "There is arena room to the WEST.\n"
+        self.assertEqual(expected_output, result_output)
