@@ -41,7 +41,7 @@ class InternalCommandHandler:
 
             elif command == "command_spawn_item":
                 item_id = commands[command]
-                self.spawn_item(item_id)
+                self._spawn_item(item_id)
 
             elif command == "command_despawn_item":
                 item_id = commands[command]
@@ -167,7 +167,7 @@ class InternalCommandHandler:
         if creature_data.health <= 0:
             print(f"{self._capitalize_first(creature_alias)} is DEAD!")
             for loot in creature_data.drops:
-                self.spawn_item(loot)
+                self._spawn_item(loot)
         # todo: vsetky prisery v miestnosti su na rade s utokom ?
         if creature_data.health > 0:
             total_damage = self._count_total_hero_damage(creature_data)
@@ -204,14 +204,10 @@ class InternalCommandHandler:
         self._remove_item_from_inventory(equipment_id)
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
 
-    def spawn_item(self, item_id):
-        items = self.game_state.items
+    def _spawn_item(self, item_id):
         room = self.game_state.rooms[self.game_state.hero.location]
         if item_id not in room.items:
-            print(f"You found {items[item_id].alias[0]}. {items[item_id].description}.")
             room.items.append(item_id)
-        else:
-            print(f"You already did this.")
 
     def _despawn_item(self, item_id):
         hero = self.game_state.hero
@@ -316,6 +312,8 @@ class InternalCommandHandler:
         return False
 
     def _drop_item(self, item_id):
+        self._remove_item_from_inventory(item_id)
+        self._spawn_item(item_id)
         # todo
         ...
 

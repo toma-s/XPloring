@@ -7,7 +7,7 @@ from InputHandler import InputHandler
 from GameState import GameState
 
 
-class TestInput(unittest.TestCase):
+class TestEnding(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
@@ -114,3 +114,24 @@ class TestInput(unittest.TestCase):
 
         self.assertEqual('0', str(e.exception))
 
+    def test_hero_death_by_poison_bad_end(self):
+        self.ih.handle_user_input("go west")
+        for i in range(9):
+            self.ih.handle_user_input("attack dragon")
+
+        self.assertEqual(51, self.game_state.creatures["#creature_dragon"].health)
+        self.assertEqual(10, self.game_state.hero.health)
+
+        self.ih.handle_user_input("go east")
+        self.ih.handle_user_input("take unlabelled bottle")
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
+            self.ih.handle_user_input("drink unlabelled bottle")
+        result_output = stdout.getvalue()
+        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
+                          "Current health is -65 HP.\n" \
+                          "It was a poison\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual(-65, self.game_state.hero.health)
+        self.assertEqual('0', str(e.exception))
