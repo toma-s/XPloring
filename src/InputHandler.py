@@ -41,7 +41,8 @@ class InputHandler:
         hero = self.game_state.hero
         if action_name in hero.actions:
             action_data = hero.actions[action_name]
-            self.internal_command_handler.handle_internal_command(action_data)
+            for ic_name, ic_args in action_data.items():
+                self.internal_command_handler.handle_internal_command(ic_name, ic_args, None)
         else:
             print(f"I don't understand that command.")
 
@@ -49,7 +50,8 @@ class InputHandler:
         hero = self.game_state.hero
         if action_name in hero.actions:
             action_data = hero.actions[action_name]
-            self.internal_command_handler.handle_internal_command(action_data, target_alias)
+            for ic_name, ic_args in action_data.items():
+                self.internal_command_handler.handle_internal_command(ic_name, ic_args, target_alias)
             return
 
         if self._is_keyword(target_alias):
@@ -67,7 +69,10 @@ class InputHandler:
             return
 
         action_data = data.actions[action_name]
-        self.internal_command_handler.handle_internal_command(action_data, target_id)
+        for ic_name, ic_args in action_data.items():
+            executed = self.internal_command_handler.handle_internal_command(ic_name, ic_args, target_id)
+            if not executed:
+                break
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:

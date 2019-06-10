@@ -5,7 +5,6 @@ from game_item.Consumable import Consumable
 from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
-from game_item.Item import Item
 from game_item.Room import Room
 from game_item.TransitionObject import TransitionObject
 from game_item.Weapon import Weapon
@@ -17,76 +16,79 @@ class InternalCommandHandler:
         self.game_state = game_state
         self.finder = Finder(game_state)
 
-    def handle_internal_command(self, commands, target_id=None):
-        for command in commands:
-            if command == "command_move_direction":
-                self.move_to_direction(target_id)
+    def handle_internal_command(self, ic_name, ic_arg, target_id) -> bool:
+        success = True
 
-            elif command == "command_show_message":
-                message = commands[command]
-                print(f"{message}")
+        if ic_name == "command_move_direction" and target_id:
+            self.move_to_direction(target_id)
 
-            elif command == "command_show_description":
-                self._show_description(target_id)
+        elif ic_name == "command_show_message":
+            message = ic_arg
+            print(f"{message}")
 
-            elif command == "command_set_description":
-                new_description: str = commands[command]
-                self._set_description(target_id, new_description)
+        elif ic_name == "command_show_description" and target_id:
+            self._show_description(target_id)
 
-            elif command == "command_set_locked":
-                is_locked: bool = commands[command]
-                self._set_locked(target_id, is_locked)
+        elif ic_name == "command_set_description" and target_id:
+            new_description: str = ic_arg
+            self._set_description(target_id, new_description)
 
-            elif command == "command_attack_creature":
-                self.attack_creature(target_id)
+        elif ic_name == "command_set_locked" and target_id:
+            is_locked: bool = ic_arg
+            self._set_locked(target_id, is_locked)
 
-            elif command == "command_spawn_item":
-                item_id = commands[command]
-                self._spawn_item(item_id)
+        elif ic_name == "command_attack_creature" and target_id:
+            self.attack_creature(target_id)
 
-            elif command == "command_despawn_item":
-                item_id = commands[command]
-                self._despawn_item(item_id)
+        elif ic_name == "command_spawn_item" and target_id:
+            item_id = ic_arg
+            self._spawn_item(item_id)
 
-            elif command == "command_add_item_to_inventory":
-                self._item_take(target_id)
+        elif ic_name == "command_despawn_item" and target_id:
+            item_id = ic_arg
+            self._despawn_item(item_id)
 
-            elif command == "command_remove_item_from_inventory":
-                self._remove_item_from_inventory(commands[command])
+        elif ic_name == "command_add_item_to_inventory" and target_id:
+            self._item_take(target_id)
 
-            elif command == "command_required_item":
-                item_id = commands[command]
-                if not self._required_item_in_inventory(item_id):
-                    return
+        elif ic_name == "command_remove_item_from_inventory":
+            self._remove_item_from_inventory(ic_arg)
 
-            elif command == "command_consume_item":
-                # TODO refactor - use_item
-                self.consume_item(target_id)
+        elif ic_name == "command_required_item":
+            item_id = ic_arg
+            if not self._required_item_in_inventory(item_id):
+                success = False
 
-            elif command == "command_equip":
-                self._equip_item(target_id)
+        elif ic_name == "command_consume_item":
+            # TODO refactor - use_item
+            self.consume_item(target_id)
 
-            elif command == "command_unequip":
-                self.unequip_item(target_id)
+        elif ic_name == "command_equip":
+            self._equip_item(target_id)
 
-            elif command == "command_drop_item":
-                self.drop_item(target_id)
+        elif ic_name == "command_unequip":
+            self.unequip_item(target_id)
 
-            elif command == "command_show_room":
-                self._show_hero_room()
+        elif ic_name == "command_drop_item":
+            self.drop_item(target_id)
 
-            elif command == "command_show_status":
-                self._show_hero_status()
+        elif ic_name == "command_show_room":
+            self._show_hero_room()
 
-            elif command == "command_show_inventory":
-                self._show_hero_inventory()
+        elif ic_name == "command_show_status":
+            self._show_hero_status()
 
-            elif command == "command_good_end":
-                end_massage = commands[command]
-                self._end_game(end_massage)
+        elif ic_name == "command_show_inventory":
+            self._show_hero_inventory()
 
-            else:
-                print("I don't understand that command.")
+        elif ic_name == "command_good_end":
+            end_massage = ic_arg
+            self._end_game(end_massage)
+
+        else:
+            print("I don't understand that command.")
+            success = False
+        return success
 
     def move_to_direction(self, direction_name):
         hero = self.game_state.hero
@@ -102,20 +104,20 @@ class InternalCommandHandler:
         if "trans_obj_id" in direction_data:
             trans_obj_id = direction_data["trans_obj_id"]
             trans_obj: TransitionObject = self.game_state.transition_objects[trans_obj_id]
-            trans_obj_alias = trans_obj.alias[0]
             if trans_obj.locked:
-                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked")
+                trans_obj_alias = trans_obj.alias[0]
+                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked.")
                 return
-
         self._move_to(target_room_id)
-
 
     def _move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
         print(f"{rooms[room_id].description}")
-        if rooms[room_id].auto_commands is not None:
-            self.handle_internal_command(rooms[room_id].auto_commands, room_id)
+        if rooms[room_id].auto_actions is None:
+            return
+        for ic_name, ic_args in rooms[room_id].auto_actions.items():
+            self.handle_internal_command(ic_name, ic_args, room_id)
 
     def _show_description(self, target_id):
         target_data = self.finder.get_data_by_id(target_id)

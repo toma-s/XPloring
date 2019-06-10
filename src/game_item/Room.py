@@ -6,6 +6,6 @@ class Room:
         self.directions = data['directions']
         self.items = data['items']
         self.creatures = data['creatures']
-        self.auto_commands = None
-        if "auto_commands" in data:
-            self.auto_commands = data["auto_commands"]
+        self.auto_actions = None
+        if "auto_actions" in data:
+            self.auto_actions = data["auto_actions"]

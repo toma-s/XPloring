@@ -56,7 +56,6 @@ class TestEnding(unittest.TestCase):
         self.ih.handle_user_input("take key")
         self.ih.handle_user_input("unlock door")
 
-
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih.handle_user_input("go north")

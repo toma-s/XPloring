@@ -42,8 +42,8 @@ class GameStateSaver:
             rooms[key]["directions"] = room.directions
             rooms[key]["items"] = room.items
             rooms[key]["creatures"] = [creature for creature in room.creatures]
-            if room.auto_commands is not None:
-                rooms[key]["auto_commands"] = room.auto_commands
+            if room.auto_actions is not None:
+                rooms[key]["auto_actions"] = room.auto_actions
         return rooms
 
     def _load_creatures(self) -> Dict[str, any]:

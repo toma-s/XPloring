@@ -41,7 +41,7 @@
       "directions": {},
       "items": [],
       "creatures": [],
-      "auto_commands": {
+      "auto_actions": {
         "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
     }

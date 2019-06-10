@@ -33,7 +33,12 @@ class TestMoving(unittest.TestCase):
     def test_move_locked_door(self):
         self.ih.handle_user_input("go west")
         self.assertEqual("#room_arena", self.game_state.hero.location)
-        self.ih.handle_user_input("go north")
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("go north")
+        result_output = stdout.getvalue()
+        expected_output = "You can't go north. The door is locked.\n"
+        self.assertEqual(expected_output, result_output)
         self.assertEqual("#room_arena", self.game_state.hero.location)
 
     def test_do_south(self):
