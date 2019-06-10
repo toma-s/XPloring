@@ -44,9 +44,9 @@ class TestLook(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("look")
         result_output = stdout.getvalue()
-        expected_output = "Entrance room. Here your journey to freedom begins.\n" \
-                          "There is a key. This key opens armory door.\n" \
-                          "There is a key. This key opens kitchen door.\n" \
+        expected_output = "Entrance room. Your journey to freedom begins here.\n" \
+                          "There is key. This key opens armory door.\n" \
+                          "There is key. This key opens kitchen door.\n" \
                           "There are no enemies around.\n" \
                           "There is crossroad room to the NORTH.\n"
         self.assertEqual(expected_output, result_output)
