@@ -1,6 +1,7 @@
 from Finder import Finder
 from GameState import GameState
 from game_item.Armour import Armour
+from game_item.Consumable import Consumable
 from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
@@ -58,7 +59,7 @@ class InternalCommandHandler:
                 if not self._required_item_in_inventory(item_id):
                     return
 
-            elif command == "command_use_item":
+            elif command == "command_consume_item":
                 # TODO refactor - use_item
                 self.consume_item(target_id)
 
@@ -261,36 +262,50 @@ class InternalCommandHandler:
 
     def consume_item(self, item_id):
         item_data = self.game_state.items[item_id]
+        if not hasattr(item_data, "value"):
+            print(f"That item can not be consumed.")
+            return
+        item_data: Consumable = item_data
         hero = self.game_state.hero
 
         if item_id not in hero.inventory:
-            print(f"You do not have it in your inventory.")
-            return
-
-        if item_data.value > 0 and hero.health == 100:
-            print(f"You are fully healed, you don't need healing.")
+            print(f"You do not have that in your inventory.")
             return
 
         if item_data.value < 0:
-            will_heal = item_data.value
+            self._consume_item_harmful_effect(item_data)
         else:
-            need_heal = 100 - hero.health
-            if need_heal >= item_data.value:
-                will_heal = item_data.value
-            else:
-                will_heal = need_heal
-
-        hero.health += will_heal
-        sign = "+"
-        if will_heal < 0:
-            sign = ""
-        print(f"You have consumed {item_data.alias[0]}. "
-              f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
+            self._consume_item_healing_effect(item_data)
         hero.inventory.remove(item_id)
 
+    def _consume_item_harmful_effect(self, consumable_data: Consumable):
+        hero = self.game_state.hero
+        harm_amount = consumable_data.value
+        hero.health += harm_amount
+
+        consumable_alias = consumable_data.alias[0]
+        print(f"The {consumable_alias} reduced your HP by {harm_amount}.")
+        print(f"Your current health is {hero.health} HP.")
+
         if hero.health <= 0:
-            item_alias = item_data.alias[0]
-            self._end_game(f"GAME OVER. You were killed by {item_alias}. Better luck next time.")
+            self._end_game(f"GAME OVER. You were killed by {consumable_alias}. Better luck next time.")
+
+    def _consume_item_healing_effect(self, consumable_data):
+        hero = self.game_state.hero
+        if hero.health == 100:
+            print(f"Your health is already 100 HP, you don't need healing.")
+            return
+
+        heal_amount = consumable_data.value
+        missing_hp = 100 - hero.health
+        if heal_amount > missing_hp:
+            heal_amount = missing_hp
+
+        hero.health += heal_amount
+
+        consumable_alias = consumable_data.alias[0]
+        print(f"The {consumable_alias} healed you for {heal_amount} HP.")
+        print(f"Your current health is {hero.health} HP.")
 
     def _equip_item(self, item_id):
         hero = self.game_state.hero

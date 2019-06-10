@@ -118,7 +118,7 @@
         ],
         "actions": {
           "eat": {
-            "command_use_item": true,
+            "command_consume_item": true,
             "command_spawn_item": "#item_doorkey_exit",
             "command_show_message": "You found key. This key opens heavy metal door."
           }

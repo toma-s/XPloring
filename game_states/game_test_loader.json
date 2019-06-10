@@ -81,7 +81,7 @@
         "actions": {
           "use": {
             "command_required_item": "#item1",
-            "command_use_item": true
+            "command_consume_item": true
           }
         }
       }

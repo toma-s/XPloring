@@ -45,7 +45,7 @@ class TestUse(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("use bandage")
         result_output = stdout.getvalue()
-        expected_output = "You do not have it in your inventory.\n"
+        expected_output = "You do not have that in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_equipment_weapon(self):

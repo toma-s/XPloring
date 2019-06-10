@@ -126,7 +126,7 @@
         ],
         "actions": {
           "use": {
-            "command_use_item": true
+            "command_consume_item": true
           }
         }
       },
@@ -139,11 +139,11 @@
         ],
         "actions": {
           "use": {
-            "command_use_item": true,
+            "command_consume_item": true,
             "command_show_message": "It was a poison."
           },
           "drink": {
-            "command_use_item": true,
+            "command_consume_item": true,
             "command_show_message": "It was a poison."
           }
         }
