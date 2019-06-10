@@ -36,7 +36,7 @@
     },
     "#room_armory": {
       "alias": "armory",
-      "description": "Armory. Unfortunately, it was pillaged some time ago by angry peasants.",
+      "description": "Unfortunately, the armory was pillaged some time ago by angry peasants.",
       "directions": {
         "east": {
           "trans_obj_id": "#trans_door_armory",
@@ -49,7 +49,7 @@
     },
     "#room_kitchen": {
       "alias": "kitchen",
-      "description": "Kitchen.",
+      "description": "A small dark room. Something smells really nice.",
       "directions": {
         "west": {
           "trans_obj_id": "#trans_door_kitchen",
@@ -119,8 +119,8 @@
         "actions": {
           "eat": {
             "command_use_item": true,
-            "command_show_message": "The cake is a lie ...",
-            "command_spawn_item": "#item_doorkey_exit"
+            "command_spawn_item": "#item_doorkey_exit",
+            "command_show_message": "You found key. This key opens heavy metal door."
           }
         }
       }

@@ -52,7 +52,7 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine bandage")
         result_output = stdout.getvalue()
-        expected_output = "You can USE bandage to reduce swelling or slow heavy bleeding.\n"
+        expected_output = "You can USE bandage to reduce swelling or slow heavy bleeding\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_equipment_weapon(self):
