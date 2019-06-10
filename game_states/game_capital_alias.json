@@ -84,7 +84,6 @@
     "base_damage": 1,
     "location": "#room",
     "weapon_slot": null,
-
     "head_slot": null,
     "chest_slot": null,
     "legs_slot": null,
