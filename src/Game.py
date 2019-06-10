@@ -97,7 +97,7 @@ class Game:
         print("Type EQUIP <item> to arm yourself an item from the inventory.")
         print("Type UNEQUIP <item> to disarm yourself an item from the inventory.")
         print("Type STATUS to show your HP, Attack Power and equipment.")
-        print("Type EXAMINE <item> to learn more about an item.")
+        print("Type EXAMINE <target> to learn more about an item.")
         print("Type SAVE to save current game.")
         print("Type QUIT or Q to quit game.")
 
