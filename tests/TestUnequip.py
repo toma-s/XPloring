@@ -95,24 +95,24 @@ class TestUnequip(unittest.TestCase):
         self.ih.handle_user_input("take helmet")
         self.ih.handle_user_input("equip helmet")
         hero = self.game_state.hero
-        self.assertEqual(hero.head, "#equipment_gladiator_helmet")
+        self.assertEqual(hero.head_slot, "#equipment_gladiator_helmet")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("unequip helmet")
         result_output = stdout.getvalue()
         expected_output = "Item unequipped.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual(hero.head, None)
+        self.assertEqual(hero.head_slot, None)
 
     def test_unequip_sword_equipped(self):
         self.ih.handle_user_input("take sword")
         self.ih.handle_user_input("equip sword")
         hero = self.game_state.hero
-        self.assertEqual(hero.right_hand, "#equipment_silver_sword")
+        self.assertEqual(hero.weapon_slot, "#equipment_silver_sword")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("unequip sword")
         result_output = stdout.getvalue()
         expected_output = "Item unequipped.\n"
         self.assertEqual(expected_output, result_output)
-        self.assertEqual(hero.right_hand, None)
+        self.assertEqual(hero.weapon_slot, None)

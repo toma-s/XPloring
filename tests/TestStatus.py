@@ -39,8 +39,7 @@ class TestStatus(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: nothing\n" \
-                          "Left hand: nothing\n" \
+                          "Weapon: nothing\n" \
                           "Head: nothing\n" \
                           "Chest: nothing\n" \
                           "Legs: nothing\n" \
@@ -57,15 +56,14 @@ class TestStatus(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 90 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: nothing\n" \
-                          "Left hand: nothing\n" \
+                          "Weapon: nothing\n" \
                           "Head: nothing\n" \
                           "Chest: nothing\n" \
                           "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_status_right_hand(self):
+    def test_status_weapon_slot(self):
         self.ih.handle_user_input("take sword")
         self.ih.handle_user_input("equip sword")
         stdout = io.StringIO()
@@ -75,16 +73,15 @@ class TestStatus(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 30 ATK\n" \
-                          "Right hand: Sword made of pure silver with a straight " \
+                          "Weapon: Sword made of pure silver with a straight " \
                           "double-edged blade and a grip for two-handed use 30 ATK\n" \
-                          "Left hand: nothing\n" \
                           "Head: nothing\n" \
                           "Chest: nothing\n" \
                           "Legs: nothing\n" \
                           "-----------------------\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_status_head(self):
+    def test_status_head_slot(self):
         self.ih.handle_user_input("take helmet")
         self.ih.handle_user_input("equip helmet")
         stdout = io.StringIO()
@@ -94,8 +91,7 @@ class TestStatus(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: nothing\n" \
-                          "Left hand: nothing\n" \
+                          "Weapon: nothing\n" \
                           "Head: Gladiator helmet made of steel 2 DEF 12 Durability\n" \
                           "Chest: nothing\n" \
                           "Legs: nothing\n" \
@@ -112,8 +108,7 @@ class TestStatus(unittest.TestCase):
         expected_output = "----- HERO STATUS -----\n" \
                           "Health: 100 HP\n" \
                           "Attack Power: 1 ATK\n" \
-                          "Right hand: nothing\n" \
-                          "Left hand: nothing\n" \
+                          "Weapon: nothing\n" \
                           "Head: nothing\n" \
                           "Chest: Steel chestplate armor 3 DEF 18 Durability\n" \
                           "Legs: nothing\n" \

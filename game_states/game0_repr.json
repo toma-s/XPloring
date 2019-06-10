@@ -164,7 +164,7 @@
           "sword",
           "silver sword"
         ],
-        "slot": "right_hand",
+        "slot": "weapon_slot",
         "description": "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use",
         "actions": {}
       }
@@ -178,7 +178,7 @@
           "gladiator helmet",
           "steel helmet"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "description": "Gladiator helmet made of steel",
         "actions": {}
       },
@@ -189,7 +189,7 @@
           "chestplate",
           "steel chestplate"
         ],
-        "slot": "chest",
+        "slot": "chest_slot",
         "description": "Steel chestplate armor",
         "actions": {}
       }
@@ -199,11 +199,11 @@
     "health": 100,
     "base_damage": 1,
     "location": "#room_entrance",
-    "right_hand": null,
-    "left_hand": null,
-    "head": null,
-    "chest": null,
-    "legs": null,
+    "weapon_slot": null,
+
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": []
   }

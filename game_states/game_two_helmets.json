@@ -26,7 +26,7 @@
         "alias": [
           "helmet1"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
 
@@ -37,7 +37,7 @@
         "alias": [
           "helmet2"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
 
@@ -51,11 +51,11 @@
     "health": 100,
     "base_damage": 1,
     "location": "#room1",
-    "right_hand": null,
-    "left_hand": null,
-    "head": null,
-    "chest": null,
-    "legs": null,
+    "weapon_slot": null,
+
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": []
   }

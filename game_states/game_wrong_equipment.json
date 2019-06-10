@@ -28,7 +28,7 @@
         "alias": [
           "dummy armour"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "durability": 10,
         "description": "Dummy armour",
         "actions": {}
@@ -41,11 +41,11 @@
     "health": 100,
     "base_damage": 1,
     "location": "#room_dummy",
-    "right_hand": null,
-    "left_hand": null,
-    "head": null,
-    "chest": null,
-    "legs": null,
+    "weapon_slot": null,
+
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": []
   }

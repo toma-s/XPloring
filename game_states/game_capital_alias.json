@@ -58,7 +58,7 @@
         "alias": [
           "Sword"
         ],
-        "slot": "right_hand",
+        "slot": "weapon_slot",
 
         "description": "Weapon Equipment Sword",
         "actions": {}
@@ -69,7 +69,7 @@
         "alias": [
           "Helmet"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
 
@@ -83,11 +83,11 @@
     "health": 100,
     "base_damage": 1,
     "location": "#room",
-    "right_hand": null,
-    "left_hand": null,
-    "head": null,
-    "chest": null,
-    "legs": null,
+    "weapon_slot": null,
+
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": []
   }

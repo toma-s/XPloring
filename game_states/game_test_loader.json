@@ -97,7 +97,7 @@
         "alias": [
           "weapon equipment"
         ],
-        "slot": "right_hand",
+        "slot": "weapon_slot",
 
         "damage": 50,
         "description": "Weapon Equipment",
@@ -109,7 +109,7 @@
         "alias": [
           "armour equipment"
         ],
-        "slot": "head",
+        "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
 
@@ -124,11 +124,11 @@
     "health": 100,
     "base_damage": 1,
     "location": "#room1",
-    "right_hand": "#weapon1",
-    "left_hand": null,
-    "head": "#armour1",
-    "chest": null,
-    "legs": null,
+    "weapon_slot": "#weapon1",
+
+    "head_slot": "#armour1",
+    "chest_slot": null,
+    "legs_slot": null,
     "actions": {},
     "inventory": [
       "#item1"
