@@ -5,7 +5,10 @@ from typing import Dict
 from GameState import GameState
 from game_item.Armour import Armour
 from game_item.Consumable import Consumable
+from game_item.Equipment import Equipment
+from game_item.Hero import Hero
 from game_item.Item import Item
+from game_item.TransitionObject import TransitionObject
 from game_item.Weapon import Weapon
 
 
@@ -33,6 +36,7 @@ class GameStateSaver:
         for key, value in self.game_state.rooms.items():
             room = value
             rooms[key] = dict()
+            rooms[key]["alias"] = room.alias
             rooms[key]["description"] = room.description
             rooms[key]["directions"] = room.directions
             rooms[key]["items"] = room.items
@@ -61,7 +65,7 @@ class GameStateSaver:
             transition_objects[key]["alias"] = [alias_item for alias_item in transition_object.alias]
             transition_objects[key]["unlocked"] = transition_object.unlocked
             transition_objects[key]["description"] = transition_object.description
-            transition_objects[key]["actions"] = transition_object.actions
+            transition_objects[key]["actions"] = self._get_custom_trans_obj_actions(transition_object)
         return transition_objects
 
     def _load_items(self) -> Dict[str, any]:
@@ -80,7 +84,7 @@ class GameStateSaver:
                 items[group_key].setdefault(key, {})
             items[group_key][key]["description"] = item.description
             items[group_key][key]["alias"] = [alias_item for alias_item in item.alias]
-            items[group_key][key]["actions"] = item.actions
+            items[group_key][key]["actions"] = self._get_custom_item_actions(item)
         return items
 
     def _load_equipment(self) -> Dict[str, any]:
@@ -102,6 +106,7 @@ class GameStateSaver:
             equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
             equipment[group_key][key]["slot"] = single_equipment.slot
             equipment[group_key][key]["description"] = single_equipment.description
+            equipment[group_key][key]["actions"] = self._get_custom_equipment_actions(single_equipment)
         return equipment
 
     def _load_hero(self) -> Dict[str, any]:
@@ -115,9 +120,38 @@ class GameStateSaver:
         hero["head"] = hero_data.head
         hero["chest"] = hero_data.chest
         hero["legs"] = hero_data.legs
-        hero["actions"] = hero_data.actions
+        hero["actions"] = self._get_custom_hero_actions()
         hero["inventory"] = [inventory_item for inventory_item in hero_data.inventory]
         return hero
+
+    def _get_custom_item_actions(self, item) -> Dict[str, any]:
+        actions = dict()
+        for action, value in item.actions.items():
+            if action not in Item.item_actions.keys():
+                actions[action] = value
+        return actions
+
+    def _get_custom_equipment_actions(self, equipment) -> Dict[str, any]:
+        actions = dict()
+        for action, value in equipment.actions.items():
+            if action not in Equipment.equipment_actions.keys()\
+                    and not Item.item_actions.keys():
+                actions[action] = value
+        return actions
+
+    def _get_custom_trans_obj_actions(self, transition_object) -> Dict[str, any]:
+        actions = dict()
+        for action, value in transition_object.actions.items():
+            if action not in TransitionObject.trans_obj_actions.keys():
+                actions[action] = value
+        return actions
+
+    def _get_custom_hero_actions(self) -> Dict[str, any]:
+        actions = dict()
+        for action, value in self.game_state.hero.actions.items():
+            if action not in Hero.hero_actions.keys():
+                actions[action] = value
+        return actions
 
     @staticmethod
     def _store(data):
@@ -125,4 +159,4 @@ class GameStateSaver:
         timestamp = f"{now.date()}_{now.hour}-{now.minute}-{now.second}"
         output_path = f"../game_states/game_{timestamp}.json"
         with open(output_path, "w") as output_file:
-            json.dump(data, output_file)
+            json.dump(data, output_file, indent=2)

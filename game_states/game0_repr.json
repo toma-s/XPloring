@@ -49,7 +49,8 @@
   "creatures": {
     "#creature_dragon": {
       "alias": [
-        "green dragon", "dragon"
+        "green dragon",
+        "dragon"
       ],
       "health": 60,
       "damage": 10,
@@ -119,7 +120,8 @@
         "value": 25,
         "description": "You can USE bandage to reduce swelling or slow heavy bleeding.",
         "alias": [
-          "bandage", "bandages"
+          "bandage",
+          "bandages"
         ],
         "actions": {
           "use": {
@@ -131,7 +133,8 @@
         "value": -75,
         "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences.",
         "alias": [
-          "unlabelled bottle", "bottle"
+          "unlabelled bottle",
+          "bottle"
         ],
         "actions": {
           "use": {
@@ -151,7 +154,8 @@
       "#equipment_silver_sword": {
         "damage": 30,
         "alias": [
-          "sword", "silver sword"
+          "sword",
+          "silver sword"
         ],
         "slot": "right_hand",
         "description": "Sword made of pure silver with a straight double-edged blade and a grip for two-handed use",
@@ -163,7 +167,9 @@
         "resistance": 2,
         "durability": 12,
         "alias": [
-          "helmet", "gladiator helmet", "steel helmet"
+          "helmet",
+          "gladiator helmet",
+          "steel helmet"
         ],
         "slot": "head",
         "description": "Gladiator helmet made of steel",
@@ -172,8 +178,9 @@
       "#equipment_steel_chestplate": {
         "resistance": 3,
         "durability": 18,
-        "alias":[
-          "chestplate", "steel chestplate"
+        "alias": [
+          "chestplate",
+          "steel chestplate"
         ],
         "slot": "chest",
         "description": "Steel chestplate armor",
