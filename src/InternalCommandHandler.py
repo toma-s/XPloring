@@ -305,7 +305,7 @@ class InternalCommandHandler:
         hero.health += heal_amount
 
         consumable_alias = consumable_data.alias[0]
-        print(f"The {consumable_alias} healed you for {heal_amount} HP.")
+        print(f"The {consumable_alias} healed you by {heal_amount} HP.")
         print(f"Your current health is {hero.health} HP.")
 
     def _equip_item(self, item_id):
