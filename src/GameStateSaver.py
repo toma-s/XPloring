@@ -9,6 +9,7 @@ from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
 from game_item.Item import Item
+from game_item.Room import Room
 from game_item.TransitionObject import TransitionObject
 from game_item.Weapon import Weapon
 
@@ -42,9 +43,9 @@ class GameStateSaver:
             rooms[key]["directions"] = room.directions
             rooms[key]["items"] = room.items
             rooms[key]["creatures"] = [creature for creature in room.creatures]
-            rooms[key]["items"] = room.actions
-            if room.auto_actions is not None:
-                rooms[key]["auto_actions"] = room.auto_actions
+            rooms[key]["actions"] = self._get_custom_actions(room, Room.room_actions)
+            rooms[key]["auto_commands"] = room.auto_commands
+
         return rooms
 
     def _load_creatures(self) -> Dict[str, any]:

@@ -14,7 +14,8 @@
       "creatures": [
         "#creature1"
       ],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     },
     "#room2": {
       "alias": "room2",
@@ -30,7 +31,8 @@
       "creatures": [
         "#creature2"
       ],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     }
   },
   "creatures": {

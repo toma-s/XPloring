@@ -10,7 +10,8 @@
         "#helmet2"
       ],
       "creatures": [],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     }
   },
   "creatures": {},

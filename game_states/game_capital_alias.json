@@ -14,7 +14,8 @@
       "creatures": [
         "#creature"
       ],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     }
   },
   "creatures": {

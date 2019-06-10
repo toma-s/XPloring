@@ -14,6 +14,4 @@ class Room:
         self.creatures = data['creatures']
         self.actions = data['actions']
         self.actions.update(self.room_actions)
-        self.auto_actions = dict()
-        if "auto_actions" in data:
-            self.auto_actions = data["auto_actions"]
+        self.auto_commands = data["auto_commands"]

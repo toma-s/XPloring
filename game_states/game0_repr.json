@@ -17,7 +17,8 @@
         "#equipment_steel_chestplate"
       ],
       "creatures": [],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     },
     "#room_arena": {
       "alias": "arena",
@@ -35,7 +36,8 @@
       "creatures": [
         "#creature_dragon"
       ],
-      "actions": {}
+      "actions": {},
+      "auto_commands": {}
     },
     "#room_exit": {
       "alias": "exit",
@@ -44,7 +46,7 @@
       "items": [],
       "creatures": [],
       "actions": {},
-      "auto_actions": {
+      "auto_commands": {
         "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
     }

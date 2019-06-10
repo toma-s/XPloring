@@ -113,9 +113,9 @@ class InternalCommandHandler:
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
         print(f"{rooms[room_id].description}")
-        if rooms[room_id].auto_actions is None:
+        if rooms[room_id].auto_commands is None:
             return
-        for ic_name, ic_args in rooms[room_id].auto_actions.items():
+        for ic_name, ic_args in rooms[room_id].auto_commands.items():
             self.handle_internal_command(ic_name, ic_args, room_id)
 
     def _show_description(self, target_id):

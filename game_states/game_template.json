@@ -16,7 +16,8 @@
       ],
       "actions": {
         "": ""
-      }
+      },
+      "auto_commands": {}
     },
     "#": {
       "alias": "",
@@ -31,7 +32,8 @@
       ],
       "creatures": [
         "#"
-      ]
+      ],
+      "auto_commands": {}
     }
   },
   "creatures": {
