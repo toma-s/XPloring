@@ -24,7 +24,8 @@
       "health": 50,
       "damage": 10,
       "drops": [],
-      "description": "Green Dragon Creature"
+      "description": "Green Dragon Creature",
+      "actions": {}
     }
   },
   "items": {

@@ -19,7 +19,8 @@
       "damage": 10,
       "drops": [
       ],
-      "description": "Dummy creature"
+      "description": "Dummy creature",
+      "actions": {}
     }
   },
   "items": {

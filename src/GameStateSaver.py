@@ -56,6 +56,8 @@ class GameStateSaver:
             creatures[key]["damage"] = creature.damage
             creatures[key]["drops"] = creature.drops
             creatures[key]["description"] = creature.description
+            actions = Creature.creature_actions.keys()
+            creatures[key]["actions"] = self._get_custom_actions(creature, actions)
         return creatures
 
     def _load_transition_objects(self) -> Dict[str, any]:
