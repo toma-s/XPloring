@@ -37,7 +37,7 @@ class InternalCommandHandler:
                 self._set_unlocked(target_id, unlocked)
 
             elif command == "command_attack_creature":
-                self._attack_creature(target_id)
+                self.attack_creature(target_id)
 
             elif command == "command_spawn_item":
                 item_id = commands[command]
@@ -135,48 +135,60 @@ class InternalCommandHandler:
         target_data = self.finder.get_data_by_id(target_id)
         target_data.unlocked = is_unlocked
 
-    def _attack_creature(self, creature_id):
-        creature_data: Creature = self.finder.get_data_by_id(creature_id)
-        creature_alias = creature_data.alias[0]
+    def attack_creature(self, target_creature_id):
+        target_creature_data: Creature = self.finder.get_data_by_id(target_creature_id)
+        creature_alias = target_creature_data.alias[0]
 
-        if creature_id not in self.game_state.creatures:
+        if target_creature_id not in self.game_state.creatures:
             print(f"You can't attack the {creature_alias}.")
             return
 
-        self._hero_attack_turn(creature_data)
-        self._creature_attack_turn(creature_data)
-
-    def _hero_attack_turn(self, target_creature: Creature):
-        hero = self.game_state.hero
-        target_alias = target_creature.alias[0]
-
-        if target_creature.health <= 0:
-            print(f"{self._capitalize_first(target_alias)} is already dead.")
+        if target_creature_data.health <= 0:
+            print(f"{self._capitalize_first(target_creature_data.alias[0])} is already dead.")
             return
-        damage = hero.base_damage
-        if hero.right_hand is not None:
-            damage = self.game_state.equipment[hero.right_hand].damage
-        target_creature.health -= damage
-        print(f"You hit the {target_alias} for {damage} damage! "
-              f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
-    def _creature_attack_turn(self, creature_data):
+        self._hero_attack_turn(target_creature_data)
+
         hero = self.game_state.hero
+        hero_room: Room = self.game_state.rooms[hero.location]
+        for creature_id in hero_room.creatures:
+            creature_data: Creature = self.game_state.creatures[creature_id]
+            if creature_data.health > 0:
+                self._creature_attack_turn(creature_data)
+
+    def _hero_attack_turn(self, creature_data: Creature):
+        if creature_data.health <= 0:
+            return
         creature_alias = creature_data.alias[0]
+        hero = self.game_state.hero
+        hero_attack_power = hero.base_damage
+        if hero.right_hand is not None:
+            hero_attack_power = self.game_state.equipment[hero.right_hand].damage
+        creature_data.health -= hero_attack_power
+        print(f"You hit the {creature_alias} for {hero_attack_power} damage! "
+              f"{self._capitalize_first(creature_alias)} has {creature_data.health} HP left.")
 
         if creature_data.health <= 0:
-            print(f"{self._capitalize_first(creature_alias)} is DEAD!")
-            for loot in creature_data.drops:
-                self._spawn_item(loot)
-        # todo: vsetky prisery v miestnosti su na rade s utokom ?
+            self._on_creature_death(creature_data)
+
+    def _on_creature_death(self, creature_data: Creature):
+        creature_alias = creature_data.alias[0]
+        print(f"{self._capitalize_first(creature_alias)} is dead!")
+        for loot in creature_data.drops:
+            self._spawn_item(loot)
+
+    def _creature_attack_turn(self, creature_data: Creature):
+        creature_alias = creature_data.alias[0]
+        hero = self.game_state.hero
+
         if creature_data.health > 0:
             total_damage = self._count_total_hero_damage(creature_data)
             hero.health -= total_damage
             print(f"{self._capitalize_first(creature_alias)} hit you for {total_damage} damage! "
                   f"You have {hero.health} HP left.")
 
-        if hero.health <= 0:
-            self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
+            if hero.health <= 0:
+                self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
 
     def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
@@ -203,6 +215,11 @@ class InternalCommandHandler:
 
         self._remove_item_from_inventory(equipment_id)
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
+
+
+    def _hero_hp_reduction(self, damage_value, attacker_alias):
+        ...
+
 
     def _spawn_item(self, item_id):
         room = self.game_state.rooms[self.game_state.hero.location]
@@ -253,6 +270,7 @@ class InternalCommandHandler:
         if item_data.value > 0 and hero.health == 100:
             print(f"You are fully healed, you don't need healing.")
             return
+
         if item_data.value < 0:
             will_heal = item_data.value
         else:
@@ -269,6 +287,10 @@ class InternalCommandHandler:
         print(f"You have consumed {item_data.alias[0]}. "
               f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
         hero.inventory.remove(item_id)
+
+        if hero.health <= 0:
+            item_alias = item_data.alias[0]
+            self._end_game(f"GAME OVER. You were killed by {item_alias}. Better luck next time.")
 
     def _equip_item(self, item_id):
         hero = self.game_state.hero

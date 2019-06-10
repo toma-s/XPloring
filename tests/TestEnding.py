@@ -131,7 +131,7 @@ class TestEnding(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "You have consumed unlabelled bottle. -75 HP. " \
                           "Current health is -65 HP.\n" \
-                          "It was a poison\n"
+                          "GAME OVER. You were killed by unlabelled bottle. Better luck next time.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(-65, self.game_state.hero.health)
         self.assertEqual('0', str(e.exception))
