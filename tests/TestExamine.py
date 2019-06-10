@@ -89,7 +89,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine dragon")
         result_output = stdout.getvalue()
-        expected_output = "Big green dragon\n"
+        expected_output = "Big green dragon\n" \
+                          "HP: 60\n" \
+                          "DMG: 10\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_inventory(self):

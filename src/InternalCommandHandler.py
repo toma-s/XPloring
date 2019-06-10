@@ -34,6 +34,10 @@ class InternalCommandHandler:
                 elif isinstance(target, Armour):
                     print(f"Durability: {target.durability}")
                     print(f"Resistance: {target.resistance}")
+                elif isinstance(target, Creature):
+                    print(f"HP: {target.health}")
+                    print(f"DMG: {target.damage}")
+
 
             elif command == "command_set_description":
                 new_description: str = commands[command]
