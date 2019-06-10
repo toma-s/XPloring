@@ -327,27 +327,29 @@ class InternalCommandHandler:
         print(f"{self._capitalize_first(room.alias)} room. {room.description}")
 
         # items in room
-        for i in room.items:
-            if i in items:
-                print(f"There is {items[i].alias[0]}. {self._capitalize_first(items[i].description)}.")
-            elif i in equipment:
-                print(f"There is {equipment[i].alias[0]}. {self._capitalize_first(equipment[i].description)}.")
+        for item_id in room.items:
+            item_data = self.finder.get_data_by_id(item_id)
+            if item_id in items:
+                print(f"There is a {item_data.alias[0]}. {self._capitalize_first(item_data.description)}.")
+            elif item_id in equipment:
+                print(f"There is a {item_data.alias[0]}. {self._capitalize_first(item_data.description)}.")
 
         # entities in room
         if not room.creatures:
             print("There are no enemies around.")
         else:
             for c in room.creatures:
-                print(f"There is {creatures[c].alias[0]} here. "
+                print(f"There is a hostile {creatures[c].alias[0]}."
                       f"{self._capitalize_first(creatures[c].description)}.")
 
         # direction from room
-        for direction, value in room.directions.items():
-            if "trans_obj_id" in value.keys():
-                print(f"There is door to the {direction.upper()}.")
+        for direction_name, direction_data in room.directions.items():
+            if "trans_obj_id" in direction_data.keys():
+                trans_obj_data: TransitionObject = self.finder.get_data_by_id(direction_data["trans_obj_id"])
+                print(f"There is a {trans_obj_data.alias[0]} to the {direction_name.upper()}.")
             else:
-                room_in_dir = self.game_state.rooms[value["room_id"]].alias
-                print(f"There is {room_in_dir} room to the {direction.upper()}.")
+                room_in_dir = self.game_state.rooms[direction_data["room_id"]].alias
+                print(f"The {room_in_dir} is to the {direction_name.upper()}.")
 
     def _show_hero_status(self):
 
