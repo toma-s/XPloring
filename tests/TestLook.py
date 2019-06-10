@@ -6,7 +6,7 @@ from GameState import GameState
 from InputHandler import InputHandler
 
 
-class TestInventory(unittest.TestCase):
+class TestLook(unittest.TestCase):
 
     def setUp(self) -> None:
         self.map0 = '../game_states/game0_repr.json'
