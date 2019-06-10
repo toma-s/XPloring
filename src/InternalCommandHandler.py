@@ -28,6 +28,8 @@ class InternalCommandHandler:
             elif command == "command_show_description":
                 data = self.finder.get_data_by_id(target_id)
                 print(f"{data.description}")
+                damage = self.game_state.equipment[target_id].damage
+                print(f"DMG: {damage}")
 
             elif command == "command_set_description":
                 new_description: str = commands[command]
