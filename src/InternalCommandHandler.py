@@ -66,10 +66,10 @@ class InternalCommandHandler:
                 self._equip_item(target_id)
 
             elif command == "command_unequip":
-                self._unequip_item(target_id)
+                self.unequip_item(target_id)
 
             elif command == "command_drop_item":
-                self._drop_item(target_id)
+                self.drop_item(target_id)
 
             elif command == "command_show_room":
                 self._show_hero_room()
@@ -287,19 +287,17 @@ class InternalCommandHandler:
 
         print(f"Item equipped")
 
-    def _unequip_item(self, item_id):
+    def unequip_item(self, item_id):
         if not self._is_item_equipped(item_id):
             print(f"It is not equipped.")
             return
+        self._remove_item_from_hero_slot(item_id)
+        print(f"Item unequipped.")
+
+    def _remove_item_from_hero_slot(self, item_id):
         hero = self.game_state.hero
         equipment_data: Equipment = self.game_state.equipment[item_id]
         setattr(hero, equipment_data.slot, None)
-
-        item_in_slot = getattr(hero, equipment_data.slot)
-        if item_in_slot == item_id:
-            return True
-
-        print(f"Item unequipped.")
 
     def _is_item_equipped(self, item_id: str) -> bool:
         if item_id not in self.game_state.equipment:
@@ -311,11 +309,17 @@ class InternalCommandHandler:
             return True
         return False
 
-    def _drop_item(self, item_id):
+    def drop_item(self, item_id):
+        hero = self.game_state.hero
+        if item_id not in hero.inventory:
+            print("You don't have that in your inventory.")
+            return
+        if self._is_item_equipped(item_id):
+            self._remove_item_from_hero_slot(item_id)
+            print(f"Item unequipped.")
         self._remove_item_from_inventory(item_id)
         self._spawn_item(item_id)
-        # todo
-        ...
+        print(f"Item removed from inventory.")
 
     def _show_hero_room(self):
         items = self.game_state.items

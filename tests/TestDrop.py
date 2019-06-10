@@ -73,7 +73,7 @@ class TestDrop(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("drop nothinggg")
         result_output = stdout.getvalue()
-        expected_output = "You don't have that in your inventory.\n"
+        expected_output = "There is no such thing as nothinggg.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(1, len(self.game_state.hero.inventory))
 
