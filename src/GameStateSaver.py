@@ -5,6 +5,7 @@ from typing import Dict
 from GameState import GameState
 from game_item.Armour import Armour
 from game_item.Consumable import Consumable
+from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
 from game_item.Item import Item
@@ -65,7 +66,8 @@ class GameStateSaver:
             transition_objects[key]["alias"] = [alias_item for alias_item in transition_object.alias]
             transition_objects[key]["unlocked"] = transition_object.unlocked
             transition_objects[key]["description"] = transition_object.description
-            transition_objects[key]["actions"] = self._get_custom_trans_obj_actions(transition_object)
+            actions = TransitionObject.trans_obj_actions.keys()
+            transition_objects[key]["actions"] = self._get_custom_actions(transition_object, actions)
         return transition_objects
 
     def _load_items(self) -> Dict[str, any]:
@@ -84,7 +86,8 @@ class GameStateSaver:
                 items[group_key].setdefault(key, {})
             items[group_key][key]["description"] = item.description
             items[group_key][key]["alias"] = [alias_item for alias_item in item.alias]
-            items[group_key][key]["actions"] = self._get_custom_item_actions(item)
+            actions = Item.item_actions.keys()
+            items[group_key][key]["actions"] = self._get_custom_actions(item, actions)
         return items
 
     def _load_equipment(self) -> Dict[str, any]:
@@ -106,7 +109,8 @@ class GameStateSaver:
             equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
             equipment[group_key][key]["slot"] = single_equipment.slot
             equipment[group_key][key]["description"] = single_equipment.description
-            equipment[group_key][key]["actions"] = self._get_custom_equipment_actions(single_equipment)
+            actions = Item.item_actions.keys() | Equipment.equipment_actions.keys()
+            equipment[group_key][key]["actions"] = self._get_custom_actions(single_equipment, actions)
         return equipment
 
     def _load_hero(self) -> Dict[str, any]:
@@ -124,25 +128,10 @@ class GameStateSaver:
         hero["inventory"] = [inventory_item for inventory_item in hero_data.inventory]
         return hero
 
-    def _get_custom_item_actions(self, item) -> Dict[str, any]:
+    def _get_custom_actions(self, item, defaults) -> Dict[str, any]:
         actions = dict()
         for action, value in item.actions.items():
-            if action not in Item.item_actions.keys():
-                actions[action] = value
-        return actions
-
-    def _get_custom_equipment_actions(self, equipment) -> Dict[str, any]:
-        actions = dict()
-        for action, value in equipment.actions.items():
-            if action not in Equipment.equipment_actions.keys()\
-                    and not Item.item_actions.keys():
-                actions[action] = value
-        return actions
-
-    def _get_custom_trans_obj_actions(self, transition_object) -> Dict[str, any]:
-        actions = dict()
-        for action, value in transition_object.actions.items():
-            if action not in TransitionObject.trans_obj_actions.keys():
+            if action not in defaults:
                 actions[action] = value
         return actions
 
