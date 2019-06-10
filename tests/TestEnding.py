@@ -56,7 +56,6 @@ class TestEnding(unittest.TestCase):
         self.ih.handle_user_input("take key")
         self.ih.handle_user_input("unlock door")
 
-
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih.handle_user_input("go north")
@@ -129,9 +128,8 @@ class TestEnding(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih.handle_user_input("drink unlabelled bottle")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
-                          "Current health is -65 HP.\n" \
-                          "It was a poison\n"
+        expected_output = "The unlabelled bottle reduced your HP by 75. Your current health is -65 HP.\n" \
+                          "GAME OVER. You were killed by unlabelled bottle. Better luck next time.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(-65, self.game_state.hero.health)
         self.assertEqual('0', str(e.exception))

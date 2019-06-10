@@ -9,6 +9,7 @@ from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
 from game_item.Item import Item
+from game_item.Room import Room
 from game_item.TransitionObject import TransitionObject
 from game_item.Weapon import Weapon
 
@@ -42,8 +43,9 @@ class GameStateSaver:
             rooms[key]["directions"] = room.directions
             rooms[key]["items"] = room.items
             rooms[key]["creatures"] = [creature for creature in room.creatures]
-            if room.auto_commands is not None:
-                rooms[key]["auto_commands"] = room.auto_commands
+            rooms[key]["actions"] = self._get_custom_actions(room, Room.room_actions)
+            rooms[key]["auto_commands"] = room.auto_commands
+
         return rooms
 
     def _load_creatures(self) -> Dict[str, any]:
@@ -66,7 +68,7 @@ class GameStateSaver:
             transition_object = value
             transition_objects[key] = dict()
             transition_objects[key]["alias"] = [alias_item for alias_item in transition_object.alias]
-            transition_objects[key]["unlocked"] = transition_object.unlocked
+            transition_objects[key]["locked"] = transition_object.locked
             transition_objects[key]["description"] = transition_object.description
             actions = TransitionObject.trans_obj_actions.keys()
             transition_objects[key]["actions"] = self._get_custom_actions(transition_object, actions)

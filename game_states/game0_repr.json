@@ -16,7 +16,9 @@
         "#item_poison_bottle",
         "#equipment_steel_chestplate"
       ],
-      "creatures": []
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
     },
     "#room_arena": {
       "alias": "arena",
@@ -33,7 +35,9 @@
       "items": [],
       "creatures": [
         "#creature_dragon"
-      ]
+      ],
+      "actions": {},
+      "auto_commands": {}
     },
     "#room_exit": {
       "alias": "exit",
@@ -41,6 +45,7 @@
       "directions": {},
       "items": [],
       "creatures": [],
+      "actions": {},
       "auto_commands": {
         "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
       }
@@ -66,7 +71,7 @@
       "alias": [
         "door"
       ],
-      "unlocked": false,
+      "locked": true,
       "description": "Exit door is locked, you need a key",
       "actions": {
         "open": {
@@ -74,7 +79,7 @@
         },
         "unlock": {
           "command_required_item": "#item_doorkey_exit",
-          "command_set_unlocked": true,
+          "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "Exit door is unlocked, you can leave",
           "command_show_description": null
@@ -126,7 +131,7 @@
         ],
         "actions": {
           "use": {
-            "command_use_item": true
+            "command_consume_item": true
           }
         }
       },
@@ -135,16 +140,17 @@
         "description": "Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences",
         "alias": [
           "unlabelled bottle",
-          "bottle"
+          "bottle",
+          "strange bottle"
         ],
         "actions": {
           "use": {
-            "command_use_item": true,
-            "command_show_message": "It was a poison"
+            "command_consume_item": true,
+            "command_show_message": "It was a poison."
           },
           "drink": {
-            "command_use_item": true,
-            "command_show_message": "It was a poison"
+            "command_consume_item": true,
+            "command_show_message": "It was a poison."
           }
         }
       }

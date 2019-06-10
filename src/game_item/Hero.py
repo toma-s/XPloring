@@ -1,9 +1,6 @@
 class Hero:
 
     hero_actions = {
-        "go": {
-            "command_move_direction": None
-        },
         "look": {
             "command_show_room": None
         },

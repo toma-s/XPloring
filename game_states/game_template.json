@@ -13,7 +13,11 @@
       ],
       "creatures": [
         "#"
-      ]
+      ],
+      "actions": {
+        "": ""
+      },
+      "auto_commands": {}
     },
     "#": {
       "alias": "",
@@ -28,7 +32,8 @@
       ],
       "creatures": [
         "#"
-      ]
+      ],
+      "auto_commands": {}
     }
   },
   "creatures": {
@@ -81,7 +86,7 @@
         "actions": {
           "use": {
             "command_required_item": "#",
-            "command_use_item": true
+            "command_consume_item": true
           }
         }
       }

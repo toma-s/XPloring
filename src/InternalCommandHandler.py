@@ -1,10 +1,10 @@
 from Finder import Finder
 from GameState import GameState
 from game_item.Armour import Armour
+from game_item.Consumable import Consumable
 from game_item.Creature import Creature
 from game_item.Equipment import Equipment
 from game_item.Hero import Hero
-from game_item.Item import Item
 from game_item.Room import Room
 from game_item.TransitionObject import TransitionObject
 from game_item.Weapon import Weapon
@@ -16,104 +16,107 @@ class InternalCommandHandler:
         self.game_state = game_state
         self.finder = Finder(game_state)
 
-    def handle_internal_command(self, commands, target_id=None):
-        for command in commands:
-            if command == "command_move_direction":
-                self._move_to_direction(target_id)
+    def handle_internal_command(self, ic_name, ic_arg, target_id) -> bool:
+        allow_next_command = True
 
-            elif command == "command_show_message":
-                message = commands[command]
-                print(f"{message}")
+        if ic_name == "command_move_direction" and target_id:
+            self.move_to_direction(target_id)
 
-            elif command == "command_show_description":
-                self._show_description(target_id)
+        elif ic_name == "command_show_message":
+            message = ic_arg
+            print(f"{message}")
 
-            elif command == "command_set_description":
-                new_description: str = commands[command]
-                self._set_description(target_id, new_description)
+        elif ic_name == "command_show_description" and target_id:
+            self._show_description(target_id)
 
-            elif command == "command_set_unlocked":
-                unlocked: bool = commands[command]
-                self._set_unlocked(target_id, unlocked)
+        elif ic_name == "command_set_description" and target_id:
+            new_description: str = ic_arg
+            self._set_description(target_id, new_description)
 
-            elif command == "command_attack_creature":
-                self._attack_creature(target_id)
+        elif ic_name == "command_set_locked" and target_id:
+            is_locked: bool = ic_arg
+            self._set_locked(target_id, is_locked)
 
-            elif command == "command_spawn_item":
-                item_id = commands[command]
-                self._spawn_item(item_id)
+        elif ic_name == "command_attack_creature" and target_id:
+            self.attack_creature(target_id)
 
-            elif command == "command_despawn_item":
-                item_id = commands[command]
-                self._despawn_item(item_id)
+        elif ic_name == "command_spawn_item" and target_id:
+            item_id = ic_arg
+            self._spawn_item(item_id)
 
-            elif command == "command_add_item_to_inventory":
-                self._item_take(target_id)
+        elif ic_name == "command_despawn_item" and target_id:
+            item_id = ic_arg
+            self._despawn_item(item_id)
 
-            elif command == "command_remove_item_from_inventory":
-                self._remove_item_from_inventory(commands[command])
+        elif ic_name == "command_add_item_to_inventory" and target_id:
+            self._item_take(target_id)
 
-            elif command == "command_required_item":
-                item_id = commands[command]
-                if not self._required_item_in_inventory(item_id):
-                    return
+        elif ic_name == "command_remove_item_from_inventory":
+            self._remove_item_from_inventory(ic_arg)
 
-            elif command == "command_use_item":
-                # TODO refactor - use_item
-                self.use_item(target_id)
+        elif ic_name == "command_required_item":
+            item_id = ic_arg
+            if not self._required_item_in_inventory(item_id):
+                allow_next_command = False
 
-            elif command == "command_equip":
-                self._equip_item(target_id)
+        elif ic_name == "command_consume_item":
+            self.consume_item(target_id)
 
-            elif command == "command_unequip":
-                self.unequip_item(target_id)
+        elif ic_name == "command_equip" and target_id:
+            self._equip_item(target_id)
 
-            elif command == "command_drop_item":
-                self.drop_item(target_id)
+        elif ic_name == "command_unequip":
+            self.unequip_item(target_id)
 
-            elif command == "command_show_room":
-                self._show_hero_room()
+        elif ic_name == "command_drop_item":
+            self.drop_item(target_id)
 
-            elif command == "command_show_status":
-                self._show_hero_status()
+        elif ic_name == "command_show_room":
+            self._show_hero_room()
 
-            elif command == "command_show_inventory":
-                self._show_hero_inventory()
+        elif ic_name == "command_show_status":
+            self._show_hero_status()
 
-            elif command == "command_good_end":
-                end_massage = commands[command]
-                self._end_game(end_massage)
+        elif ic_name == "command_show_inventory":
+            self._show_hero_inventory()
 
-            else:
-                print("I don't understand that command.")
+        elif ic_name == "command_good_end":
+            end_massage = ic_arg
+            self._end_game(end_massage)
 
-    def _move_to_direction(self, direction_name):
-        hero = self.game_state.hero
-        rooms = self.game_state.rooms
-        transition_objects = self.game_state.transition_objects
-
-        if direction_name in rooms[hero.location].directions:
-            room_id = rooms[hero.location].directions[direction_name]["room_id"]
-
-            direction_data = rooms[hero.location].directions[direction_name]
-
-            if "trans_obj_id" in direction_data:
-                trans_obj = transition_objects[direction_data["trans_obj_id"]]
-                if not trans_obj.unlocked:
-                    print(trans_obj.description)
-                else:
-                    self.move_to(room_id)
-            else:
-                self.move_to(room_id)
         else:
-            print(f"You are not allowed to go {direction_name}.")
+            print("I don't understand that command.")
+            allow_next_command = False
+        return allow_next_command
 
-    def move_to(self, room_id):
+    def move_to_direction(self, direction_name):
+        hero = self.game_state.hero
+        hero_room_data: Room = self.game_state.rooms[hero.location]
+
+        if direction_name not in hero_room_data.directions:
+            print(f"You are not allowed to go {direction_name}.")
+            return
+
+        direction_data = hero_room_data.directions[direction_name]
+        target_room_id = direction_data["room_id"]
+
+        if "trans_obj_id" in direction_data:
+            trans_obj_id = direction_data["trans_obj_id"]
+            trans_obj: TransitionObject = self.game_state.transition_objects[trans_obj_id]
+            if trans_obj.locked:
+                trans_obj_alias = trans_obj.alias[0]
+                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked.")
+                return
+        self._move_to(target_room_id)
+
+    def _move_to(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
         print(f"{rooms[room_id].description}")
-        if rooms[room_id].auto_commands is not None:
-            self.handle_internal_command(rooms[room_id].auto_commands, room_id)
+        if rooms[room_id].auto_commands is None:
+            return
+        for ic_name, ic_args in rooms[room_id].auto_commands.items():
+            self.handle_internal_command(ic_name, ic_args, room_id)
 
     def _show_description(self, target_id):
         target_data = self.finder.get_data_by_id(target_id)
@@ -131,52 +134,64 @@ class InternalCommandHandler:
         target_data = self.finder.get_data_by_id(target_id)
         target_data.description = description_message
 
-    def _set_unlocked(self, target_id, is_unlocked: bool):
-        target_data = self.finder.get_data_by_id(target_id)
-        target_data.unlocked = is_unlocked
+    def _set_locked(self, target_id, is_locked: bool):
+        target_data = self.game_state.transition_objects[target_id]
+        target_data.locked = is_locked
 
-    def _attack_creature(self, creature_id):
-        creature_data: Creature = self.finder.get_data_by_id(creature_id)
-        creature_alias = creature_data.alias[0]
+    def attack_creature(self, target_creature_id):
+        target_creature_data: Creature = self.finder.get_data_by_id(target_creature_id)
+        creature_alias = target_creature_data.alias[0]
 
-        if creature_id not in self.game_state.creatures:
+        if target_creature_id not in self.game_state.creatures:
             print(f"You can't attack the {creature_alias}.")
             return
 
-        self._hero_attack_turn(creature_data)
-        self._creature_attack_turn(creature_data)
-
-    def _hero_attack_turn(self, target_creature: Creature):
-        hero = self.game_state.hero
-        target_alias = target_creature.alias[0]
-
-        if target_creature.health <= 0:
-            print(f"{self._capitalize_first(target_alias)} is already dead.")
+        if target_creature_data.health <= 0:
+            print(f"{self._capitalize_first(target_creature_data.alias[0])} is already dead.")
             return
-        damage = hero.base_damage
-        if hero.right_hand is not None:
-            damage = self.game_state.equipment[hero.right_hand].damage
-        target_creature.health -= damage
-        print(f"You hit the {target_alias} for {damage} damage! "
-              f"{self._capitalize_first(target_alias)} has {target_creature.health} HP left.")
 
-    def _creature_attack_turn(self, creature_data):
+        self._hero_attack_turn(target_creature_data)
+
         hero = self.game_state.hero
+        hero_room: Room = self.game_state.rooms[hero.location]
+        for creature_id in hero_room.creatures:
+            creature_data: Creature = self.game_state.creatures[creature_id]
+            if creature_data.health > 0:
+                self._creature_attack_turn(creature_data)
+
+    def _hero_attack_turn(self, creature_data: Creature):
+        if creature_data.health <= 0:
+            return
         creature_alias = creature_data.alias[0]
+        hero = self.game_state.hero
+        hero_attack_power = hero.base_damage
+        if hero.right_hand is not None:
+            hero_attack_power = self.game_state.equipment[hero.right_hand].damage
+        creature_data.health -= hero_attack_power
+        print(f"You hit the {creature_alias} for {hero_attack_power} damage! "
+              f"{self._capitalize_first(creature_alias)} has {creature_data.health} HP left.")
 
         if creature_data.health <= 0:
-            print(f"{self._capitalize_first(creature_alias)} is DEAD!")
-            for loot in creature_data.drops:
-                self._spawn_item(loot)
-        # todo: vsetky prisery v miestnosti su na rade s utokom ?
+            self._on_creature_death(creature_data)
+
+    def _on_creature_death(self, creature_data: Creature):
+        creature_alias = creature_data.alias[0]
+        print(f"{self._capitalize_first(creature_alias)} is dead!")
+        for loot in creature_data.drops:
+            self._spawn_item(loot)
+
+    def _creature_attack_turn(self, creature_data: Creature):
+        creature_alias = creature_data.alias[0]
+        hero = self.game_state.hero
+
         if creature_data.health > 0:
             total_damage = self._count_total_hero_damage(creature_data)
             hero.health -= total_damage
             print(f"{self._capitalize_first(creature_alias)} hit you for {total_damage} damage! "
                   f"You have {hero.health} HP left.")
 
-        if hero.health <= 0:
-            self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
+            if hero.health <= 0:
+                self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
 
     def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
@@ -242,37 +257,60 @@ class InternalCommandHandler:
         print(f"You don't have a required item to do this action.")
         return False
 
-    def use_item(self, item_id):
+    def consume_item(self, item_id):
         item_data = self.game_state.items[item_id]
+        if not hasattr(item_data, "value"):
+            print(f"That item can not be consumed.")
+            return
+        item_data: Consumable = item_data
         hero = self.game_state.hero
 
         if item_id not in hero.inventory:
-            print(f"You do not have it in your inventory.")
+            print(f"You do not have that in your inventory.")
             return
 
-        if item_data.value > 0 and hero.health == 100:
-            print(f"You are fully healed, you don't need healing.")
-            return
+        consumed = False
         if item_data.value < 0:
-            will_heal = item_data.value
+            consumed = self._consume_item_harmful_effect(item_data)
         else:
-            need_heal = 100 - hero.health
-            if need_heal >= item_data.value:
-                will_heal = item_data.value
-            else:
-                will_heal = need_heal
+            consumed = self._consume_item_healing_effect(item_data)
+        if consumed:
+            hero.inventory.remove(item_id)
 
-        hero.health += will_heal
-        sign = "+"
-        if will_heal < 0:
-            sign = ""
-        print(f"You have consumed {item_data.alias[0]}. "
-              f"{sign}{will_heal} HP. Current health is {hero.health} HP.")
-        hero.inventory.remove(item_id)
+    def _consume_item_harmful_effect(self, consumable_data: Consumable) -> bool:
+        hero = self.game_state.hero
+        harm_amount = abs(consumable_data.value)
+
+        hero.health -= harm_amount
+
+        consumable_alias = consumable_data.alias[0]
+        print(f"The {consumable_alias} reduced your HP by {harm_amount}. "
+              f"Your current health is {hero.health} HP.")
+
+        if hero.health <= 0:
+            self._end_game(f"GAME OVER. You were killed by {consumable_alias}. Better luck next time.")
+        return True
+
+    def _consume_item_healing_effect(self, consumable_data) -> bool:
+        hero = self.game_state.hero
+        if hero.health == 100:
+            print(f"Your health is already at 100 HP, you don't need healing.")
+            return False
+
+        heal_amount = consumable_data.value
+        missing_hp = 100 - hero.health
+        if heal_amount > missing_hp:
+            heal_amount = missing_hp
+
+        hero.health += heal_amount
+
+        consumable_alias = consumable_data.alias[0]
+        print(f"The {consumable_alias} healed you by {heal_amount} HP. "
+              f"Your current health is {hero.health} HP.")
+        return True
 
     def _equip_item(self, item_id):
         hero = self.game_state.hero
-        equipment = self.game_state.equipment
 
         if item_id not in hero.inventory:
             print(f"You don't have that in your inventory.")
@@ -282,9 +320,7 @@ class InternalCommandHandler:
             return
 
         equipment_data: Equipment = self.game_state.equipment[item_id]
-
         setattr(hero, equipment_data.slot, item_id)
-
         print(f"Item equipped")
 
     def unequip_item(self, item_id):

@@ -36,9 +36,8 @@ class TestConsume(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("use bottle")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
-                          "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+        expected_output = "The unlabelled bottle reduced your HP by 75. Your current health is 25 HP.\n" \
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_use_bottle_arena_room(self):
@@ -49,9 +48,8 @@ class TestConsume(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("use bottle")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
-                          "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+        expected_output = "The unlabelled bottle reduced your HP by 75. Your current health is 25 HP.\n" \
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_drink_bottle_entrance_room(self):
@@ -61,9 +59,8 @@ class TestConsume(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("drink bottle")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
-                          "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+        expected_output = "The unlabelled bottle reduced your HP by 75. Your current health is 25 HP.\n" \
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_drink_bottle_arena_room(self):
@@ -73,22 +70,41 @@ class TestConsume(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("drink bottle")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed unlabelled bottle. -75 HP. " \
-                          "Current health is 25 HP.\n" \
-                          "It was a poison\n"
+        expected_output = "The unlabelled bottle reduced your HP by 75. Your current health is 25 HP.\n" \
+                          "It was a poison.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(25, self.game_state.hero.health)
 
-    def test_use_bandage(self):
+    def test_use_bandage_full_hp(self):
+        self.ih.handle_user_input("take bandage")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        self.assertEqual(100, self.game_state.hero.health)
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.ih.handle_user_input("take bandage")
             self.ih.handle_user_input("use bandage")
         result_output = stdout.getvalue()
-        expected_output = "Bandage has been added to your inventory.\n" \
-                          "You are fully healed, you don't need healing.\n"
+        expected_output = "Your health is already at 100 HP, you don't need healing.\n"
         self.assertEqual(expected_output, result_output)
+        self.assertEqual(1, len(self.game_state.hero.inventory))
         self.assertEqual(100, self.game_state.hero.health)
+
+    def test_use_bandage_after_poison(self):
+        self.ih.handle_user_input("take bottle")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        self.ih.handle_user_input("drink unlabelled bottle")
+        self.assertEqual(0, len(self.game_state.hero.inventory))
+        self.assertEqual(25, self.game_state.hero.health)
+
+        self.ih.handle_user_input("take bandage")
+        self.assertEqual(1, len(self.game_state.hero.inventory))
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.ih.handle_user_input("use bandage")
+        result_output = stdout.getvalue()
+        expected_output = "The bandage healed you by 25 HP. Your current health is 50 HP.\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual(50, self.game_state.hero.health)
+        self.assertEqual(0, len(self.game_state.hero.inventory))
 
     def test_eat_cake(self):
         self.ih1.handle_user_input("take kitchen key")
@@ -100,7 +116,7 @@ class TestConsume(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("eat cake")
         result_output = stdout.getvalue()
-        expected_output = "You have consumed cake. -15 HP. Current health is 85 HP.\n" \
+        expected_output = "The cake reduced your HP by 15. Your current health is 85 HP.\n" \
                           "You found key. This key opens heavy metal door.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual(85, self.game_state1.hero.health)

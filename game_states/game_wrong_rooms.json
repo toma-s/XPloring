@@ -7,7 +7,9 @@
       },
       "items": [
       ],
-      "creatures": []
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
     }
   },
   "creatures": {

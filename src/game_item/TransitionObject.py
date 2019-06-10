@@ -8,7 +8,7 @@ class TransitionObject:
 
     def __init__(self, data: dict):
         self.alias = data['alias']
-        self.unlocked = data['unlocked']
+        self.locked = data['locked']
         self.description = data['description']
         self.actions = data['actions']
         self.actions.update(self.trans_obj_actions)

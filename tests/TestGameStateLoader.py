@@ -107,7 +107,7 @@ class TestGameStateLoader(unittest.TestCase):
             {
                 "use": {
                     "command_required_item": "#item1",
-                    "command_use_item": True
+                    "command_consume_item": True
                 },
                 "examine": {
                     "command_show_description": None
@@ -155,9 +155,6 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["#item1"], hero.inventory)
 
         expected_hero_actions = {
-            "go": {
-                "command_move_direction": None
-            },
             "look": {
                 "command_show_room": None
             },
