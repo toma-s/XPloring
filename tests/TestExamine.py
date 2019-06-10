@@ -70,7 +70,9 @@ class TestExamine(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("examine helmet")
         result_output = stdout.getvalue()
-        expected_output = "Gladiator helmet made of steel\n"
+        expected_output = "Gladiator helmet made of steel\n" \
+                          "Durability: 12\n" \
+                          "Resistance: 2\n"
         self.assertEqual(expected_output, result_output)
 
     def test_examine_direction(self):
