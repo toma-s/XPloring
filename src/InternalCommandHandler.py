@@ -272,30 +272,33 @@ class InternalCommandHandler:
             print(f"You do not have that in your inventory.")
             return
 
+        consumed = False
         if item_data.value < 0:
-            self._consume_item_harmful_effect(item_data)
+            consumed = self._consume_item_harmful_effect(item_data)
         else:
-            self._consume_item_healing_effect(item_data)
-        hero.inventory.remove(item_id)
+            consumed = self._consume_item_healing_effect(item_data)
+        if consumed:
+            hero.inventory.remove(item_id)
 
-    def _consume_item_harmful_effect(self, consumable_data: Consumable):
+    def _consume_item_harmful_effect(self, consumable_data: Consumable) -> bool:
         hero = self.game_state.hero
-        harm_amount = consumable_data.value
+        harm_amount = abs(consumable_data.value)
 
-        hero.health += harm_amount
+        hero.health -= harm_amount
 
         consumable_alias = consumable_data.alias[0]
-        print(f"The {consumable_alias} reduced your HP by {harm_amount}.")
-        print(f"Your current health is {hero.health} HP.")
+        print(f"The {consumable_alias} reduced your HP by {harm_amount}. "
+              f"Your current health is {hero.health} HP.")
 
         if hero.health <= 0:
             self._end_game(f"GAME OVER. You were killed by {consumable_alias}. Better luck next time.")
+        return True
 
-    def _consume_item_healing_effect(self, consumable_data):
+    def _consume_item_healing_effect(self, consumable_data) -> bool:
         hero = self.game_state.hero
         if hero.health == 100:
-            print(f"Your health is already 100 HP, you don't need healing.")
-            return
+            print(f"Your health is already at 100 HP, you don't need healing.")
+            return False
 
         heal_amount = consumable_data.value
         missing_hp = 100 - hero.health
@@ -305,12 +308,12 @@ class InternalCommandHandler:
         hero.health += heal_amount
 
         consumable_alias = consumable_data.alias[0]
-        print(f"The {consumable_alias} healed you by {heal_amount} HP.")
-        print(f"Your current health is {hero.health} HP.")
+        print(f"The {consumable_alias} healed you by {heal_amount} HP. "
+              f"Your current health is {hero.health} HP.")
+        return True
 
     def _equip_item(self, item_id):
         hero = self.game_state.hero
-        equipment = self.game_state.equipment
 
         if item_id not in hero.inventory:
             print(f"You don't have that in your inventory.")
@@ -320,9 +323,7 @@ class InternalCommandHandler:
             return
 
         equipment_data: Equipment = self.game_state.equipment[item_id]
-
         setattr(hero, equipment_data.slot, item_id)
-
         print(f"Item equipped")
 
     def unequip_item(self, item_id):
