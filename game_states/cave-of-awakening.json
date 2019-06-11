@@ -113,7 +113,7 @@
             "command_show_message": "The tent doesn't fit into your bag. You don't need it anyway."
           },
           "examine": {
-            "command_show_message": "You take a closer look at the inside of the tent.\nThere is noone in there, but you can see a small wooden box in the corner.",
+            "command_show_message": "You take a closer look at the inside of the tent.\nThere is nobody in there, but you can see a small wooden box in the corner of the tent.",
             "command_spawn_items": ["#item_campsite_wooden_box_full"]
           }
         }
@@ -130,13 +130,27 @@
           "open": {
             "command_despawn_item": "#item_campsite_wooden_box_full",
             "command_spawn_items": ["#item_campsite_wooden_box_empty"],
-            "command_show_message": "You open the box, revealing the content. You have found a lighter.\n",
+            "command_show_message": "You open the box, revealing the content. You have found a lighter.",
             "command_add_item_to_inventory": "#item_lighter"
           }
         }
       },
+      "#item_campsite_wooden_box_empty": {
+        "description": "A small wooden box. The box is opened and there is nothing inside.",
+        "alias": [
+          "box", "wooden box", "empty box"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The box doesn't fit into your bag. You don't need it anyway."
+          },
+          "open": {
+            "command_show_message": "It is already open"
+          }
+        }
+      },
       "#item_lighter": {
-        "description": "Lighter is a portable device used to create a flame.\nYou try to use it and a small flame appears, it works.",
+        "description": "A portable device used to create a flame.",
         "alias": [
           "lighter"
         ],

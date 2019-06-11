@@ -228,9 +228,9 @@ class InternalCommandHandler:
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
 
     def _spawn_item(self, item_id):
-        room = self.game_state.rooms[self.game_state.hero.location]
-        if item_id not in room.items:
-            room.items.append(item_id)
+        hero_room_data = self.game_state.rooms[self.game_state.hero.location]
+        if item_id not in hero_room_data.items:
+            hero_room_data.items.append(item_id)
 
     def _despawn_item(self, item_id):
         hero = self.game_state.hero
@@ -369,7 +369,7 @@ class InternalCommandHandler:
         creatures = self.game_state.creatures
         room = self.game_state.rooms[self.game_state.hero.location]
 
-        print(f"{self._capitalize_first(room.alias)}.")
+        print(f"- {self._capitalize_first(room.alias)} -")
         print(f"{self._capitalize_first(room.description)}")
         print()
 
