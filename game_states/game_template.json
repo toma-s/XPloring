@@ -85,7 +85,7 @@
         ],
         "actions": {
           "use": {
-            "command_required_item": "#",
+            "command_required_items": ["#"],
             "command_consume_item": true
           }
         }

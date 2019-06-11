@@ -45,7 +45,6 @@ class InternalCommandHandler:
             for item_id in item_ids:
                 self._spawn_item(item_id)
 
-
         elif ic_name == "command_despawn_item" and target_id:
             item_id = ic_arg
             self._despawn_item(item_id)
@@ -56,10 +55,12 @@ class InternalCommandHandler:
         elif ic_name == "command_remove_item_from_inventory":
             self._remove_item_from_inventory(ic_arg)
 
-        elif ic_name == "command_required_item":
-            item_id = ic_arg
-            if not self._required_item_in_inventory(item_id):
-                allow_next_command = False
+        elif ic_name == "command_required_items":
+            item_ids: [str] = ic_arg
+            for item_id in item_ids:
+                if not self._required_item_in_inventory(item_id):
+                    allow_next_command = False
+                    break
 
         elif ic_name == "command_consume_item":
             if not self.consume_item(target_id):

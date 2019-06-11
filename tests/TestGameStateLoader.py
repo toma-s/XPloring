@@ -106,7 +106,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "use": {
-                    "command_required_item": "#item1",
+                    "command_required_items": ["#item1"],
                     "command_consume_item": True
                 },
                 "examine": {

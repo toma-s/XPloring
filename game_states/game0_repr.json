@@ -78,7 +78,7 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_item": "#item_doorkey_exit",
+          "command_required_items": ["#item_doorkey_exit"],
           "command_set_locked": false,
           "command_remove_item_from_inventory": "#item_doorkey_exit",
           "command_set_description": "Exit door is unlocked, you can leave",
