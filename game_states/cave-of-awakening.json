@@ -13,12 +13,53 @@
       "actions": {},
       "auto_commands": {}
     },
-    "#room_cave_level_1": {
+    "#room_passage_level_1": {
       "alias": "cave passage",
-      "description": "Passage that is located right after cave entrance. It gets darker as you go deeper into the cave.",
+      "description": "Passage that is located right after cave entrance.\nIt gets darker as you go deeper into the cave.",
       "directions": {
+        "north": {
+          "room_id": "#room_cave_level_2"
+        },
         "east": {
-          "room_id": "#"
+          "room_id": "#room_camp"
+        },
+        "south": {
+          "room_id": "#room_cave_entrance"
+        }
+      },
+      "items": [
+        "#"
+      ],
+      "creatures": [
+        "#"
+      ],
+      "auto_commands": {}
+    },
+    "#room_abandoned_campsite": {
+      "alias": "abandoned campsite",
+      "description": "It seems you are not the first one to discover this cave.\nPrevious owners left here some of their stuff.",
+      "directions": {
+        "west": {
+          "room_id": "#room_passage_level_1"
+        }
+      },
+      "items": [
+        "#item_campsite_chest_container",
+      ],
+      "creatures": [
+        "#"
+      ],
+      "auto_commands": {}
+    },
+    "#room_passage_level_2": {
+      "alias": "deeper cave passage",
+      "description": "The passage is really dark, you can barely see.",
+      "directions": {
+        "north": {
+          "room_id": "#room_cave_depths"
+        },
+        "west": {
+          "room_id": "#room_camp"
         }
       },
       "items": [
@@ -31,7 +72,7 @@
     }
   },
   "creatures": {
-    "#": {
+    "#zombie_adventurer": {
       "alias": [
         ""
       ],
