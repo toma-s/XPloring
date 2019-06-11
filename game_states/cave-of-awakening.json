@@ -1,0 +1,131 @@
+{
+  "rooms": {
+    "#room_cave_entrance": {
+      "alias": "cave entrance",
+      "description": "You are in the cave entrance. You can feel the sunlight touching your face.\n",
+      "directions": {
+        "north": {
+          "room_id": "#room_cave_level_1"
+        }
+      },
+      "items": [],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    },
+    "#room_cave_level_1": {
+      "alias": "cave passage",
+      "description": "Passage that is located right after cave entrance. It gets darker as you go deeper into the cave.",
+      "directions": {
+        "east": {
+          "room_id": "#"
+        }
+      },
+      "items": [
+        "#"
+      ],
+      "creatures": [
+        "#"
+      ],
+      "auto_commands": {}
+    }
+  },
+  "creatures": {
+    "#": {
+      "alias": [
+        ""
+      ],
+      "health": 0,
+      "damage": 0,
+      "drops": [
+        "#"
+      ],
+      "description": "",
+      "actions": {}
+    },
+    "#": {
+      "alias": [
+        ""
+      ],
+      "health": 0,
+      "damage": 0,
+      "drops": [
+        "#"
+      ],
+      "description": "",
+      "actions": {}
+    }
+  },
+  "items": {
+    "regular": {
+      "#item_research_documents": {
+        "description": "Documents containing research of the historical artifact 'The Staff of Awakening'.",
+        "alias": [
+          "documents", "research documents"
+        ],
+        "actions": {
+          "read": {
+            "command_show_message": "You have collected clues about the artifact, known as 'Staff of Awakening' from all around the world.\n They all lead here, to this cave located far from civilisation.\nRumors say that the staff gives the user a magical ability to control the power of life.\n It can drain life of the living and turn the dead into evil soldiers.\nI can't let it get into the wrong hands.\nI must collect the artifact and save the world ... alone."
+          }
+        }
+      }
+    },
+    "consumable": {
+      "#": {
+        "description": "",
+        "value": 0,
+        "alias": [
+          ""
+        ],
+        "actions": {
+          "use": {
+            "command_required_item": "#",
+            "command_consume_item": true
+          }
+        }
+      }
+    }
+  },
+  "equipment": {
+    "weapons": {
+      "#": {
+        "alias": [
+          ""
+        ],
+        "slot": "",
+
+        "damage": 0,
+        "description": ""
+      }
+    },
+    "armour": {
+      "#": {
+        "alias": [
+          ""
+        ],
+        "slot": "",
+        "resistance": 0,
+        "durability": 0,
+
+        "description": ""
+      }
+    }
+  },
+  "transition_objects": {
+  },
+  "hero": {
+    "health": 100,
+    "base_damage": 5,
+    "location": "#cave_entrance",
+    "weapon_slot": null,
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
+    "actions": {},
+    "inventory": [
+      "#item_research_documents",
+      "#item_fresh_apple",
+      "#item_bottle_of_water"
+    ]
+  }
+}
