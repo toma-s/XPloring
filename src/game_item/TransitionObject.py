@@ -10,5 +10,5 @@ class TransitionObject:
         self.alias = data['alias']
         self.locked = data['locked']
         self.description = data['description']
-        self.actions = data['actions']
-        self.actions.update(self.trans_obj_actions)
+        self.actions = self.trans_obj_actions.copy()
+        self.actions.update(data['actions'])

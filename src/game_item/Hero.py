@@ -21,7 +21,7 @@ class Hero:
         self.chest_slot = data['chest_slot']
         self.legs_slot = data['legs_slot']
         self.inventory = data['inventory']
-        self.actions = data['actions']
-        self.actions.update(self.hero_actions)
+        self.actions = self.hero_actions.copy()
+        self.actions.update(data['actions'])
 
 

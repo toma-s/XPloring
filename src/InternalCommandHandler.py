@@ -60,7 +60,8 @@ class InternalCommandHandler:
                 allow_next_command = False
 
         elif ic_name == "command_consume_item":
-            self.consume_item(target_id)
+            if not self.consume_item(target_id):
+                allow_next_command = False
 
         elif ic_name == "command_equip" and target_id:
             self._equip_item(target_id)
@@ -107,12 +108,13 @@ class InternalCommandHandler:
                 trans_obj_alias = trans_obj.alias[0]
                 print(f"You can't go {direction_name}. The {trans_obj_alias} is locked.")
                 return
-        self._move_to(target_room_id)
+        self._move_hero_to_room(target_room_id)
 
-    def _move_to(self, room_id):
+    def _move_hero_to_room(self, room_id):
         self.game_state.hero.location = room_id
         rooms = self.game_state.rooms
-        print(f"{rooms[room_id].description}")
+        # print(f"{rooms[room_id].description}")
+        self._show_hero_room()
         if rooms[room_id].auto_commands is None:
             return
         for ic_name, ic_args in rooms[room_id].auto_commands.items():
@@ -260,21 +262,21 @@ class InternalCommandHandler:
         item_data = self.game_state.items[item_id]
         if not hasattr(item_data, "value"):
             print(f"That item can not be consumed.")
-            return
+            return False
         item_data: Consumable = item_data
         hero = self.game_state.hero
 
         if item_id not in hero.inventory:
             print(f"You do not have that in your inventory.")
-            return
+            return False
 
-        consumed = False
         if item_data.value < 0:
             consumed = self._consume_item_harmful_effect(item_data)
         else:
             consumed = self._consume_item_healing_effect(item_data)
         if consumed:
             hero.inventory.remove(item_id)
+        return consumed
 
     def _consume_item_harmful_effect(self, consumable_data: Consumable) -> bool:
         hero = self.game_state.hero
@@ -362,7 +364,9 @@ class InternalCommandHandler:
         creatures = self.game_state.creatures
         room = self.game_state.rooms[self.game_state.hero.location]
 
-        print(f"{self._capitalize_first(room.alias)}. {room.description}")
+        print(f"{self._capitalize_first(room.alias)}.")
+        print(f"{self._capitalize_first(room.description)}")
+        print()
 
         # items in room
         for item_id in room.items:
@@ -377,7 +381,7 @@ class InternalCommandHandler:
             print("There are no enemies around.")
         else:
             for c in room.creatures:
-                print(f"There is a hostile {creatures[c].alias[0]}."
+                print(f"There is a hostile {creatures[c].alias[0]}. "
                       f"{self._capitalize_first(creatures[c].description)}.")
 
         # direction from room

@@ -2,10 +2,10 @@
   "rooms": {
     "#room_cave_entrance": {
       "alias": "cave entrance",
-      "description": "You are in the cave entrance. You can feel the sunlight touching your face.\n",
+      "description": "You can feel the sunlight touching your face.",
       "directions": {
         "north": {
-          "room_id": "#room_cave_level_1"
+          "room_id": "#room_passage_level_1"
         }
       },
       "items": [],
@@ -18,56 +18,49 @@
       "description": "Passage that is located right after cave entrance.\nIt gets darker as you go deeper into the cave.",
       "directions": {
         "north": {
-          "room_id": "#room_cave_level_2"
+          "room_id": "#room_passage_level_2"
         },
         "east": {
-          "room_id": "#room_camp"
+          "room_id": "#room_abandoned_campsite"
         },
         "south": {
           "room_id": "#room_cave_entrance"
         }
       },
-      "items": [
-        "#"
-      ],
-      "creatures": [
-        "#"
-      ],
+      "items": [],
+      "creatures": [],
+      "actions": {},
       "auto_commands": {}
     },
     "#room_abandoned_campsite": {
       "alias": "abandoned campsite",
-      "description": "It seems you are not the first one to discover this cave.\nPrevious owners left here some of their stuff.",
+      "description": "There iIt seems that you are not the first one to discover this cave.\nPrevious owners left here some of their stuff.",
       "directions": {
         "west": {
           "room_id": "#room_passage_level_1"
         }
       },
       "items": [
-        "#item_campsite_chest_container",
+        "#item_campsite_tent"
       ],
-      "creatures": [
-        "#"
-      ],
+      "creatures": [],
+      "actions": {},
       "auto_commands": {}
     },
     "#room_passage_level_2": {
-      "alias": "deeper cave passage",
+      "alias": "cave passage",
       "description": "The passage is really dark, you can barely see.",
       "directions": {
         "north": {
           "room_id": "#room_cave_depths"
         },
         "west": {
-          "room_id": "#room_camp"
+          "room_id": "#room_"
         }
       },
-      "items": [
-        "#"
-      ],
-      "creatures": [
-        "#"
-      ],
+      "items": [],
+      "creatures": [],
+      "actions": {},
       "auto_commands": {}
     }
   },
@@ -106,22 +99,72 @@
         ],
         "actions": {
           "read": {
-            "command_show_message": "You have collected clues about the artifact, known as 'Staff of Awakening' from all around the world.\n They all lead here, to this cave located far from civilisation.\nRumors say that the staff gives the user a magical ability to control the power of life.\n It can drain life of the living and turn the dead into evil soldiers.\nI can't let it get into the wrong hands.\nI must collect the artifact and save the world ... alone."
+            "command_show_message": "You have collected clues about the artifact, known as 'Staff of Awakening' from all around the world.\nThey all lead here, to this cave located far from civilisation.\nRumors say that the staff gives the user a magical ability to control the power of life.\nIt can drain life of the living and turn the dead into evil soldiers.\nYou can't let it get into the wrong hands.\nCollect the artifact and save the world ... alone."
           }
         }
+      },
+      "#item_campite_tent": {
+        "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time.",
+        "alias": [
+          "tent", "camp tent"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The tent doesn't fit into your bag. You don't need it anyway."
+          },
+          "examine": {
+            "command_show_message": "You take a closer look inside the tent.\nThere is noone in there, but you can see a small wooden box in the corner.",
+            "command_spawn_item": "#item_campsite_wooden_box"
+          }
+        }
+      },
+      "#item_campsite_wooden_box": {
+        "description": "",
+        "alias": [
+          "box", "wooden box"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The box doesn't fit into your bag. You don't need it anyway."
+          },
+          "open": {
+            "command_show_message": "You open the box, revealing the content. You have found a lighter.",
+            "command_spawn_item": "#item_lighter"
+          }
+        }
+      },
+      "#item_lighter": {
+        "description": "Lighter is a portable device used to create a flame.\nYou try to use it and a small flame appears, it works.",
+        "alias": [
+          "lighter"
+        ],
+        "actions": {}
       }
     },
     "consumable": {
-      "#": {
-        "description": "",
-        "value": 0,
+      "#item_fresh_apple": {
+        "description": "A delicious fresh apple.",
+        "value": 40,
         "alias": [
-          ""
+          "fresh apple", "apple", "delicious apple"
         ],
         "actions": {
-          "use": {
-            "command_required_item": "#",
-            "command_consume_item": true
+          "eat": {
+            "command_consume_item": true,
+            "command_show_message": "You feel better."
+          }
+        }
+      },
+      "#item_bottle_of_water": {
+        "description": "A bottle full of refreshing water.",
+        "value": 20,
+        "alias": [
+          "water bottle", "water", "refreshing water", "bottle"
+        ],
+        "actions": {
+          "drink": {
+            "command_consume_item": true,
+            "command_show_message": "You feel refreshed."
           }
         }
       }
@@ -129,27 +172,8 @@
   },
   "equipment": {
     "weapons": {
-      "#": {
-        "alias": [
-          ""
-        ],
-        "slot": "",
-
-        "damage": 0,
-        "description": ""
-      }
     },
     "armour": {
-      "#": {
-        "alias": [
-          ""
-        ],
-        "slot": "",
-        "resistance": 0,
-        "durability": 0,
-
-        "description": ""
-      }
     }
   },
   "transition_objects": {
@@ -157,7 +181,7 @@
   "hero": {
     "health": 100,
     "base_damage": 5,
-    "location": "#cave_entrance",
+    "location": "#room_cave_entrance",
     "weapon_slot": null,
     "head_slot": null,
     "chest_slot": null,

@@ -76,7 +76,7 @@ class Game:
         hero = self.game_state.hero
         room = self.game_state.rooms[hero.location]
         print("\n-----------------------------\n")
-        print(f"You are in the {(room.alias.capitalize())}. {room.description}")
+        print(f"You are in the {room.alias}. {room.description}")
         print("What is your next step?")
         print()
         print(self.help_tooltip)
