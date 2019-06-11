@@ -213,7 +213,6 @@ class InternalCommandHandler:
     def _equipment_destruction(self, equipment_id):
         hero = self.game_state.hero
         equipment_data = self.game_state.equipment[equipment_id]
-
         setattr(hero, equipment_data.slot, None)
 
         self._remove_item_from_inventory(equipment_id)
@@ -363,7 +362,7 @@ class InternalCommandHandler:
         creatures = self.game_state.creatures
         room = self.game_state.rooms[self.game_state.hero.location]
 
-        print(f"{self._capitalize_first(room.alias)} room. {room.description}")
+        print(f"{self._capitalize_first(room.alias)}. {room.description}")
 
         # items in room
         for item_id in room.items:
