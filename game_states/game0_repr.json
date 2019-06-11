@@ -1,8 +1,8 @@
 {
   "rooms": {
     "#room_entrance": {
-      "alias": "entrance",
-      "description": "Entrance room, there are some things laying around in the room.",
+      "alias": "entrance room",
+      "description": "There are some things just laying around in the room.",
       "directions": {
         "west": {
           "room_id": "#room_arena"

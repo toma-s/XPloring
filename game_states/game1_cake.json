@@ -1,7 +1,7 @@
 {
   "rooms": {
     "#room_entrance": {
-      "alias": "entrance",
+      "alias": "entrance room",
       "description": "Your journey to freedom begins here.",
       "directions": {
         "north": {
@@ -17,7 +17,7 @@
       "auto_commands": {}
     },
     "#room_crossroad": {
-      "alias": "crossroad",
+      "alias": "crossroad room",
       "description": "A room with 3 doors",
       "directions": {
         "west": {
