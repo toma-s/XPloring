@@ -40,6 +40,7 @@ class InternalCommandHandler:
         elif ic_name == "command_attack_creature" :
             self.attack_creature(target_id)
 
+        # <array as arg>
         elif ic_name == "command_spawn_items":
             item_ids: [str] = ic_arg
             for item_id in item_ids:
@@ -59,8 +60,12 @@ class InternalCommandHandler:
             for item_id in item_ids:
                 self._add_item_to_inventory(item_id)
 
-        elif ic_name == "command_remove_item_from_inventory":
-            self._remove_item_from_inventory(ic_arg)
+        elif ic_name == "command_remove_items_from_inventory":
+            item_ids = ic_arg
+            if ic_arg is None:
+                item_ids = [target_id]
+            for item_id in item_ids:
+                self._remove_item_from_inventory(item_id)
 
         elif ic_name == "command_required_items":
             item_ids: [str] = ic_arg
@@ -68,6 +73,7 @@ class InternalCommandHandler:
                 if not self._required_item_in_inventory(item_id):
                     allow_next_command = False
                     break
+        # </array as arg>
 
         elif ic_name == "command_consume_item":
             if not self.consume_item(target_id):

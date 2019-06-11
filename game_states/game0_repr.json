@@ -80,7 +80,7 @@
         "unlock": {
           "command_required_items": ["#item_doorkey_exit"],
           "command_set_locked": false,
-          "command_remove_item_from_inventory": "#item_doorkey_exit",
+          "command_remove_items_from_inventory": ["#item_doorkey_exit"],
           "command_set_description": "Exit door is unlocked, you can leave",
           "command_show_description": null
         }
@@ -98,7 +98,7 @@
           "open": {
             "command_spawn_items": ["#item_letter"],
             "command_despawn_items": ["#item_envelope"],
-            "command_remove_item_from_inventory": "#item_envelope",
+            "command_remove_items_from_inventory": ["#item_envelope"],
             "command_show_message": "You have found a letter inside."
           }
         }
