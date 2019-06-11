@@ -70,7 +70,7 @@
         ],
         "actions": {
           "open": {
-            "command_spawn_item": "#item2"
+            "command_spawn_items": ["#item2"]
           }
         }
       }

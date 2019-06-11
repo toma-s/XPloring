@@ -85,7 +85,7 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "open": {
-                    "command_spawn_item": "#item2"
+                    "command_spawn_items": ["#item2"]
                 },
                 "examine": {
                     "command_show_description": None

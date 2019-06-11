@@ -40,9 +40,11 @@ class InternalCommandHandler:
         elif ic_name == "command_attack_creature" and target_id:
             self.attack_creature(target_id)
 
-        elif ic_name == "command_spawn_item" and target_id:
-            item_id = ic_arg
-            self._spawn_item(item_id)
+        elif ic_name == "command_spawn_items" and target_id:
+            item_ids: [str] = ic_arg
+            for item_id in item_ids:
+                self._spawn_item(item_id)
+
 
         elif ic_name == "command_despawn_item" and target_id:
             item_id = ic_arg
