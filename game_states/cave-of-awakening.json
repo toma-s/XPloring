@@ -48,7 +48,7 @@
       "auto_commands": {}
     },
     "#room_passage_level_2": {
-      "alias": "cave passage",
+      "alias": "deeper cave passage",
       "description": "The passage is really dark, you can barely see.",
       "directions": {
         "north": {
@@ -129,8 +129,9 @@
           },
           "open": {
             "command_despawn_item": "#item_campsite_wooden_box_full",
-            "command_spawn_items": ["#item_lighter", "#item_campsite_wooden_box_empty"],
-            "command_show_message": "You open the box, revealing the content. You have found a lighter."
+            "command_spawn_items": ["#item_campsite_wooden_box_empty"],
+            "command_show_message": "You open the box, revealing the content. You have found a lighter.\n",
+            "command_add_item_to_inventory": "#item_lighter"
           }
         }
       },

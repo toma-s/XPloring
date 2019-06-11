@@ -6,6 +6,7 @@ class Item:
             "command_show_description": None
         },
         "take": {
+            "command_despawn_item": None,
             "command_add_item_to_inventory": None
         },
         "drop": {

@@ -48,7 +48,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("open envel")
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as envel.\n"
+        expected_output = "There is no envel around.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_nonexisting_action_ope(self):
@@ -64,7 +64,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("ope enveep")
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as enveep.\n"
+        expected_output = "There is no enveep around.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_read_envelope(self):
@@ -95,7 +95,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("open envelope")
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as envelope.\n"
+        expected_output = "There is no envelope around.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_open_envelope_inventory(self):
@@ -109,7 +109,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("open envelope")
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as envelope.\n"
+        expected_output = "There is no envelope around.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_take_keys_with_same_alias(self):
@@ -169,5 +169,5 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("attack nothing")
         result_output = stdout.getvalue()
-        expected_output = "There is no such thing as nothing.\n"
+        expected_output = "There is no nothing around.\n"
         self.assertEqual(expected_output, result_output)

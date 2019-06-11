@@ -19,38 +19,43 @@ class InternalCommandHandler:
     def handle_internal_command(self, ic_name, ic_arg, target_id) -> bool:
         allow_next_command = True
 
-        if ic_name == "command_move_direction" and target_id:
+        if ic_name == "command_move_direction":
             self.move_to_direction(target_id)
 
         elif ic_name == "command_show_message":
             message = ic_arg
             print(f"{message}")
 
-        elif ic_name == "command_show_description" and target_id:
+        elif ic_name == "command_show_description":
             self._show_description(target_id)
 
-        elif ic_name == "command_set_description" and target_id:
+        elif ic_name == "command_set_description":
             new_description: str = ic_arg
             self._set_description(target_id, new_description)
 
-        elif ic_name == "command_set_locked" and target_id:
+        elif ic_name == "command_set_locked":
             is_locked: bool = ic_arg
             self._set_locked(target_id, is_locked)
 
-        elif ic_name == "command_attack_creature" and target_id:
+        elif ic_name == "command_attack_creature" :
             self.attack_creature(target_id)
 
-        elif ic_name == "command_spawn_items" and target_id:
+        elif ic_name == "command_spawn_items":
             item_ids: [str] = ic_arg
             for item_id in item_ids:
                 self._spawn_item(item_id)
 
-        elif ic_name == "command_despawn_item" and target_id:
-            item_id = ic_arg
+        elif ic_name == "command_despawn_item":
+            item_id = target_id
+            if ic_arg is not None:
+                item_id = ic_arg
             self._despawn_item(item_id)
 
-        elif ic_name == "command_add_item_to_inventory" and target_id:
-            self._item_take(target_id)
+        elif ic_name == "command_add_item_to_inventory":
+            item_id = target_id
+            if ic_arg is not None:
+                item_id = ic_arg
+            self._add_item_to_inventory(item_id)
 
         elif ic_name == "command_remove_item_from_inventory":
             self._remove_item_from_inventory(ic_arg)
@@ -66,7 +71,7 @@ class InternalCommandHandler:
             if not self.consume_item(target_id):
                 allow_next_command = False
 
-        elif ic_name == "command_equip" and target_id:
+        elif ic_name == "command_equip":
             self._equip_item(target_id)
 
         elif ic_name == "command_unequip":
@@ -115,13 +120,12 @@ class InternalCommandHandler:
 
     def _move_hero_to_room(self, room_id):
         self.game_state.hero.location = room_id
-        rooms = self.game_state.rooms
-        # print(f"{rooms[room_id].description}")
+        hero_room_data = self.game_state.rooms[room_id]
+        if hero_room_data.auto_commands:
+            for ic_name, ic_args in hero_room_data.auto_commands.items():
+                self.handle_internal_command(ic_name, ic_args, room_id)
         self._show_hero_room()
-        if rooms[room_id].auto_commands is None:
-            return
-        for ic_name, ic_args in rooms[room_id].auto_commands.items():
-            self.handle_internal_command(ic_name, ic_args, room_id)
+
 
     def _show_description(self, target_id):
         target_data = self.finder.get_data_by_id(target_id)
@@ -234,7 +238,7 @@ class InternalCommandHandler:
         if item_id in room.items:
             room.items.remove(item_id)
 
-    def _item_take(self, item_id):
+    def _add_item_to_inventory(self, item_id):
         hero = self.game_state.hero
 
         item_data = self.finder.get_data_by_id(item_id)
@@ -244,8 +248,6 @@ class InternalCommandHandler:
             print(f"{self._capitalize_first(target_item_alias)} is already in your inventory.")
             return
         hero.inventory.append(item_id)
-        room = self.game_state.rooms[hero.location]
-        room.items.remove(item_id)
 
         print(f"{self._capitalize_first(target_item_alias)} has been added to your inventory.")
 
