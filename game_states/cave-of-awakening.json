@@ -51,12 +51,6 @@
       "alias": "deeper cave passage",
       "description": "The passage is really dark, you can barely see.",
       "directions": {
-        "north": {
-          "room_id": "#room_cave_depths"
-        },
-        "west": {
-          "room_id": "#room_"
-        }
       },
       "items": [],
       "creatures": [],
