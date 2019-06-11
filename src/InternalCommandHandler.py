@@ -45,17 +45,19 @@ class InternalCommandHandler:
             for item_id in item_ids:
                 self._spawn_item(item_id)
 
-        elif ic_name == "command_despawn_item":
-            item_id = target_id
-            if ic_arg is not None:
-                item_id = ic_arg
-            self._despawn_item(item_id)
+        elif ic_name == "command_despawn_items":
+            item_ids = ic_arg
+            if ic_arg is None:
+                item_ids = [target_id]
+            for item_id in item_ids:
+                self._despawn_item(item_id)
 
-        elif ic_name == "command_add_item_to_inventory":
-            item_id = target_id
-            if ic_arg is not None:
-                item_id = ic_arg
-            self._add_item_to_inventory(item_id)
+        elif ic_name == "command_add_items_to_inventory":
+            item_ids = ic_arg
+            if ic_arg is None:
+                item_ids = [target_id]
+            for item_id in item_ids:
+                self._add_item_to_inventory(item_id)
 
         elif ic_name == "command_remove_item_from_inventory":
             self._remove_item_from_inventory(ic_arg)

@@ -6,8 +6,8 @@ class Item:
             "command_show_description": None
         },
         "take": {
-            "command_despawn_item": None,
-            "command_add_item_to_inventory": None
+            "command_despawn_items": None,
+            "command_add_items_to_inventory": None
         },
         "drop": {
             "command_drop_item": None

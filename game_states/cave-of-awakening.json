@@ -114,7 +114,7 @@
           },
           "examine": {
             "command_show_message": "You take a closer look at the inside of the tent.\nThere is nobody in there, but you can see a small wooden box in the corner of the tent.",
-            "command_despawn_item": "#item_campsite_tent",
+            "command_despawn_items": ["#item_campsite_tent"],
             "command_spawn_items": [
               "#item_campsite_tent_examined",
               "#item_campsite_wooden_box_full"
@@ -147,8 +147,8 @@
           },
           "open": {
             "command_show_message": "You open the box, revealing the content. You have found a lighter.",
-            "command_add_item_to_inventory": "#item_lighter",
-            "command_despawn_item": "#item_campsite_wooden_box_full",
+            "command_add_items_to_inventory": "#item_lighter",
+            "command_despawn_items": ["#item_campsite_wooden_box_full"],
             "command_spawn_items": ["#item_campsite_wooden_box_empty"]
           }
         }
