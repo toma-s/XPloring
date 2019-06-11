@@ -80,7 +80,7 @@ class InputHandler:
 
     def _check_found_one_id_only(self, ids, target_alias) -> bool:
         if len(ids) == 0:
-            print(f"There is no such thing as {target_alias}.")
+            print(f"There is no {target_alias} around.")
             return False
         if len(ids) > 1:
             print(f"There are {len(ids)} \"{target_alias}\". You have to be more specific.")

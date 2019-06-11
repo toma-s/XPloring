@@ -126,7 +126,7 @@
         "actions": {
           "eat": {
             "command_consume_item": true,
-            "command_spawn_item": "#item_doorkey_exit",
+            "command_spawn_items": ["#item_doorkey_exit"],
             "command_show_message": "You found key. This key opens heavy metal door."
           }
         }
@@ -145,9 +145,9 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_item": "#item_doorkey_armory",
+          "command_required_items": ["#item_doorkey_armory"],
           "command_set_locked": false,
-          "command_remove_item_from_inventory": "#item_doorkey_armory",
+          "command_remove_items_from_inventory": ["#item_doorkey_armory"],
           "command_set_description": "Armory door is unlocked, you may go through.",
           "command_show_description": null
         }
@@ -164,9 +164,9 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_item": "#item_doorkey_kitchen",
+          "command_required_items": ["#item_doorkey_kitchen"],
           "command_set_locked": false,
-          "command_remove_item_from_inventory": "#item_doorkey_kitchen",
+          "command_remove_items_from_inventory": ["#item_doorkey_kitchen"],
           "command_set_description": "Kitchen door is unlocked, you may go through.",
           "command_show_description": null
         }
@@ -183,9 +183,9 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_item": "#item_doorkey_exit",
+          "command_required_items": ["#item_doorkey_exit"],
           "command_set_locked": false,
-          "command_remove_item_from_inventory": "#item_doorkey_exit",
+          "command_remove_items_from_inventory": ["#item_doorkey_exit"],
           "command_set_description": "The heavy metal door is unlocked.\nBright daylight shines through the tiny gaps in the heavy metal door.\nYour freedom is right behind the door",
           "command_show_description": null
         }

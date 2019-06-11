@@ -15,5 +15,5 @@ class Creature:
         self.health = data['health']
         self.damage = data['damage']
         self.drops = data['drops']
-        self.actions = data['actions']
-        self.actions.update(self.creature_actions)
+        self.actions = self.creature_actions.copy()
+        self.actions.update(data['actions'])

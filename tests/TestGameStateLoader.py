@@ -85,13 +85,13 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "open": {
-                    "command_spawn_item": "#item2"
+                    "command_spawn_items": ["#item2"]
                 },
                 "examine": {
                     "command_show_description": None
                 },
                 "take": {
-                    "command_add_item_to_inventory": None
+                    "command_add_items_to_inventory": None
                 },
                 "drop": {
                     "command_drop_item": None
@@ -106,14 +106,14 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "use": {
-                    "command_required_item": "#item1",
+                    "command_required_items": ["#item1"],
                     "command_consume_item": True
                 },
                 "examine": {
                     "command_show_description": None
                 },
                 "take": {
-                    "command_add_item_to_inventory": None
+                    "command_add_items_to_inventory": None
                 },
                 "drop": {
                     "command_drop_item": None
