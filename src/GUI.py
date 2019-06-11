@@ -52,6 +52,9 @@ class GamePickerGUI:
         self.main_frame = tkinter.Frame(self.window)
         self.main_frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
+        self.label = tkinter.Label(self.main_frame, text = "Select map and press enter to commit.")
+        self.label.grid(column=0, row=0)
+
         # Create a Tkinter variable
         self.tkvar = tkinter.StringVar(self.main_frame)
 
@@ -60,7 +63,7 @@ class GamePickerGUI:
         self.tkvar.set(choices_arr[0])  # set the default option
 
         popupMenu = tkinter.OptionMenu(self.main_frame, self.tkvar, *self.choices)
-        popupMenu.grid(column=0, row=0)
+        popupMenu.grid(column=1, row=0)
 
     def enterPressed(self, e):
         self.retun_val = self.tkvar.get()
