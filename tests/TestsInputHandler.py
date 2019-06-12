@@ -16,19 +16,16 @@ class TestInputHandler(unittest.TestCase):
         del self.ih
 
     def test_synonym(self):
-        self.assertEqual(["go"], self.ih.parse_user_input("run"))
+        self.assertEqual(["go"], self.ih._parse_user_input("run"))
 
     def test_unknown_word(self):
-        self.assertEqual(["runy"], self.ih.parse_user_input("runy"))
+        self.assertEqual(["runy"], self.ih._parse_user_input("runy"))
 
     def test_move_north(self):
-        self.assertEqual(["go", "north"], self.ih.parse_user_input("move north"))
+        self.assertEqual(["go", "north"], self.ih._parse_user_input("move north"))
 
     def test_move_to_north(self):
-        self.assertEqual(["go", "north"], self.ih.parse_user_input("move to north"))
+        self.assertEqual(["go", "north"], self.ih._parse_user_input("move to north"))
 
     def test_move_inventory_north(self):
-        self.assertEqual(["go", "inventory", "north"], self.ih.parse_user_input("move inventory north"))
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(["go", "inventory", "north"], self.ih._parse_user_input("move inventory north"))

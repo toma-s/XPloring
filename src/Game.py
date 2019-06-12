@@ -5,13 +5,11 @@ from src.GUI import GUI
 import re
 import sys
 
-
 import io
 from contextlib import redirect_stdout
 
 
 class Game:
-
     help_tooltip = "Type HELP for manual."
     enter_tooltip = "Press Enter to execute command."
 
@@ -50,7 +48,7 @@ class Game:
             print(">>> ")
 
             output = buffer.getvalue()
-            self.GUI.setOutput(output)
+            self.GUI.set_output(output)
 
     def react_to_input(self, user_input):
         buffer = io.StringIO()
@@ -70,7 +68,7 @@ class Game:
                 self.input_handler.handle_user_input(user_input)
 
             output = buffer.getvalue()
-            self.GUI.setOutput(output)
+            self.GUI.set_output(output)
 
     def _on_load_introduction_print(self):
         hero = self.game_state.hero
@@ -81,7 +79,6 @@ class Game:
         print()
         print(self.help_tooltip)
         print(self.enter_tooltip)
-
 
     @staticmethod
     def print_help():

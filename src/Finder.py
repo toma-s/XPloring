@@ -17,8 +17,7 @@ class Finder:
             return self.game_state.creatures[id]
         if id in self.game_state.transition_objects:
             return self.game_state.transition_objects[id]
-        else:
-            return None
+        return None
 
     def find_ids_by_alias(self, target_alias) -> [str]:
         hero = self.game_state.hero
@@ -86,4 +85,3 @@ class Finder:
                 if target_alias in [alias.lower() for alias in creature_data.alias]:
                     found_ids.append(creature_id)
         return found_ids
-

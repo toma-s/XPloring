@@ -88,6 +88,3 @@ class TestMoving(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "I don't understand that command.\n"
         self.assertEqual(expected_output, result_output)
-
-if __name__ == '__main__':
-    unittest.main()

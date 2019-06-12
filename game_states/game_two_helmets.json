@@ -29,7 +29,6 @@
         "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
-
         "description": "Helmet Equipment #1",
         "actions": {}
       },
@@ -40,7 +39,6 @@
         "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
-
         "description": "Helmet Equipment #2",
         "actions": {}
       }

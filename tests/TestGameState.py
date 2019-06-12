@@ -6,7 +6,6 @@ from exceptions.GameStateFileException import GameStateFileException
 
 
 class TestGameState(unittest.TestCase):
-
     parent_path = '..\\game_states'
 
     # read file

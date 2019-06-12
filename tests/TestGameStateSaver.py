@@ -1,10 +1,8 @@
 import unittest
 from unittest import TestCase
 
-
 from GameState import GameState
 from testing.TestingGameStateSaver import TestingGameStateSaver
-
 
 TestCase.maxDiff = None
 

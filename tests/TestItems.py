@@ -32,7 +32,7 @@ class TestItems(unittest.TestCase):
         room_items = self.game_state.rooms[self.game_state.hero.location].items
         self.assertNotIn("#equipment_silver_sword", room_items, "You took the sword, why is it still in the room ???")
 
-    def test_go_throught_locked_door(self):
+    def test_go_through_locked_door(self):
         self.ih.handle_user_input("go west")
         self.assertEqual("#room_arena", self.game_state.hero.location)
         self.ih.handle_user_input("go north")
@@ -43,7 +43,7 @@ class TestItems(unittest.TestCase):
         self.assertEqual(1, len(self.game_state.hero.inventory))
         self.assertIn("#equipment_silver_sword", self.game_state.hero.inventory)
 
-    def test_open_nonexisting_item(self):
+    def test_open_non_existing_item(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("open envel")
@@ -51,7 +51,7 @@ class TestItems(unittest.TestCase):
         expected_output = "There is no envel around.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_nonexisting_action_ope(self):
+    def test_non_existing_action_ope(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("ope envelope")
@@ -59,7 +59,7 @@ class TestItems(unittest.TestCase):
         expected_output = f"Action \"ope\" is not allowed with the envelope.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_both_nonexisting_ope_enveep(self):
+    def test_both_non_existing_ope_enveep(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("ope enveep")
@@ -81,7 +81,7 @@ class TestItems(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("read letter")
         result_output = stdout.getvalue()
-        expected_output = "A green dragon guards a key to the exit door.\n"\
+        expected_output = "A green dragon guards a key to the exit door.\n" \
                           "You must kill the dragon and take the key from its dead body.\n"
         self.assertEqual(expected_output, result_output)
 

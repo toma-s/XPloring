@@ -1,5 +1,4 @@
 class Creature:
-
     creature_actions = {
         "attack": {
             "command_attack_creature": None

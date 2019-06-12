@@ -2,7 +2,6 @@ from game_item.Item import Item
 
 
 class Equipment(Item):
-
     equipment_actions = {
         "equip": {
             "command_equip": None
@@ -16,5 +15,3 @@ class Equipment(Item):
         super().__init__(data)
         self.slot = data['slot']  # what equipment slot does this game_item fit
         self.actions.update(self.equipment_actions)
-
-

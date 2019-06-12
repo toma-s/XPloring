@@ -1,5 +1,4 @@
 class Room:
-
     room_actions = {
         "go": {
             "command_move_direction": None
