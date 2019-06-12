@@ -1,4 +1,8 @@
 import tkinter
+from src.GameState import GameState
+from os.path import join
+
+parent_path = '..\\game_states'
 
 class GUI:
     def __init__(self,game,width=850, height=600):
@@ -66,5 +70,9 @@ class GamePickerGUI:
         popupMenu.grid(column=1, row=0)
 
     def enterPressed(self, e):
-        self.retun_val = self.tkvar.get()
-        self.window.destroy()
+        try:
+            GameState(join(parent_path,self.tkvar.get()))
+            self.retun_val = self.tkvar.get()
+            self.window.destroy()
+        except Exception as e:
+            self.label.config(text=''+str(e))
