@@ -91,10 +91,11 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_show_description": None
                 },
                 "take": {
-                    "command_add_items_to_inventory": None
+                    "command_add_items_to_inventory": None,
+                    'command_despawn_items': None
                 },
                 "drop": {
-                    "command_drop_item": None
+                    "command_drop_item": None,
                 }
             }, item1.actions
         )

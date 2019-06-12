@@ -280,7 +280,7 @@ class InternalCommandHandler:
         hero = self.game_state.hero
         if item_id in hero.inventory:
             return True
-        print(f"You don't have a required item to do this action.")
+        print(f"You don't have a required item in you inventory to do this action.")
         return False
 
     def consume_item(self, item_id):

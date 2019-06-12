@@ -49,7 +49,7 @@
     },
     "#room_passage_level_2": {
       "alias": "deeper cave passage",
-      "description": "The passage is really dark, you can barely see.\nYou can't go deeper without a proper source of light",
+      "description": "The passage is really dark, you can barely see.\nYou can't go deeper without a proper source of LIGHT",
       "directions": {
         "north": {
           "trans_obj_id": "#trans_darkness",
@@ -68,11 +68,13 @@
     },
     "#room_darkroom": {
       "alias": "dark cave passage",
-      "description": "",
+      "description": "Your lit lantern provides enough light to navigate the cave passage.",
       "directions": {
         "west": {
-          "trans_obj_id": "#trans_darkness",
-          "room_id": "#room_darkroom"
+          "room_id": "#room_ancient_temple"
+        },
+        "south": {
+          "room_id": "#room_passage_level_2"
         }
       },
       "items": [
@@ -82,17 +84,23 @@
       "actions": {},
       "auto_commands": {}
     },
-    "#room_bossfight": {
-      "alias": "deeper cave passage",
-      "description": "The passage is really dark, you can barely see.",
+    "#room_ancient_temple": {
+      "alias": "ancient temple",
+      "description": "From carvings in the wall you guess, you have entered an ancient temple.\nThere is an empty stand, on which the artifact rested for ages.",
       "directions": {
-      },
-      "items": [],
+        "east": {
+          "room_id": "#room_darkroom"
+        }      },
+      "items": [
+        "#equipment_artifact_staff_of_awakening"
+      ],
       "creatures": [
-        "#creature_final_boss"
+        "#creature_temple_demon"
       ],
       "actions": {},
-      "auto_commands": {}
+      "auto_commands": {
+        "command_show_message": "Suddenly you spot an evil demon holding the 'Staff of Awakening'.\nIt is ready to drain your life."
+      }
     }
   },
   "creatures": {
@@ -108,14 +116,16 @@
       ],
       "actions": {}
     },
-    "#creature_final_boss": {
-      "description": "The final boss, he holds the Staff",
+    "#creature_temple_demon": {
+      "description": "A demon holding the 'Staff of Awakening'.\nHe is ready to drain life from you.",
       "alias": [
-        "final boss"
+        "guardian of the artifact", "demon"
       ],
-      "health": 60,
-      "damage": 50,
-      "drops": [],
+      "health": 100,
+      "damage": 100,
+      "drops": [
+        "#item_thank_you_letter"
+      ],
       "actions": {}
     }
   },
@@ -241,7 +251,8 @@
           "light": {
             "command_required_items": ["#item_lighter"],
             "command_despawn_items": ["#item_lantern_extinguished"],
-            "command_spawn_items": ["#item_lantern_lit"],
+            "command_remove_items_from_inventory": ["#item_lantern_extinguished"],
+            "command_add_items_to_inventory": ["#item_lantern_lit"],
             "command_show_message": "The lantern is now lit and provides light."
           }
         }
@@ -251,12 +262,16 @@
         "alias": [
           "lit lantern", "lantern"
         ],
+        "actions": {}
+      },
+      "#item_thank_you_letter": {
+        "description": "READ to read content",
+        "alias": [
+          "letter"
+        ],
         "actions": {
-          "light": {
-            "command_required_items": ["#item_lighter"],
-            "command_despawn_items": ["#item_lantern_extinguished"],
-            "command_spawn_items": ["#item_lantern_lit"],
-            "command_show_message": "The lantern is now lit and provides light."
+          "read": {
+            "command_show_message": "If you are reading this, it means you have solved my puzzles\n and collected the artifact.\nThank you for your time, it means a lot to me."
           }
         }
       }
@@ -306,8 +321,9 @@
           "whip": {
             "command_required_items": ["#item_whip"],
             "command_show_message": "You strike your whip and the whip wraps around the artifact.\n The artifact is pulled straight to you.",
-            "command_set_description": "It have the artifact.",
-            "command_add_items_to_inventory": ["#item_artifact_staff_of_awakening"]
+            "command_set_description": "The artifact is mine. Now let's get out of here.",
+            "command_despawn_items": ["#equipment_artifact_staff_of_awakening"],
+            "command_add_items_to_inventory": ["#equipment_artifact_staff_of_awakening"]
           },
           "drop": {
             "command_show_message": "You can't drop the artifact."
@@ -320,14 +336,18 @@
   },
   "transition_objects": {
     "#trans_darkness": {
-      "alias": ["dark cave passage"],
+      "alias": [
+        "dark cave passage",
+        "darkness"
+      ],
       "locked": true,
-      "description": "You can't go any deeper without a proper source of LIGHT",
+      "description": "All you can see is darkness. You can't go any deeper without a proper source of LIGHT",
       "actions": {
         "light": {
           "command_required_items": ["#item_lantern_lit"],
           "command_set_locked": false,
-          "command_show_message": "The lantern lightens the darkness"
+          "command_show_message": "The lantern lightens the darkness",
+          "command_set_description": "The lantern lightens the darkness"
         }
       }
     }
