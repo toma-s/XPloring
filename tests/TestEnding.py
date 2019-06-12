@@ -2,7 +2,6 @@ import unittest
 import contextlib
 import io
 
-
 from InputHandler import InputHandler
 from GameState import GameState
 
@@ -25,7 +24,6 @@ class TestEnding(unittest.TestCase):
         del self.game_state1
         del self.ih1
 
-
     # -- Good End --
 
     def test_game1_escape_good_end(self):
@@ -42,10 +40,9 @@ class TestEnding(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih1.handle_user_input("go east")
         result_output = stdout.getvalue()
-        expected_output = "The End\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
+        expected_output = "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual('0', str(e.exception))
-
 
     def test_game0_escape_good_end(self):
         self.ih.handle_user_input("take sword")
@@ -60,10 +57,9 @@ class TestEnding(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih.handle_user_input("go north")
         result_output = stdout.getvalue()
-        expected_output = "The end\nCongratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
+        expected_output = "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual('0', str(e.exception))
-
 
     # -- Bad End --
 

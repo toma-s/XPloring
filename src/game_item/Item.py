@@ -1,12 +1,11 @@
-
 class Item:
-
     item_actions = {
         "examine": {
             "command_show_description": None
         },
         "take": {
-            "command_add_item_to_inventory": None
+            "command_despawn_items": None,
+            "command_add_items_to_inventory": None
         },
         "drop": {
             "command_drop_item": None
@@ -17,5 +16,5 @@ class Item:
         super().__init__()
         self.alias = data['alias']
         self.description = data['description']
-        self.actions = data['actions']
-        self.actions.update(self.item_actions)
+        self.actions = self.item_actions.copy()
+        self.actions.update(data['actions'])

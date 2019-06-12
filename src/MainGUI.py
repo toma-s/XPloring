@@ -8,12 +8,11 @@ from src.GUI import GamePickerGUI
 parent_path = '..\\game_states'
 
 def init_game(game_path):
-    # config_path = '../game_states/game0_repr.json'
     game_state = GameState(game_path)
     return Game(game_state)
 
 
-def run_by_environment(game):
+def _run_by_environment(game):
     game.run_gui()
     game.GUI.window.mainloop()
 
@@ -32,7 +31,7 @@ if __name__ == '__main__':
         conf_arr.append(f"{element}")
     g = GamePickerGUI(conf_arr)
     g.window.mainloop()
-    # print(g.retun_val)
     game_config = g.retun_val
     inited_game = init_game(join(parent_path, game_config))
-    run_by_environment(inited_game)
+    _run_by_environment(inited_game)
+

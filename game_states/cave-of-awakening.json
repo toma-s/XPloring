@@ -1,0 +1,240 @@
+{
+  "rooms": {
+    "#room_cave_entrance": {
+      "alias": "cave entrance",
+      "description": "You can feel the sunlight touching your face",
+      "directions": {
+        "north": {
+          "room_id": "#room_passage_level_1"
+        }
+      },
+      "items": [],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    },
+    "#room_passage_level_1": {
+      "alias": "cave passage",
+      "description": "Passage that is located right after cave entrance.\nIt gets darker as you go deeper into the cave",
+      "directions": {
+        "north": {
+          "room_id": "#room_passage_level_2"
+        },
+        "east": {
+          "room_id": "#room_abandoned_campsite"
+        },
+        "south": {
+          "room_id": "#room_cave_entrance"
+        }
+      },
+      "items": [],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    },
+    "#room_abandoned_campsite": {
+      "alias": "abandoned campsite",
+      "description": "It seems that you are not the first one to discover this cave.\nPrevious owners left here some of their stuff",
+      "directions": {
+        "west": {
+          "room_id": "#room_passage_level_1"
+        }
+      },
+      "items": [
+        "#item_campsite_tent"
+      ],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    },
+    "#room_passage_level_2": {
+      "alias": "deeper cave passage",
+      "description": "The passage is really dark, you can barely see",
+      "directions": {
+      },
+      "items": [],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    }
+  },
+  "creatures": {
+    "#zombie_adventurer": {
+      "alias": [
+        ""
+      ],
+      "health": 0,
+      "damage": 0,
+      "drops": [
+        "#"
+      ],
+      "description": "",
+      "actions": {}
+    },
+    "#": {
+      "alias": [
+        ""
+      ],
+      "health": 0,
+      "damage": 0,
+      "drops": [
+        "#"
+      ],
+      "description": "",
+      "actions": {}
+    }
+  },
+  "items": {
+    "regular": {
+      "#item_research_documents": {
+        "description": "Documents containing research of the historical artifact 'The Staff of Awakening'",
+        "alias": [
+          "documents",
+          "research documents"
+        ],
+        "actions": {
+          "read": {
+            "command_show_message": "You have collected clues about the artifact, known as 'Staff of Awakening' from all around the world.\nThey all lead here, to this cave located far from civilisation.\nRumors say that the staff gives the user a magical ability to control the power of life.\nIt can drain life of the living and turn the dead into evil soldiers.\nYou can't let it get into the wrong hands.\nCollect the artifact and save the world ... alone"
+          }
+        }
+      },
+      "#item_campsite_tent": {
+        "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time",
+        "alias": [
+          "tent",
+          "camp tent"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The tent doesn't fit into your bag. You don't need it anyway"
+          },
+          "examine": {
+            "command_show_message": "You take a closer look at the inside of the tent.\nThere is nobody in there, but you can see a small wooden box in the corner of the tent",
+            "command_despawn_items": [
+              "#item_campsite_tent"
+            ],
+            "command_spawn_items": [
+              "#item_campsite_tent_examined",
+              "#item_campsite_wooden_box_full"
+            ]
+          }
+        }
+      },
+      "#item_campsite_tent_examined": {
+        "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time",
+        "alias": [
+          "tent",
+          "camp tent"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The tent doesn't fit into your bag. You don't need it anyway"
+          },
+          "examine": {
+            "command_show_message": "You take a closer look at the inside of the tent.\nThere is nobody in there, but you can see a small wooden box in the corner of the tent"
+          }
+        }
+      },
+      "#item_campsite_wooden_box_full": {
+        "description": "A small wooden box. The box is closed and there may be some things inside",
+        "alias": [
+          "box",
+          "wooden box"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The box doesn't fit into your bag. You don't need it anyway"
+          },
+          "open": {
+            "command_show_message": "You open the box, revealing the content. You have found a lighter",
+            "command_add_items_to_inventory": "#item_lighter",
+            "command_despawn_items": [
+              "#item_campsite_wooden_box_full"
+            ],
+            "command_spawn_items": [
+              "#item_campsite_wooden_box_empty"
+            ]
+          }
+        }
+      },
+      "#item_campsite_wooden_box_empty": {
+        "description": "A small wooden box. The box is opened and there is nothing inside",
+        "alias": [
+          "box",
+          "wooden box"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "The box doesn't fit into your bag. You don't need it anyway"
+          },
+          "open": {
+            "command_show_message": "It is already open"
+          }
+        }
+      },
+      "#item_lighter": {
+        "description": "A portable device used to create a flame",
+        "alias": [
+          "lighter"
+        ],
+        "actions": {}
+      }
+    },
+    "consumable": {
+      "#item_fresh_apple": {
+        "description": "A delicious fresh apple",
+        "value": 40,
+        "alias": [
+          "fresh apple",
+          "apple",
+          "delicious apple"
+        ],
+        "actions": {
+          "eat": {
+            "command_consume_item": true,
+            "command_show_message": "You feel better"
+          }
+        }
+      },
+      "#item_bottle_of_water": {
+        "description": "A bottle full of refreshing water",
+        "value": 20,
+        "alias": [
+          "water bottle",
+          "water",
+          "refreshing water",
+          "bottle"
+        ],
+        "actions": {
+          "drink": {
+            "command_consume_item": true,
+            "command_show_message": "You feel refreshed"
+          }
+        }
+      }
+    }
+  },
+  "equipment": {
+    "weapons": {
+    },
+    "armour": {
+    }
+  },
+  "transition_objects": {
+  },
+  "hero": {
+    "health": 100,
+    "base_damage": 5,
+    "location": "#room_cave_entrance",
+    "weapon_slot": null,
+    "head_slot": null,
+    "chest_slot": null,
+    "legs_slot": null,
+    "actions": {},
+    "inventory": [
+      "#item_research_documents",
+      "#item_fresh_apple",
+      "#item_bottle_of_water"
+    ]
+  }
+}

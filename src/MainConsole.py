@@ -5,14 +5,13 @@ from exceptions.GameStateFileException import GameStateFileException
 from src.Game import Game
 from src.GameState import GameState
 
-
 parent_path = '..\\game_states'
 
 
 def run():
     try:
         config_files = _get_config_files()
-        game_config = let_user_pick(config_files, "the game")
+        game_config = _select(config_files, "the game")
         game_state = GameState(join(parent_path, game_config))
         game = Game(game_state)
         game.run_console()
@@ -28,18 +27,18 @@ def _get_config_files():
     return files
 
 
-def let_user_pick(options, item_name):
+def _select(options, item_name):
     while True:
         print(f"Please choose {item_name}:")
         for idx, element in enumerate(options):
             print(f"{idx + 1}) {element}")
         chosen_i = input("Enter number: ")
-        if not valid_choice(chosen_i, len(options)):
+        if not _valid_choice(chosen_i, len(options)):
             continue
         return options[int(chosen_i) - 1]
 
 
-def valid_choice(choice, max_limit):
+def _valid_choice(choice, max_limit):
     if not choice.isdigit():
         print("Not a number\n")
         return False

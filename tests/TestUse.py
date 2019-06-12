@@ -23,7 +23,7 @@ class TestUse(unittest.TestCase):
 
         del self.game_state1
         del self.ih1
-    
+
     def test_use(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):

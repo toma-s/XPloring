@@ -70,7 +70,9 @@
         ],
         "actions": {
           "open": {
-            "command_spawn_item": "#item2"
+            "command_spawn_items": [
+              "#item2"
+            ]
           }
         }
       }
@@ -84,7 +86,9 @@
         ],
         "actions": {
           "use": {
-            "command_required_item": "#item1",
+            "command_required_items": [
+              "#item1"
+            ],
             "command_consume_item": true
           }
         }
@@ -98,7 +102,6 @@
           "weapon equipment"
         ],
         "slot": "weapon_slot",
-
         "damage": 50,
         "description": "Weapon Equipment",
         "actions": {}
@@ -112,7 +115,6 @@
         "slot": "head_slot",
         "resistance": 5,
         "durability": 10,
-
         "description": "Armour Equipment",
         "actions": {}
       }

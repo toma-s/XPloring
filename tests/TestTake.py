@@ -2,7 +2,6 @@ import contextlib
 import io
 import unittest
 
-from InputHandler import InputHandler
 from GameState import GameState
 from InputHandler import InputHandler
 
@@ -212,7 +211,7 @@ class TestTake(unittest.TestCase):
             self.ih_capital_alias.handle_user_input("take bandage")
             self.ih_capital_alias.handle_user_input("take Bandage")
         result_output = stdout.getvalue()
-        expected_output = "Bandage has been added to your inventory.\n"\
+        expected_output = "Bandage has been added to your inventory.\n" \
                           "Bandage is already in your inventory.\n"
         self.assertEqual(expected_output, result_output)
 

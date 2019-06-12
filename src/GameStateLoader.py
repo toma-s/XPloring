@@ -3,14 +3,14 @@ from json import JSONDecodeError
 from typing import Dict
 
 from exceptions.GameStateFileException import GameStateFileException
-from game_item.Creature import Creature
-from game_item.TransitionObject import TransitionObject
-from game_item.Item import Item
-from game_item.Consumable import Consumable
-from game_item.Room import Room
-from game_item.Weapon import Weapon
 from game_item.Armour import Armour
+from game_item.Consumable import Consumable
+from game_item.Creature import Creature
 from game_item.Hero import Hero
+from game_item.Item import Item
+from game_item.Room import Room
+from game_item.TransitionObject import TransitionObject
+from game_item.Weapon import Weapon
 
 
 class GameStateLoader:
@@ -27,45 +27,35 @@ class GameStateLoader:
     def create_transition_objects(self) -> Dict[str, any]:
         return self._create_dict(TransitionObject, "transition_objects")
 
-    def _create_dict(self, type, key_name) -> Dict[str, any]:
+    def _create_dict(self, obj_class, key_name) -> Dict[str, any]:
         try:
             objects = dict()
             rooms_data = self.game_data[key_name]
             for key, value in rooms_data.items():
-                object = type(value)
-                objects[key] = object
+                obj = obj_class(value)
+                objects[key] = obj
             return objects
         except KeyError as e:
             raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
 
     def create_items(self):
-        key_name = "items"
-        try:
-            objects = dict()
-            data = self.game_data[key_name]["regular"]
-            for key in data:
-                object = Item(data[key])
-                objects[key] = object
-            data = self.game_data[key_name]["consumable"]
-            for key in data:
-                object = Consumable(data[key])
-                objects[key] = object
-            return objects
-        except KeyError as e:
-            raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
+        data = ["items", [(Item, "regular"), (Consumable, "consumable")]]
+        return self._create_by_class(data)
 
     def create_equipment(self):
-        key_name = "equipment"
+        data = ["equipment", [(Weapon, "weapons"), (Armour, "armour")]]
+        return self._create_by_class(data)
+
+    def _create_by_class(self, data):
+        key_name = data[0]
         try:
             objects = dict()
-            data = self.game_data[key_name]["weapons"]
-            for key in data:
-                object = Weapon(data[key])
-                objects[key] = object
-            data = self.game_data[key_name]["armour"]
-            for key in data:
-                object = Armour(data[key])
-                objects[key] = object
+            types = data[1]
+            for type in types:
+                data = self.game_data[key_name][type[1]]
+                for key in data:
+                    obj = type[0](data[key])
+                    objects[key] = obj
             return objects
         except KeyError as e:
             raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")

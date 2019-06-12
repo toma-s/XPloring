@@ -71,7 +71,9 @@
         ],
         "actions": {
           "open": {
-            "command_spawn_item": "#"
+            "command_spawn_items": [
+              "#"
+            ]
           }
         }
       }
@@ -85,7 +87,9 @@
         ],
         "actions": {
           "use": {
-            "command_required_item": "#",
+            "command_required_items": [
+              "#"
+            ],
             "command_consume_item": true
           }
         }
@@ -99,7 +103,6 @@
           ""
         ],
         "slot": "",
-
         "damage": 0,
         "description": ""
       }
@@ -112,7 +115,6 @@
         "slot": "",
         "resistance": 0,
         "durability": 0,
-
         "description": ""
       }
     }
