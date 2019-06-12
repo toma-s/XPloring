@@ -16,86 +16,86 @@ class InternalCommandHandler:
         self.game_state = game_state
         self.finder = Finder(game_state)
 
-    def handle_internal_command(self, ic_name, internal_cmd_arg, target_id) -> bool:
+    def handle_internal_command(self, internal_cmd_name, internal_cmd_arg, target_id) -> bool:
         allow_next_command = True
 
-        if ic_name == "command_move_direction":
+        if internal_cmd_name == "command_move_direction":
             self._move_to_direction(target_id)
 
-        elif ic_name == "command_show_message":
+        elif internal_cmd_name == "command_show_message":
             message = internal_cmd_arg
             print(f"{message}.")
 
-        elif ic_name == "command_show_description":
+        elif internal_cmd_name == "command_show_description":
             self._show_description(target_id)
 
-        elif ic_name == "command_set_description":
+        elif internal_cmd_name == "command_set_description":
             new_description: str = internal_cmd_arg
             self._set_description(target_id, new_description)
 
-        elif ic_name == "command_set_locked":
+        elif internal_cmd_name == "command_set_locked":
             is_locked: bool = internal_cmd_arg
             self._set_locked(target_id, is_locked)
 
-        elif ic_name == "command_attack_creature":
+        elif internal_cmd_name == "command_attack_creature":
             self._attack_creature(target_id)
 
-        elif ic_name == "command_spawn_items":
+        elif internal_cmd_name == "command_spawn_items":
             item_ids: [str] = internal_cmd_arg
             for item_id in item_ids:
                 self._spawn_item(item_id)
 
-        elif ic_name == "command_despawn_items":
+        elif internal_cmd_name == "command_despawn_items":
             item_ids = internal_cmd_arg
             if internal_cmd_arg is None:
                 item_ids = [target_id]
             for item_id in item_ids:
                 self._despawn_item(item_id)
 
-        elif ic_name == "command_add_items_to_inventory":
+        elif internal_cmd_name == "command_add_items_to_inventory":
             item_ids = internal_cmd_arg
             if internal_cmd_arg is None:
                 item_ids = [target_id]
             for item_id in item_ids:
                 self._add_item_to_inventory(item_id)
 
-        elif ic_name == "command_remove_items_from_inventory":
+        elif internal_cmd_name == "command_remove_items_from_inventory":
             item_ids = internal_cmd_arg
             if internal_cmd_arg is None:
                 item_ids = [target_id]
             for item_id in item_ids:
                 self._remove_item_from_inventory(item_id)
 
-        elif ic_name == "command_required_items":
+        elif internal_cmd_name == "command_required_items":
             item_ids: [str] = internal_cmd_arg
             for item_id in item_ids:
                 if not self._required_item_in_inventory(item_id):
                     allow_next_command = False
                     break
 
-        elif ic_name == "command_consume_item":
+        elif internal_cmd_name == "command_consume_item":
             if not self._consume_item(target_id):
                 allow_next_command = False
 
-        elif ic_name == "command_equip":
+        elif internal_cmd_name == "command_equip":
             self._equip_item(target_id)
 
-        elif ic_name == "command_unequip":
+        elif internal_cmd_name == "command_unequip":
             self._unequip_item(target_id)
 
-        elif ic_name == "command_drop_item":
+        elif internal_cmd_name == "command_drop_item":
             self._drop_item(target_id)
 
-        elif ic_name == "command_show_room":
+        elif internal_cmd_name == "command_show_room":
             self._show_hero_room()
 
-        elif ic_name == "command_show_status":
+        elif internal_cmd_name == "command_show_status":
             self._show_hero_status()
 
-        elif ic_name == "command_show_inventory":
+        elif internal_cmd_name == "command_show_inventory":
             self._show_hero_inventory()
 
-        elif ic_name == "command_good_end":
+        elif internal_cmd_name == "command_good_end":
             end_massage = internal_cmd_arg
             self._end_game(end_massage)
 
