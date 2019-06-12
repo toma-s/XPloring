@@ -27,9 +27,7 @@
           "room_id": "#room_cave_entrance"
         }
       },
-      "items": [
-        "#item_dead_body"
-      ],
+      "items": [],
       "creatures": [],
       "actions": {},
       "auto_commands": {}
@@ -57,7 +55,9 @@
           "room_id": ""
         }
       },
-      "items": [],
+      "items": [
+        "#item_dead_body"
+      ],
       "creatures": [],
       "actions": {},
       "auto_commands": {}
@@ -84,9 +84,8 @@
       "health": 30,
       "damage": 10,
       "drops": [
-        "#"
+        "#item_lantern_extinguished"
       ],
-
       "actions": {}
     },
     "#creature_final_boss": {
@@ -116,7 +115,7 @@
         "alias": [
           "whip"
         ],
-        "description": "Whip is both a tool made of braided leather.",
+        "description": "It is made of braided leather.",
         "actions": {}
       },
       "#item_campsite_tent": {
@@ -207,6 +206,12 @@
             "command_spawn_creatures": ["#creature_zombie_adventurer"]
           }
         }
+      },
+      "#item_lantern_extinguished": {
+
+      },
+      "#item_lantern_lit": {
+
       }
     },
     "consumable": {
@@ -271,7 +276,7 @@
     "health": 100,
     "base_damage": 5,
     "location": "#room_cave_entrance",
-    "weapon_slot": null,
+    "weapon_slot": "#equipment_hunting_knife",
     "head_slot": null,
     "chest_slot": null,
     "legs_slot": null,
@@ -280,7 +285,8 @@
       "#item_research_documents",
       "#item_fresh_apple",
       "#item_bottle_of_water",
-      "#item_whip"
+      "#item_whip",
+      "#equipment_hunting_knife"
     ]
   }
 }
