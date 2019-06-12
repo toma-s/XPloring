@@ -39,33 +39,23 @@ class GameStateLoader:
             raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
 
     def create_items(self):
-        key_name = "items"
-        try:
-            objects = dict()
-            data = self.game_data[key_name]["regular"]
-            for key in data:
-                obj = Item(data[key])
-                objects[key] = obj
-            data = self.game_data[key_name]["consumable"]
-            for key in data:
-                obj = Consumable(data[key])
-                objects[key] = obj
-            return objects
-        except KeyError as e:
-            raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")
+        data = ["items", [(Item, "regular"), (Consumable, "consumable")]]
+        return self._create_by_class(data)
 
     def create_equipment(self):
-        key_name = "equipment"
+        data = ["equipment", [(Weapon, "weapons"), (Armour, "armour")]]
+        return self._create_by_class(data)
+
+    def _create_by_class(self, data):
+        key_name = data[0]
         try:
             objects = dict()
-            data = self.game_data[key_name]["weapons"]
-            for key in data:
-                obj = Weapon(data[key])
-                objects[key] = obj
-            data = self.game_data[key_name]["armour"]
-            for key in data:
-                obj = Armour(data[key])
-                objects[key] = obj
+            types = data[1]
+            for type in types:
+                data = self.game_data[key_name][type[1]]
+                for key in data:
+                    obj = type[0](data[key])
+                    objects[key] = obj
             return objects
         except KeyError as e:
             raise GameStateFileException(f"Failed to read {key_name} data: cannot find key {e}")

@@ -1,5 +1,9 @@
 from GameStateLoader import GameStateLoader
 from exceptions.GameStateFileException import GameStateFileException
+from game_item.Armour import Armour
+from game_item.Consumable import Consumable
+from game_item.Item import Item
+from game_item.Weapon import Weapon
 
 
 class GameState:

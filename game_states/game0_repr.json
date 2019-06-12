@@ -2,7 +2,7 @@
   "rooms": {
     "#room_entrance": {
       "alias": "entrance room",
-      "description": "There are some things just laying around in the room",
+      "description": "there are some things just laying around in the room",
       "directions": {
         "west": {
           "room_id": "#room_arena"
@@ -22,7 +22,7 @@
     },
     "#room_arena": {
       "alias": "arena",
-      "description": "Big round arena",
+      "description": "big round arena",
       "directions": {
         "east": {
           "room_id": "#room_entrance"
@@ -41,7 +41,7 @@
     },
     "#room_exit": {
       "alias": "exit",
-      "description": "The end",
+      "description": "the end",
       "directions": {},
       "items": [],
       "creatures": [],
