@@ -50,7 +50,7 @@ class TestLook(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("look")
         result_output = stdout.getvalue()
-        expected_output = "- Crossroad room -\nA room with 3 doors\n\n" \
+        expected_output = "- Crossroad room -\nA room with 3 doors.\n\n" \
                           "There are no enemies around.\n" \
                           "There is a armory door to the WEST.\n" \
                           "There is a kitchen door to the EAST.\n" \

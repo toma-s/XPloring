@@ -24,7 +24,7 @@ class InternalCommandHandler:
 
         elif ic_name == "command_show_message":
             message = ic_arg
-            print(f"{message}")
+            print(f"{message}.")
 
         elif ic_name == "command_show_description":
             self._show_description(target_id)
@@ -207,7 +207,7 @@ class InternalCommandHandler:
                   f"You have {hero.health} HP left.")
 
             if hero.health <= 0:
-                self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time.")
+                self._end_game(f"GAME OVER. You were killed by {creature_alias}. Better luck next time")
 
     def _count_total_hero_damage(self, creature_data):
         hero = self.game_state.hero
@@ -301,7 +301,7 @@ class InternalCommandHandler:
               f"Your current health is {hero.health} HP.")
 
         if hero.health <= 0:
-            self._end_game(f"GAME OVER. You were killed by {consumable_alias}. Better luck next time.")
+            self._end_game(f"GAME OVER. You were killed by {consumable_alias}. Better luck next time")
         return True
 
     def _consume_item_healing_effect(self, consumable_data) -> bool:
@@ -377,7 +377,7 @@ class InternalCommandHandler:
         room = self.game_state.rooms[self.game_state.hero.location]
 
         print(f"- {self._capitalize_first(room.alias)} -")
-        print(f"{self._capitalize_first(room.description)}")
+        print(f"{self._capitalize_first(room.description)}.")
         print()
 
         # items in room
@@ -456,7 +456,7 @@ class InternalCommandHandler:
 
     @staticmethod
     def _end_game(end_message):
-        print(end_message)
+        print(f"{end_message}.")
         exit(0)
 
     @staticmethod

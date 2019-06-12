@@ -83,17 +83,18 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["regular item 1"], item1.alias)
         self.assertDictEqual(
             {
-                "open": {
-                    "command_spawn_items": ["#item2"]
+                "drop": {
+                    "command_drop_item": None
                 },
                 "examine": {
                     "command_show_description": None
                 },
-                "take": {
-                    "command_add_items_to_inventory": None
+                "open": {
+                    "command_spawn_items": ["#item2"]
                 },
-                "drop": {
-                    "command_drop_item": None
+                "take": {
+                    "command_add_items_to_inventory": None,
+                    "command_despawn_items": None
                 }
             }, item1.actions
         )
@@ -104,18 +105,19 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["consumable item 2"], item2.alias)
         self.assertDictEqual(
             {
-                "use": {
-                    "command_required_items": ["#item1"],
-                    "command_consume_item": True
+                "drop": {
+                    "command_drop_item": None
                 },
                 "examine": {
                     "command_show_description": None
                 },
                 "take": {
-                    "command_add_items_to_inventory": None
+                    "command_add_items_to_inventory": None,
+                    "command_despawn_items": None
                 },
-                "drop": {
-                    "command_drop_item": None
+                "use": {
+                    "command_required_items": ["#item1"],
+                    "command_consume_item": True
                 }
             }, item2.actions
         )

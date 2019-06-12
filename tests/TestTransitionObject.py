@@ -106,7 +106,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("unlock armory door")
         result_output = stdout.getvalue()
-        expected_output = f"Armory door is unlocked, you may go through.\n"
+        expected_output = f"Armory door is unlocked, you may go through\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_doors_with_same_alias_no_key(self):
