@@ -1,5 +1,4 @@
 class Hero:
-
     hero_actions = {
         "look": {
             "command_show_room": None
@@ -23,5 +22,3 @@ class Hero:
         self.inventory = data['inventory']
         self.actions = self.hero_actions.copy()
         self.actions.update(data['actions'])
-
-

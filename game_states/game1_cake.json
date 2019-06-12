@@ -2,7 +2,7 @@
   "rooms": {
     "#room_entrance": {
       "alias": "entrance room",
-      "description": "Your journey to freedom begins here.",
+      "description": "Your journey to freedom begins here",
       "directions": {
         "north": {
           "room_id": "#room_crossroad"
@@ -39,7 +39,7 @@
     },
     "#room_armory": {
       "alias": "armory",
-      "description": "Unfortunately, the armory was pillaged some time ago by angry peasants.",
+      "description": "Unfortunately, the armory was pillaged some time ago by angry peasants",
       "directions": {
         "east": {
           "trans_obj_id": "#trans_door_armory",
@@ -54,7 +54,7 @@
     },
     "#room_kitchen": {
       "alias": "kitchen",
-      "description": "A small dark room. Something smells really nice.",
+      "description": "A small dark room. Something smells really nice",
       "directions": {
         "west": {
           "trans_obj_id": "#trans_door_kitchen",
@@ -80,7 +80,7 @@
       "creatures": [],
       "actions": {},
       "auto_commands": {
-        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
+        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be"
       }
     }
   },
@@ -97,21 +97,24 @@
       "#item_doorkey_armory": {
         "description": "This key opens armory door",
         "alias": [
-          "key", "armory key"
+          "key",
+          "armory key"
         ],
         "actions": {}
       },
       "#item_doorkey_kitchen": {
         "description": "This key opens kitchen door",
         "alias": [
-           "key", "kitchen key"
+          "key",
+          "kitchen key"
         ],
         "actions": {}
       },
       "#item_doorkey_exit": {
         "description": "This key opens heavy metal door",
         "alias": [
-          "key", "heavy metal door key"
+          "key",
+          "heavy metal door key"
         ],
         "actions": {}
       }
@@ -126,8 +129,10 @@
         "actions": {
           "eat": {
             "command_consume_item": true,
-            "command_spawn_items": ["#item_doorkey_exit"],
-            "command_show_message": "You found key. This key opens heavy metal door."
+            "command_spawn_items": [
+              "#item_doorkey_exit"
+            ],
+            "command_show_message": "You found key. This key opens heavy metal door"
           }
         }
       }
@@ -136,7 +141,9 @@
   "transition_objects": {
     "#trans_door_armory": {
       "alias": [
-        "armory door", "door to armory", "door"
+        "armory door",
+        "door to armory",
+        "door"
       ],
       "locked": true,
       "description": "Armory door is locked, you need a key",
@@ -145,17 +152,23 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_items": ["#item_doorkey_armory"],
+          "command_required_items": [
+            "#item_doorkey_armory"
+          ],
           "command_set_locked": false,
-          "command_remove_items_from_inventory": ["#item_doorkey_armory"],
-          "command_set_description": "Armory door is unlocked, you may go through.",
+          "command_remove_items_from_inventory": [
+            "#item_doorkey_armory"
+          ],
+          "command_set_description": "Armory door is unlocked, you may go through",
           "command_show_description": null
         }
       }
     },
     "#trans_door_kitchen": {
       "alias": [
-        "kitchen door", "door to kitchen", "door"
+        "kitchen door",
+        "door to kitchen",
+        "door"
       ],
       "locked": true,
       "description": "Kitchen door is locked, you need a key",
@@ -164,28 +177,38 @@
           "command_show_description": null
         },
         "unlock": {
-          "command_required_items": ["#item_doorkey_kitchen"],
+          "command_required_items": [
+            "#item_doorkey_kitchen"
+          ],
           "command_set_locked": false,
-          "command_remove_items_from_inventory": ["#item_doorkey_kitchen"],
-          "command_set_description": "Kitchen door is unlocked, you may go through.",
+          "command_remove_items_from_inventory": [
+            "#item_doorkey_kitchen"
+          ],
+          "command_set_description": "Kitchen door is unlocked, you may go through",
           "command_show_description": null
         }
       }
     },
     "#trans_door_exit": {
       "alias": [
-        "exit door", "heavy metal door", "door"
+        "exit door",
+        "heavy metal door",
+        "door"
       ],
       "locked": true,
-      "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door.",
+      "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door",
       "actions": {
         "open": {
           "command_show_description": null
         },
         "unlock": {
-          "command_required_items": ["#item_doorkey_exit"],
+          "command_required_items": [
+            "#item_doorkey_exit"
+          ],
           "command_set_locked": false,
-          "command_remove_items_from_inventory": ["#item_doorkey_exit"],
+          "command_remove_items_from_inventory": [
+            "#item_doorkey_exit"
+          ],
           "command_set_description": "The heavy metal door is unlocked.\nBright daylight shines through the tiny gaps in the heavy metal door.\nYour freedom is right behind the door",
           "command_show_description": null
         }
