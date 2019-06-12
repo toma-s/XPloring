@@ -80,7 +80,7 @@
       "creatures": [],
       "actions": {},
       "auto_commands": {
-        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
+        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be"
       }
     }
   },
@@ -127,7 +127,7 @@
           "eat": {
             "command_consume_item": true,
             "command_spawn_items": ["#item_doorkey_exit"],
-            "command_show_message": "You found key. This key opens heavy metal door."
+            "command_show_message": "You found key. This key opens heavy metal door"
           }
         }
       }
@@ -148,7 +148,7 @@
           "command_required_items": ["#item_doorkey_armory"],
           "command_set_locked": false,
           "command_remove_items_from_inventory": ["#item_doorkey_armory"],
-          "command_set_description": "Armory door is unlocked, you may go through.",
+          "command_set_description": "Armory door is unlocked, you may go through",
           "command_show_description": null
         }
       }
@@ -167,7 +167,7 @@
           "command_required_items": ["#item_doorkey_kitchen"],
           "command_set_locked": false,
           "command_remove_items_from_inventory": ["#item_doorkey_kitchen"],
-          "command_set_description": "Kitchen door is unlocked, you may go through.",
+          "command_set_description": "Kitchen door is unlocked, you may go through",
           "command_show_description": null
         }
       }
@@ -177,7 +177,7 @@
         "exit door", "heavy metal door", "door"
       ],
       "locked": true,
-      "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door.",
+      "description": "The heavy metal door is locked.\nBright daylight shines through the tiny gaps between the heavy metal sheets of the door.\nYour freedom is right behind the door",
       "actions": {
         "open": {
           "command_show_description": null

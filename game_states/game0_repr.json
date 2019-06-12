@@ -2,7 +2,7 @@
   "rooms": {
     "#room_entrance": {
       "alias": "entrance room",
-      "description": "There are some things just laying around in the room.",
+      "description": "There are some things just laying around in the room",
       "directions": {
         "west": {
           "room_id": "#room_arena"
@@ -22,7 +22,7 @@
     },
     "#room_arena": {
       "alias": "arena",
-      "description": "Big round arena.",
+      "description": "Big round arena",
       "directions": {
         "east": {
           "room_id": "#room_entrance"
@@ -47,7 +47,7 @@
       "creatures": [],
       "actions": {},
       "auto_commands": {
-        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be."
+        "command_good_end": "Congratulations Hero!\nYou are free. Do anything you want, be who you want to be"
       }
     }
   },
@@ -99,7 +99,7 @@
             "command_spawn_items": ["#item_letter"],
             "command_despawn_items": ["#item_envelope"],
             "command_remove_items_from_inventory": ["#item_envelope"],
-            "command_show_message": "You have found a letter inside."
+            "command_show_message": "You have found a letter inside"
           }
         }
       },
@@ -110,7 +110,7 @@
         ],
         "actions": {
           "read": {
-            "command_show_message": "A green dragon guards a key to the exit door.\nYou must kill the dragon and take the key from its dead body."
+            "command_show_message": "A green dragon guards a key to the exit door.\nYou must kill the dragon and take the key from its dead body"
           }
         }
       },
@@ -147,11 +147,11 @@
         "actions": {
           "use": {
             "command_consume_item": true,
-            "command_show_message": "It was a poison."
+            "command_show_message": "It was a poison"
           },
           "drink": {
             "command_consume_item": true,
-            "command_show_message": "It was a poison."
+            "command_show_message": "It was a poison"
           }
         }
       }
