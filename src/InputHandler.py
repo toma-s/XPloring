@@ -14,10 +14,10 @@ class InputHandler:
         self.finder = Finder(game_state)
 
     def handle_user_input(self, user_input: str) -> None:
-        commands_to_run = self.parse_user_input(user_input)
-        self.execute_commands(commands_to_run)
+        commands_to_run = self._parse_user_input(user_input)
+        self._execute_commands(commands_to_run)
 
-    def parse_user_input(self, user_input):
+    def _parse_user_input(self, user_input):
         user_input_words = user_input.strip().lower().split(" ")
         ignored_words = {"the", "to", "on", "a", "an", "this", "that", "these", "those"}
         parsed_words = []
@@ -28,16 +28,16 @@ class InputHandler:
             parsed_words.append(checked_word)
         return parsed_words
 
-    def execute_commands(self, commands: [str]) -> None:
+    def _execute_commands(self, commands: [str]) -> None:
         action_name = commands[0]
         target_alias = " ".join(commands[1:])
 
         if len(commands) == 1:
-            self.single_command(action_name)
+            self._single_command(action_name)
         else:
-            self.dual_command(action_name, target_alias)
+            self._dual_command(action_name, target_alias)
 
-    def single_command(self, action_name: str) -> None:
+    def _single_command(self, action_name: str) -> None:
         hero = self.game_state.hero
         if action_name in hero.actions:
             hero = self.game_state.hero
@@ -46,7 +46,7 @@ class InputHandler:
         else:
             print(f"I don't understand that command.")
 
-    def dual_command(self, action_name: str, target_alias: str) -> None:
+    def _dual_command(self, action_name: str, target_alias: str) -> None:
         hero: Hero = self.game_state.hero
         hero_room_data: Room = self.game_state.rooms[hero.location]
         if action_name in hero_room_data.room_actions:

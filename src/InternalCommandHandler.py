@@ -20,7 +20,7 @@ class InternalCommandHandler:
         allow_next_command = True
 
         if ic_name == "command_move_direction":
-            self.move_to_direction(target_id)
+            self._move_to_direction(target_id)
 
         elif ic_name == "command_show_message":
             message = ic_arg
@@ -38,7 +38,7 @@ class InternalCommandHandler:
             self._set_locked(target_id, is_locked)
 
         elif ic_name == "command_attack_creature":
-            self.attack_creature(target_id)
+            self._attack_creature(target_id)
 
         # <array as arg>
         elif ic_name == "command_spawn_items":
@@ -76,17 +76,17 @@ class InternalCommandHandler:
         # </array as arg>
 
         elif ic_name == "command_consume_item":
-            if not self.consume_item(target_id):
+            if not self._consume_item(target_id):
                 allow_next_command = False
 
         elif ic_name == "command_equip":
             self._equip_item(target_id)
 
         elif ic_name == "command_unequip":
-            self.unequip_item(target_id)
+            self._unequip_item(target_id)
 
         elif ic_name == "command_drop_item":
-            self.drop_item(target_id)
+            self._drop_item(target_id)
 
         elif ic_name == "command_show_room":
             self._show_hero_room()
@@ -106,7 +106,7 @@ class InternalCommandHandler:
             allow_next_command = False
         return allow_next_command
 
-    def move_to_direction(self, direction_name):
+    def _move_to_direction(self, direction_name):
         hero = self.game_state.hero
         hero_room_data: Room = self.game_state.rooms[hero.location]
 
@@ -154,7 +154,7 @@ class InternalCommandHandler:
         target_data = self.game_state.transition_objects[target_id]
         target_data.locked = is_locked
 
-    def attack_creature(self, target_creature_id):
+    def _attack_creature(self, target_creature_id):
         target_creature_data: Creature = self.finder.get_data_by_id(target_creature_id)
         creature_alias = target_creature_data.alias[0]
 
@@ -270,7 +270,7 @@ class InternalCommandHandler:
         print(f"You don't have a required item to do this action.")
         return False
 
-    def consume_item(self, item_id):
+    def _consume_item(self, item_id):
         item_data = self.game_state.items[item_id]
         if not hasattr(item_data, "value"):
             print(f"That item can not be consumed.")
@@ -336,7 +336,7 @@ class InternalCommandHandler:
         setattr(hero, equipment_data.slot, item_id)
         print(f"Item equipped")
 
-    def unequip_item(self, item_id):
+    def _unequip_item(self, item_id):
         if not self._is_item_equipped(item_id):
             print(f"It is not equipped.")
             return
@@ -358,7 +358,7 @@ class InternalCommandHandler:
             return True
         return False
 
-    def drop_item(self, item_id):
+    def _drop_item(self, item_id):
         hero = self.game_state.hero
         if item_id not in hero.inventory:
             print("You don't have that in your inventory.")
@@ -460,5 +460,5 @@ class InternalCommandHandler:
         exit(0)
 
     @staticmethod
-    def _capitalize_first(input: str):
-        return input[0].capitalize() + input[1:]
+    def _capitalize_first(string: str):
+        return string[0].capitalize() + string[1:]

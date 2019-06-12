@@ -10,7 +10,7 @@ class GUI:
         self.window.config(bg='lightgrey')
         self.window.geometry(str(width) + 'x' + str(height))
         self.window.title("XPloring game")
-        self.window.bind('<Return>', self.enter_pressed)
+        self.window.bind('<Return>', self._enter_pressed)
 
         self.main_frame = tkinter.Frame(self.window)
         self.main_frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
@@ -24,7 +24,10 @@ class GUI:
         self.text_input.insert(tkinter.END, "Input here!")
         self.text_input.grid(column=0, row=1)
 
-    def get_input(self):
+    def _enter_pressed(self):
+        self.game.react_to_input(self._get_input())
+
+    def _get_input(self):
         input_text = self.text_input.get("1.0", "end-1c")
         self.text_input.delete('1.0', tkinter.END)
         return input_text
@@ -34,6 +37,3 @@ class GUI:
         self.text_output.insert(tkinter.INSERT, text)
         self.text_output.configure(state='disabled')
         self.text_output.see("end")
-
-    def enter_pressed(self):
-        self.game.react_to_input(self.get_input())
