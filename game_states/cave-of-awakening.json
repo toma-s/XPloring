@@ -27,7 +27,9 @@
           "room_id": "#room_cave_entrance"
         }
       },
-      "items": [],
+      "items": [
+        "#item_dead_body"
+      ],
       "creatures": [],
       "actions": {},
       "auto_commands": {}
@@ -51,37 +53,50 @@
       "alias": "deeper cave passage",
       "description": "The passage is really dark, you can barely see.",
       "directions": {
+        "west": {
+          "room_id": ""
+        }
       },
       "items": [],
       "creatures": [],
       "actions": {},
       "auto_commands": {}
+    },
+    "#room_bossfight": {
+      "alias": "deeper cave passage",
+      "description": "The passage is really dark, you can barely see.",
+      "directions": {
+      },
+      "items": [],
+      "creatures": [
+        "#creature_final_boss"
+      ],
+      "actions": {},
+      "auto_commands": {}
     }
   },
   "creatures": {
-    "#zombie_adventurer": {
+    "#creature_zombie_adventurer": {
+      "description": "A body of a dead adventurer controlled by evil magic.",
       "alias": [
-        ""
+        "dead adventurer", "adventurer", "dead body", "zombie", "zombie adventurer"
       ],
-      "health": 0,
-      "damage": 0,
+      "health": 30,
+      "damage": 10,
       "drops": [
         "#"
       ],
-      "description": "",
+
       "actions": {}
     },
-    "#": {
+    "#creature_final_boss": {
       "alias": [
-        ""
+        "final boss"
       ],
-      "health": 0,
-      "damage": 0,
-      "drops": [
-        "#"
-      ],
-      "description": "",
-      "actions": {}
+      "health": 60,
+      "damage": 50,
+      "drops": [],
+      "description": "The final boss, he holds the Staff"
     }
   },
   "items": {
@@ -96,6 +111,13 @@
             "command_show_message": "You have collected clues about the artifact, known as 'Staff of Awakening' from all around the world.\nThey all lead here, to this cave located far from civilisation.\nRumors say that the staff gives the user a magical ability to control the power of life.\nIt can drain life of the living and turn the dead into evil soldiers.\nYou can't let it get into the wrong hands.\nCollect the artifact and save the world ... alone."
           }
         }
+      },
+      "#item_whip": {
+        "alias": [
+          "whip"
+        ],
+        "description": "Whip is both a tool made of braided leather.",
+        "actions": {}
       },
       "#item_campsite_tent": {
         "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time.",
@@ -167,6 +189,24 @@
           "lighter"
         ],
         "actions": {}
+      },
+      "#item_dead_body": {
+        "description": "A body of a dead man lies on a cave floor. Probably an adventurer.",
+        "alias": [
+          "dead man", "body", "dead body"
+        ],
+        "actions": {
+          "take": {
+            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
+            "command_despawn_items": ["#item_dead_body"],
+            "command_spawn_creatures": ["#creature_zombie_adventurer"]
+          },
+          "examine": {
+            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
+            "command_despawn_items": ["#item_dead_body"],
+            "command_spawn_creatures": ["#creature_zombie_adventurer"]
+          }
+        }
       }
     },
     "consumable": {
@@ -200,6 +240,27 @@
   },
   "equipment": {
     "weapons": {
+      "#equipment_artifact_staff_of_awakening": {
+        "damage": 100,
+        "description": "The final boss holds the artifact in his hands.",
+        "alias": [
+          "The Staff of Awakening", "staff", "artifact"
+        ],
+        "actions": {
+          "take": {
+            "command_show_description": null
+          },
+          "whip": {
+            "command_required_items": ["#item_whip"],
+            "command_show_message": "You strike your whip and the whip wraps around the artifact.\n The artifact is pulled straight to you.",
+            "command_set_description": "It have the artifact.",
+            "command_add_items_to_inventory": ["#item_artifact_staff_of_awakening"]
+          },
+          "drop": {
+            "command_show_message": "You can't drop the artifact."
+          }
+        }
+      }
     },
     "armour": {
     }
@@ -218,7 +279,8 @@
     "inventory": [
       "#item_research_documents",
       "#item_fresh_apple",
-      "#item_bottle_of_water"
+      "#item_bottle_of_water",
+      "#item_whip"
     ]
   }
 }

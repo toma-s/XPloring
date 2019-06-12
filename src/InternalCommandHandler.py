@@ -41,6 +41,11 @@ class InternalCommandHandler:
             self.attack_creature(target_id)
 
         # <array as arg>
+        elif ic_name == "command_spawn_creatures":
+            creature_ids: [str] = ic_arg
+            for creature_id in creature_ids:
+                self._spawn_creature(creature_id)
+
         elif ic_name == "command_spawn_items":
             item_ids: [str] = ic_arg
             for item_id in item_ids:
@@ -234,6 +239,12 @@ class InternalCommandHandler:
 
         self._remove_item_from_inventory(equipment_id)
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
+
+    def _spawn_creature(self, creature_id):
+        hero = self.game_state.hero
+        hero_room_data = self.game_state.rooms[hero.location]
+        if creature_id not in hero_room_data.creatures:
+            hero_room_data.creatures.append(creature_id)
 
     def _spawn_item(self, item_id):
         hero_room_data = self.game_state.rooms[self.game_state.hero.location]
