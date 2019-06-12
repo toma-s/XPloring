@@ -29,6 +29,3 @@ class TestInputHandler(unittest.TestCase):
 
     def test_move_inventory_north(self):
         self.assertEqual(["go", "inventory", "north"], self.ih._parse_user_input("move inventory north"))
-
-if __name__ == '__main__':
-    unittest.main()

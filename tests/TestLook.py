@@ -17,19 +17,12 @@ class TestLook(unittest.TestCase):
         self.game_state1 = GameState(self.map1)
         self.ih1 = InputHandler(self.game_state1)
 
-        self.map_capital_alias = '../game_states/game_capital_alias.json'
-        self.game_state_capital_alias = GameState(self.map_capital_alias)
-        self.ih_capital_alias = InputHandler(self.game_state_capital_alias)
-
     def tearDown(self) -> None:
         del self.game_state
         del self.ih
 
         del self.game_state1
         del self.ih1
-
-        del self.game_state_capital_alias
-        del self.ih_capital_alias
 
     def test_look_whatever(self):
         stdout = io.StringIO()
@@ -71,10 +64,12 @@ class TestLook(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "- Entrance room -\nThere are some things just laying around in the room.\n\n" \
                           "There is a envelope. OPEN to get letter from inside.\n" \
-                          "There is a sword. Sword made of pure silver with a straight double-edged blade and a grip for two-handed use.\n" \
+                          "There is a sword. Sword made of pure silver with a straight double-edged blade " \
+                          "and a grip for two-handed use.\n" \
                           "There is a bandage. You can USE bandage to reduce swelling or slow heavy bleeding.\n" \
                           "There is a helmet. Gladiator helmet made of steel.\n" \
-                          "There is a unlabelled bottle. Small unlabelled bottle with strange liquid inside. USE may lead to bad consequences.\n" \
+                          "There is a unlabelled bottle. Small unlabelled bottle with strange liquid inside. " \
+                          "USE may lead to bad consequences.\n" \
                           "There is a chestplate. Steel chestplate armor.\n" \
                           "There are no enemies around.\n" \
                           "The arena is to the WEST.\n"

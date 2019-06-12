@@ -11,7 +11,6 @@ from game_item.Weapon import Weapon
 
 
 class TestGameStateLoader(unittest.TestCase):
-
     file_path = "../game_states/game_test_loader.json"
     game_data = GameStateLoader.read_file(file_path)
     loader = GameStateLoader(game_data)
@@ -28,9 +27,9 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "west":
-                {
-                    "room_id": "#room2"
-                }
+                    {
+                        "room_id": "#room2"
+                    }
             },
             room1.directions
         )
@@ -43,9 +42,9 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "east":
-                {
-                     "room_id": "#room1"
-                }
+                    {
+                        "room_id": "#room1"
+                    }
             },
             room2.directions
         )
