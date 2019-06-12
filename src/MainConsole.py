@@ -5,7 +5,6 @@ from exceptions.GameStateFileException import GameStateFileException
 from src.Game import Game
 from src.GameState import GameState
 
-
 parent_path = '..\\game_states'
 
 

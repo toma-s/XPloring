@@ -131,17 +131,18 @@ class GameStateSaver:
         hero["inventory"] = [inventory_item for inventory_item in hero_data.inventory]
         return hero
 
-    def _get_custom_actions(self, item, defaults) -> Dict[str, any]:
-        actions = dict()
-        for action, value in item.actions.items():
-            if action not in defaults:
-                actions[action] = value
-        return actions
-
     def _get_custom_hero_actions(self) -> Dict[str, any]:
         actions = dict()
         for action, value in self.game_state.hero.actions.items():
             if action not in Hero.hero_actions.keys():
+                actions[action] = value
+        return actions
+
+    @staticmethod
+    def _get_custom_actions(item, defaults) -> Dict[str, any]:
+        actions = dict()
+        for action, value in item.actions.items():
+            if action not in defaults:
                 actions[action] = value
         return actions
 

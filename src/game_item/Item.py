@@ -1,6 +1,4 @@
-
 class Item:
-
     item_actions = {
         "examine": {
             "command_show_description": None

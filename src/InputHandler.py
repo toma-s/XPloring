@@ -4,8 +4,6 @@ from commands import commands_directions, commands_actions
 from game_item.Hero import Hero
 from game_item.Room import Room
 from src.GameState import GameState
-from game_item.Weapon import Weapon
-from game_item.Armour import Armour
 
 
 class InputHandler:
@@ -78,7 +76,8 @@ class InputHandler:
             if not next_command_allowed:
                 break
 
-    def _check_found_one_id_only(self, ids, target_alias) -> bool:
+    @staticmethod
+    def _check_found_one_id_only(ids, target_alias) -> bool:
         if len(ids) == 0:
             print(f"There is no {target_alias} around.")
             return False
@@ -98,10 +97,9 @@ class InputHandler:
                 return command
         return input_word
 
-
     @staticmethod
-    def _capitalize_first(input: str):
-        return input[0].capitalize() + input[1:]
+    def _capitalize_first(string: str):
+        return string[0].capitalize() + string[1:]
 
     @staticmethod
     def _is_keyword(target_alias):
@@ -109,5 +107,3 @@ class InputHandler:
             return True
         if target_alias.lower() in [cd.lower() for cd in commands_directions]:
             return True
-
-

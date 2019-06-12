@@ -37,7 +37,7 @@ class InternalCommandHandler:
             is_locked: bool = ic_arg
             self._set_locked(target_id, is_locked)
 
-        elif ic_name == "command_attack_creature" :
+        elif ic_name == "command_attack_creature":
             self.attack_creature(target_id)
 
         # <array as arg>
@@ -133,7 +133,6 @@ class InternalCommandHandler:
             for ic_name, ic_args in hero_room_data.auto_commands.items():
                 self.handle_internal_command(ic_name, ic_args, room_id)
         self._show_hero_room()
-
 
     def _show_description(self, target_id):
         target_data = self.finder.get_data_by_id(target_id)
@@ -455,14 +454,11 @@ class InternalCommandHandler:
                 item_print += " [EQUIPPED]"
             print(item_print)
 
-    def _end_game(self, end_message):
+    @staticmethod
+    def _end_game(end_message):
         print(end_message)
         exit(0)
-
 
     @staticmethod
     def _capitalize_first(input: str):
         return input[0].capitalize() + input[1:]
-
-
-
