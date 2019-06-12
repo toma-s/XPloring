@@ -11,7 +11,6 @@ from game_item.Weapon import Weapon
 
 
 class TestGameStateLoader(unittest.TestCase):
-
     file_path = "../game_states/game_test_loader.json"
     game_data = GameStateLoader.read_file(file_path)
     loader = GameStateLoader(game_data)
@@ -28,9 +27,9 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "west":
-                {
-                    "room_id": "#room2"
-                }
+                    {
+                        "room_id": "#room2"
+                    }
             },
             room1.directions
         )
@@ -43,9 +42,9 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertDictEqual(
             {
                 "east":
-                {
-                     "room_id": "#room1"
-                }
+                    {
+                        "room_id": "#room1"
+                    }
             },
             room2.directions
         )
@@ -84,18 +83,18 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["regular item 1"], item1.alias)
         self.assertDictEqual(
             {
-                "open": {
-                    "command_spawn_items": ["#item2"]
+                "drop": {
+                    "command_drop_item": None
                 },
                 "examine": {
                     "command_show_description": None
                 },
+                "open": {
+                    "command_spawn_items": ["#item2"]
+                },
                 "take": {
                     "command_add_items_to_inventory": None,
-                    'command_despawn_items': None
-                },
-                "drop": {
-                    "command_drop_item": None,
+                    "command_despawn_items": None
                 }
             }, item1.actions
         )
@@ -106,9 +105,8 @@ class TestGameStateLoader(unittest.TestCase):
         self.assertListEqual(["consumable item 2"], item2.alias)
         self.assertDictEqual(
             {
-                "use": {
-                    "command_required_items": ["#item1"],
-                    "command_consume_item": True
+                "drop": {
+                    "command_drop_item": None
                 },
                 "examine": {
                     "command_show_description": None
@@ -117,8 +115,9 @@ class TestGameStateLoader(unittest.TestCase):
                     "command_add_items_to_inventory": None,
                     'command_despawn_items': None
                 },
-                "drop": {
-                    "command_drop_item": None
+                "use": {
+                    "command_required_items": ["#item1"],
+                    "command_consume_item": True
                 }
             }, item2.actions
         )

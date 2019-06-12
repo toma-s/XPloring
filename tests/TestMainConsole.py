@@ -9,7 +9,7 @@ class TestInput(unittest.TestCase):
 
     def test_valid_choice_1(self):
         expected_value = True
-        result_value = MainConsole.valid_choice("1", 1)
+        result_value = MainConsole._valid_choice("1", 1)
         self.assertEqual(expected_value, result_value)
 
     def test_valid_choice_one(self):
@@ -18,7 +18,7 @@ class TestInput(unittest.TestCase):
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            result_value = MainConsole.valid_choice("one", 1)
+            result_value = MainConsole._valid_choice("one", 1)
         result_output = stdout.getvalue()
 
         self.assertEqual(expected_output, result_output)
@@ -30,7 +30,7 @@ class TestInput(unittest.TestCase):
 
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            result_value = MainConsole.valid_choice("0", 1)
+            result_value = MainConsole._valid_choice("0", 1)
         result_output = stdout.getvalue()
 
         self.assertEqual(expected_output, result_output)

@@ -4,8 +4,6 @@ from commands import commands_directions, commands_actions
 from game_item.Hero import Hero
 from game_item.Room import Room
 from src.GameState import GameState
-from game_item.Weapon import Weapon
-from game_item.Armour import Armour
 
 
 class InputHandler:
@@ -16,10 +14,10 @@ class InputHandler:
         self.finder = Finder(game_state)
 
     def handle_user_input(self, user_input: str) -> None:
-        commands_to_run = self.parse_user_input(user_input)
-        self.execute_commands(commands_to_run)
+        commands_to_run = self._parse_user_input(user_input)
+        self._execute_commands(commands_to_run)
 
-    def parse_user_input(self, user_input):
+    def _parse_user_input(self, user_input):
         user_input_words = user_input.strip().lower().split(" ")
         ignored_words = {"the", "to", "on", "a", "an", "this", "that", "these", "those"}
         parsed_words = []
@@ -30,16 +28,16 @@ class InputHandler:
             parsed_words.append(checked_word)
         return parsed_words
 
-    def execute_commands(self, commands: [str]) -> None:
+    def _execute_commands(self, commands: [str]) -> None:
         action_name = commands[0]
         target_alias = " ".join(commands[1:])
 
         if len(commands) == 1:
-            self.single_command(action_name)
+            self._single_command(action_name)
         else:
-            self.dual_command(action_name, target_alias)
+            self._dual_command(action_name, target_alias)
 
-    def single_command(self, action_name: str) -> None:
+    def _single_command(self, action_name: str) -> None:
         hero = self.game_state.hero
         if action_name in hero.actions:
             hero = self.game_state.hero
@@ -48,7 +46,7 @@ class InputHandler:
         else:
             print(f"I don't understand that command.")
 
-    def dual_command(self, action_name: str, target_alias: str) -> None:
+    def _dual_command(self, action_name: str, target_alias: str) -> None:
         hero: Hero = self.game_state.hero
         hero_room_data: Room = self.game_state.rooms[hero.location]
         if action_name in hero_room_data.room_actions:
@@ -78,7 +76,8 @@ class InputHandler:
             if not next_command_allowed:
                 break
 
-    def _check_found_one_id_only(self, ids, target_alias) -> bool:
+    @staticmethod
+    def _check_found_one_id_only(ids, target_alias) -> bool:
         if len(ids) == 0:
             print(f"There is no {target_alias} around.")
             return False
@@ -98,10 +97,9 @@ class InputHandler:
                 return command
         return input_word
 
-
     @staticmethod
-    def _capitalize_first(input: str):
-        return input[0].capitalize() + input[1:]
+    def _capitalize_first(string: str):
+        return string[0].capitalize() + string[1:]
 
     @staticmethod
     def _is_keyword(target_alias):
@@ -109,5 +107,3 @@ class InputHandler:
             return True
         if target_alias.lower() in [cd.lower() for cd in commands_directions]:
             return True
-
-

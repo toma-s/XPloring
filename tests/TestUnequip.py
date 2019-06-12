@@ -13,23 +13,9 @@ class TestUnequip(unittest.TestCase):
         self.game_state = GameState(self.map0)
         self.ih = InputHandler(self.game_state)
 
-        self.map_two_helmets = '../game_states/game_two_helmets.json'
-        self.game_two_helmets = GameState(self.map_two_helmets)
-        self.ih_two_helmets = InputHandler(self.game_two_helmets)
-
-        self.map1 = '../game_states/game1_cake.json'
-        self.game_state1 = GameState(self.map1)
-        self.ih1 = InputHandler(self.game_state1)
-
     def tearDown(self) -> None:
         del self.game_state
         del self.ih
-
-        del self.game_two_helmets
-        del self.ih_two_helmets
-
-        del self.game_state1
-        del self.ih1
 
     def test_unequip_no_target(self):
         stdout = io.StringIO()
@@ -72,7 +58,6 @@ class TestUnequip(unittest.TestCase):
         result_output = stdout.getvalue()
         expected_output = "It is not equipped.\n"
         self.assertEqual(expected_output, result_output)
-
 
     def test_unequip_envelope_room(self):
         stdout = io.StringIO()

@@ -2,7 +2,6 @@ import unittest
 import contextlib
 import io
 
-
 from InputHandler import InputHandler
 from GameState import GameState
 
@@ -44,7 +43,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"Exit door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_unlock_arena_door_nokey(self):
+    def test_unlock_arena_door_no_key(self):
         self.ih.handle_user_input("go west")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -53,9 +52,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"You don't have a required item in you inventory to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
-
     # -- game1 --
-
     def test_open_doors_with_same_alias(self):
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()
@@ -74,7 +71,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_open_locked_door_nokey(self):
+    def test_open_locked_door_no_key(self):
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -83,7 +80,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_open_locked_door_haskey(self):
+    def test_open_locked_door_has_key(self):
         self.ih1.handle_user_input("take armory key")
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()
@@ -93,7 +90,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"Armory door is locked, you need a key\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_unlock_armory_door_nokey(self):
+    def test_unlock_armory_door_no_key(self):
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -109,10 +106,10 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("unlock armory door")
         result_output = stdout.getvalue()
-        expected_output = f"Armory door is unlocked, you may go through.\n"
+        expected_output = f"Armory door is unlocked, you may go through\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_unlock_doors_with_same_alias_nokey(self):
+    def test_unlock_doors_with_same_alias_no_key(self):
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
@@ -121,7 +118,7 @@ class TestInput(unittest.TestCase):
         expected_output = f"There are 2 \"door\". You have to be more specific.\n"
         self.assertEqual(expected_output, result_output)
 
-    def test_unlock_doors_with_same_alias_haskey(self):
+    def test_unlock_doors_with_same_alias_has_key(self):
         self.ih1.handle_user_input("take armory key")
         self.ih1.handle_user_input("go north")
         stdout = io.StringIO()

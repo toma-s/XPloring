@@ -5,13 +5,11 @@ from src.GUI import GUI
 import re
 import sys
 
-
 import io
 from contextlib import redirect_stdout
 
 
 class Game:
-
     help_tooltip = "Type HELP for manual."
     enter_tooltip = "Press Enter to execute command."
 
@@ -81,7 +79,6 @@ class Game:
         print()
         print(self.help_tooltip)
         print(self.enter_tooltip)
-
 
     @staticmethod
     def print_help():
