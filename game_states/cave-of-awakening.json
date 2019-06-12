@@ -15,7 +15,7 @@
     },
     "#room_passage_level_1": {
       "alias": "cave passage",
-      "description": "Passage that is located right after cave entrance.\nIt gets darker as you go deeper into the cave",
+      "description": "You are in a passage that is located right after the cave entrance.\nIt gets darker as you go deeper into the cave",
       "directions": {
         "north": {
           "room_id": "#room_passage_level_2"
@@ -284,7 +284,7 @@
         ],
         "actions": {
           "read": {
-            "command_show_message": "If you are reading this, it means you have solved my puzzles\n and collected the artifact.\nThank you for your time, it means a lot to me."
+            "command_good_end": "If you are reading this, it means you have solved my puzzles\nand collected the artifact.\nThank you for your time, it means a lot to me"
           }
         }
       }
@@ -331,15 +331,15 @@
         "alias": [
           "The Staff of Awakening", "staff", "artifact"
         ],
-        "description": "The final boss holds the artifact in his hands.",
+        "description": "The guardian of the temple holds this artifact in its hands.",
         "actions": {
           "take": {
             "command_show_description": null
           },
           "whip": {
             "command_required_items": ["#item_whip"],
-            "command_show_message": "You strike your whip and the whip wraps around the artifact.\n The artifact is pulled straight to you.",
-            "command_set_description": "The artifact is mine. Now let's get out of here.",
+            "command_show_message": "You strike your whip and the whip wraps around the artifact.\nThe artifact is pulled straight to you.",
+            "command_set_description": "The artifact is mine now.",
             "command_despawn_items": ["#equipment_artifact_staff_of_awakening"],
             "command_add_items_to_inventory": ["#equipment_artifact_staff_of_awakening"]
           },

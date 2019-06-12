@@ -1,10 +1,11 @@
 import unittest
 import contextlib
 import io
-
+from sys import stdout
 
 from InputHandler import InputHandler
 from GameState import GameState
+from game_item.Creature import Creature
 from game_item.Hero import Hero
 from game_item.Room import Room
 
@@ -67,6 +68,20 @@ class TestCave(unittest.TestCase):
         self.assertIn("#item_thank_you_letter", temple_room.items)
 
 
+    def test_light_lantern(self):
+        hero: Hero = self.game_state.hero
+        hero.inventory.append("#item_lantern_extinguished")
+        hero.inventory.append("#item_lighter")
+
+        self.assertIn("#item_lantern_extinguished", hero.inventory)
+        self.assertNotIn("#item_lantern_lit", hero.inventory)
+
+        self.ih.handle_user_input("light lantern")
+
+        self.assertNotIn("#item_lantern_extinguished", hero.inventory)
+        self.assertIn("#item_lantern_lit", hero.inventory)
+
+
     def test_dead_body_zombie(self):
         self.game_state.hero.location = "#room_passage_level_2"
         room2: Room = self.game_state.rooms["#room_passage_level_2"]
@@ -109,16 +124,33 @@ class TestCave(unittest.TestCase):
         self.assertEqual(0, demon.health)
         self.assertEqual(100, hero.health)
 
+    def test_bad_end(self):
+        hero = self.game_state.hero
+        hero.location = "#room_ancient_temple"
 
-    def test_light_lantern(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
+            self.ih.handle_user_input("attack demon")
+        result_output = stdout.getvalue()
+        expected_output = "You hit the guardian of the artifact for 5 damage! Guardian of the artifact has 95 HP left.\n" \
+                          "Guardian of the artifact hit you for 100 damage! You have 0 HP left.\n" \
+                          "GAME OVER. You were killed by guardian of the artifact. Better luck next time.\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual('0', str(e.exception))
+
+        demon: Creature = self.game_state.creatures["#creature_temple_demon"]
+        self.assertEqual(95, demon.health)
+        self.assertEqual(0, hero.health)
+
+    def test_good_end(self):
         hero: Hero = self.game_state.hero
-        hero.inventory.append("#item_lantern_extinguished")
-        hero.inventory.append("#item_lighter")
+        hero.inventory.append("#item_thank_you_letter")
 
-        self.assertIn("#item_lantern_extinguished", hero.inventory)
-        self.assertNotIn("#item_lantern_lit", hero.inventory)
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
+            self.ih.handle_user_input("read letter")
+        result_output = stdout.getvalue()
+        expected_output = "If you are reading this, it means you have solved my puzzles\nand collected the artifact.\nThank you for your time, it means a lot to me.\n"
+        self.assertEqual(expected_output, result_output)
+        self.assertEqual('0', str(e.exception))
 
-        self.ih.handle_user_input("light lantern")
-
-        self.assertNotIn("#item_lantern_extinguished", hero.inventory)
-        self.assertIn("#item_lantern_lit", hero.inventory)
