@@ -41,7 +41,7 @@
         }
       },
       "items": [
-        "#item_campsite_tent"
+        "#item_tent"
       ],
       "creatures": [],
       "actions": {},
@@ -49,10 +49,30 @@
     },
     "#room_passage_level_2": {
       "alias": "deeper cave passage",
-      "description": "The passage is really dark, you can barely see.",
+      "description": "The passage is really dark, you can barely see.\nYou can't go deeper without a proper source of light",
+      "directions": {
+        "north": {
+          "trans_obj_id": "#trans_darkness",
+          "room_id": "#room_darkroom"
+        },
+        "south": {
+          "room_id": "#room_passage_level_1"
+        }
+      },
+      "items": [
+        "#item_dead_body"
+      ],
+      "creatures": [],
+      "actions": {},
+      "auto_commands": {}
+    },
+    "#room_darkroom": {
+      "alias": "dark cave passage",
+      "description": "",
       "directions": {
         "west": {
-          "room_id": ""
+          "trans_obj_id": "#trans_darkness",
+          "room_id": "#room_darkroom"
         }
       },
       "items": [
@@ -89,13 +109,14 @@
       "actions": {}
     },
     "#creature_final_boss": {
+      "description": "The final boss, he holds the Staff",
       "alias": [
         "final boss"
       ],
       "health": 60,
       "damage": 50,
       "drops": [],
-      "description": "The final boss, he holds the Staff"
+      "actions": {}
     }
   },
   "items": {
@@ -118,7 +139,7 @@
         "description": "It is made of braided leather.",
         "actions": {}
       },
-      "#item_campsite_tent": {
+      "#item_tent": {
         "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time.",
         "alias": [
           "tent", "camp tent"
@@ -129,15 +150,15 @@
           },
           "examine": {
             "command_show_message": "You take a closer look at the inside of the tent.\nThere is nobody in there, but you can see a small wooden box in the corner of the tent.",
-            "command_despawn_items": ["#item_campsite_tent"],
+            "command_despawn_items": ["#item_tent"],
             "command_spawn_items": [
-              "#item_campsite_tent_examined",
-              "#item_campsite_wooden_box_full"
+              "#item_tent_examined",
+              "#item_wooden_box_full"
             ]
           }
         }
       },
-      "#item_campsite_tent_examined": {
+      "#item_tent_examined": {
         "description": "The tent is covered in a layer of dust. It seems it hasn't been used in a long time.",
         "alias": [
           "tent", "camp tent"
@@ -151,7 +172,7 @@
           }
         }
       },
-      "#item_campsite_wooden_box_full": {
+      "#item_wooden_box_full": {
         "description": "A small wooden box. The box is closed and there may be some things inside.",
         "alias": [
           "box", "wooden box"
@@ -163,12 +184,12 @@
           "open": {
             "command_show_message": "You open the box, revealing the content. You have found a lighter.",
             "command_add_items_to_inventory": "#item_lighter",
-            "command_despawn_items": ["#item_campsite_wooden_box_full"],
-            "command_spawn_items": ["#item_campsite_wooden_box_empty"]
+            "command_despawn_items": ["#item_wooden_box_full"],
+            "command_spawn_items": ["#item_wooden_box_empty"]
           }
         }
       },
-      "#item_campsite_wooden_box_empty": {
+      "#item_wooden_box_empty": {
         "description": "A small wooden box. The box is opened and there is nothing inside.",
         "alias": [
           "box", "wooden box"
@@ -208,10 +229,32 @@
         }
       },
       "#item_lantern_extinguished": {
-
+        "description": "It is extinguished.\nYou need a source of fire to LIGHT the lantern",
+        "alias": [
+          "extinguished lantern", "lantern"
+        ],
+        "actions": {
+          "light": {
+            "command_required_items": ["#item_lighter"],
+            "command_despawn_items": ["#item_lantern_extinguished"],
+            "command_spawn_items": ["#item_lantern_lit"],
+            "command_show_message": "The lantern is now lit and provides light."
+          }
+        }
       },
       "#item_lantern_lit": {
-
+        "description": "The lantern is lit and provides light for you to see.",
+        "alias": [
+          "lit lantern", "lantern"
+        ],
+        "actions": {
+          "light": {
+            "command_required_items": ["#item_lighter"],
+            "command_despawn_items": ["#item_lantern_extinguished"],
+            "command_spawn_items": ["#item_lantern_lit"],
+            "command_show_message": "The lantern is now lit and provides light."
+          }
+        }
       }
     },
     "consumable": {
@@ -247,10 +290,11 @@
     "weapons": {
       "#equipment_artifact_staff_of_awakening": {
         "damage": 100,
-        "description": "The final boss holds the artifact in his hands.",
+        "slot": "weapon_slot",
         "alias": [
           "The Staff of Awakening", "staff", "artifact"
         ],
+        "description": "The final boss holds the artifact in his hands.",
         "actions": {
           "take": {
             "command_show_description": null
@@ -271,12 +315,24 @@
     }
   },
   "transition_objects": {
+    "#trans_darkness": {
+      "alias": "dark cave passage",
+      "locked": true,
+      "description": "You can't go any deeper without a proper source of LIGHT",
+      "actions": {
+        "light": {
+          "command_required_items": ["#item_lantern_lit"],
+          "command_set_locked": false,
+          "command_show_message": "The lantern lightens the darkness"
+        }
+      }
+    }
   },
   "hero": {
     "health": 100,
     "base_damage": 5,
     "location": "#room_cave_entrance",
-    "weapon_slot": "#equipment_hunting_knife",
+    "weapon_slot": null,
     "head_slot": null,
     "chest_slot": null,
     "legs_slot": null,
@@ -285,8 +341,7 @@
       "#item_research_documents",
       "#item_fresh_apple",
       "#item_bottle_of_water",
-      "#item_whip",
-      "#equipment_hunting_knife"
+      "#item_whip"
     ]
   }
 }
