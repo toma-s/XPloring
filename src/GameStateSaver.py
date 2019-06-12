@@ -45,7 +45,6 @@ class GameStateSaver:
             rooms[key]["creatures"] = [creature for creature in room.creatures]
             rooms[key]["actions"] = self._get_custom_actions(room, Room.room_actions)
             rooms[key]["auto_commands"] = room.auto_commands
-
         return rooms
 
     def _load_creatures(self) -> Dict[str, any]:
@@ -76,46 +75,62 @@ class GameStateSaver:
 
     def _load_items(self) -> Dict[str, any]:
         items = dict()
-        for key, value in self.game_state.items.items():
-            item = value
-            group_key = "items"
-            if isinstance(value, Consumable):
-                group_key = "consumable"
-                items.setdefault(group_key, {})
-                items[group_key].setdefault(key, {})
-                items[group_key][key]["value"] = item.value
-            elif isinstance(value, Item):
-                group_key = "regular"
-                items.setdefault(group_key, {})
-                items[group_key].setdefault(key, {})
-            items[group_key][key]["description"] = item.description
-            items[group_key][key]["alias"] = [alias_item for alias_item in item.alias]
-            actions = Item.item_actions.keys()
-            items[group_key][key]["actions"] = self._get_custom_actions(item, actions)
+        for key, item in self.game_state.items.items():
+            if isinstance(item, Consumable):
+                self._load_consumable(item, items, key)
+            elif isinstance(item, Item):
+                self._load_regular(item, items, key)
         return items
+
+    def _load_consumable(self, item, items, key):
+        group_key = "consumable"
+        items.setdefault(group_key, {})
+        items[group_key].setdefault(key, {})
+        items[group_key][key]["value"] = item.value
+        self._load_item_values(group_key, item, items, key)
+
+    def _load_regular(self, item, items, key):
+        group_key = "regular"
+        items.setdefault(group_key, {})
+        items[group_key].setdefault(key, {})
+        self._load_item_values(group_key, item, items, key)
+
+    def _load_item_values(self, group_key, item, items, key):
+        items[group_key][key]["description"] = item.description
+        items[group_key][key]["alias"] = [alias_item for alias_item in item.alias]
+        actions = Item.item_actions.keys()
+        items[group_key][key]["actions"] = self._get_custom_actions(item, actions)
 
     def _load_equipment(self) -> Dict[str, any]:
         equipment = dict()
-        for key, value in self.game_state.equipment.items():
-            single_equipment = value
-            group_key = "equipment"
+        for key, single_equipment in self.game_state.equipment.items():
             if isinstance(single_equipment, Armour):
-                group_key = "armour"
-                equipment.setdefault(group_key, {})
-                equipment[group_key].setdefault(key, {})
-                equipment[group_key][key]["resistance"] = single_equipment.resistance
-                equipment[group_key][key]["durability"] = single_equipment.durability
+                self._load_armour(single_equipment, equipment, key)
             elif isinstance(single_equipment, Weapon):
-                group_key = "weapons"
-                equipment.setdefault(group_key, {})
-                equipment[group_key].setdefault(key, {})
-                equipment[group_key][key]["damage"] = single_equipment.damage
-            equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
-            equipment[group_key][key]["slot"] = single_equipment.slot
-            equipment[group_key][key]["description"] = single_equipment.description
-            actions = Item.item_actions.keys() | Equipment.equipment_actions.keys()
-            equipment[group_key][key]["actions"] = self._get_custom_actions(single_equipment, actions)
+                self._load_weapons(single_equipment, equipment, key)
         return equipment
+
+    def _load_weapon_values(self, equipment, group_key, key, single_equipment):
+        equipment[group_key][key]["alias"] = [alias_item for alias_item in single_equipment.alias]
+        equipment[group_key][key]["slot"] = single_equipment.slot
+        equipment[group_key][key]["description"] = single_equipment.description
+        actions = Item.item_actions.keys() | Equipment.equipment_actions.keys()
+        equipment[group_key][key]["actions"] = self._get_custom_actions(single_equipment, actions)
+
+    def _load_armour(self, single_equipment, equipment, key):
+        group_key = "armour"
+        equipment.setdefault(group_key, {})
+        equipment[group_key].setdefault(key, {})
+        equipment[group_key][key]["resistance"] = single_equipment.resistance
+        equipment[group_key][key]["durability"] = single_equipment.durability
+        self._load_weapon_values(equipment, group_key, key, single_equipment)
+
+    def _load_weapons(self, single_equipment, equipment, key):
+        group_key = "weapons"
+        equipment.setdefault(group_key, {})
+        equipment[group_key].setdefault(key, {})
+        equipment[group_key][key]["damage"] = single_equipment.damage
+        self._load_weapon_values(equipment, group_key, key, single_equipment)
 
     def _load_hero(self) -> Dict[str, any]:
         hero = dict()
