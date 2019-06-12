@@ -126,8 +126,7 @@ class InternalCommandHandler:
             trans_obj_id = direction_data["trans_obj_id"]
             trans_obj: TransitionObject = self.game_state.transition_objects[trans_obj_id]
             if trans_obj.locked:
-                trans_obj_alias = trans_obj.alias[0]
-                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked.")
+                print(f"You can't go {direction_name}.\n{trans_obj.description}")
                 return
         self._move_hero_to_room(target_room_id)
 
@@ -261,6 +260,8 @@ class InternalCommandHandler:
         hero = self.game_state.hero
 
         item_data = self.finder.get_data_by_id(item_id)
+        if item_data is None:
+            return
         target_item_alias = item_data.alias[0]
 
         if item_id in hero.inventory:

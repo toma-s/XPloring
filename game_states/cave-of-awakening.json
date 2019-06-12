@@ -183,7 +183,7 @@
           },
           "open": {
             "command_show_message": "You open the box, revealing the content. You have found a lighter.",
-            "command_add_items_to_inventory": "#item_lighter",
+            "command_add_items_to_inventory": ["#item_lighter"],
             "command_despawn_items": ["#item_wooden_box_full"],
             "command_spawn_items": ["#item_wooden_box_empty"]
           }
@@ -217,23 +217,27 @@
         ],
         "actions": {
           "take": {
-            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
+            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes.\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
             "command_despawn_items": ["#item_dead_body"],
             "command_spawn_creatures": ["#creature_zombie_adventurer"]
           },
           "examine": {
-            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
+            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit you, but you step aside, and avoid the attack.",
             "command_despawn_items": ["#item_dead_body"],
             "command_spawn_creatures": ["#creature_zombie_adventurer"]
           }
         }
       },
       "#item_lantern_extinguished": {
-        "description": "It is extinguished.\nYou need a source of fire to LIGHT the lantern",
+        "description": "The lantern is extinguished.",
         "alias": [
           "extinguished lantern", "lantern"
         ],
         "actions": {
+          "examine": {
+            "command_show_description": null,
+            "command_show_message": "You need a source of fire to LIGHT the lantern"
+          },
           "light": {
             "command_required_items": ["#item_lighter"],
             "command_despawn_items": ["#item_lantern_extinguished"],
@@ -316,7 +320,7 @@
   },
   "transition_objects": {
     "#trans_darkness": {
-      "alias": "dark cave passage",
+      "alias": ["dark cave passage"],
       "locked": true,
       "description": "You can't go any deeper without a proper source of LIGHT",
       "actions": {
