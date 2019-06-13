@@ -40,6 +40,11 @@ class InternalCommandHandler:
         elif internal_cmd_name == "command_attack_creature":
             self._attack_creature(target_id)
 
+        elif internal_cmd_name == "command_spawn_creatures":
+            creature_ids: [str] = internal_cmd_arg
+            for creature_id in creature_ids:
+                self._spawn_creature(creature_id)
+
         elif internal_cmd_name == "command_spawn_items":
             item_ids: [str] = internal_cmd_arg
             for item_id in item_ids:
@@ -119,8 +124,7 @@ class InternalCommandHandler:
             trans_obj_id = direction_data["trans_obj_id"]
             trans_obj: TransitionObject = self.game_state.transition_objects[trans_obj_id]
             if trans_obj.locked:
-                trans_obj_alias = trans_obj.alias[0]
-                print(f"You can't go {direction_name}. The {trans_obj_alias} is locked.")
+                print(f"You can't go {direction_name}.\n{trans_obj.description}")
                 return
         self._move_hero_to_room(target_room_id)
 
@@ -191,8 +195,10 @@ class InternalCommandHandler:
     def _on_creature_death(self, creature_data: Creature):
         creature_alias = creature_data.alias[0]
         print(f"{self._capitalize_first(creature_alias)} is dead!")
-        for loot in creature_data.drops:
-            self._spawn_item(loot)
+        if creature_data.drops:
+            print("You have searched the corpse and found some items.")
+        for item_id in creature_data.drops:
+            self._spawn_item(item_id)
 
     def _creature_attack_turn(self, creature_data: Creature):
         creature_alias = creature_data.alias[0]
@@ -232,6 +238,12 @@ class InternalCommandHandler:
         self._remove_item_from_inventory(equipment_id)
         print(f"Your {self._capitalize_first(equipment_data.alias[0])} is broken!")
 
+    def _spawn_creature(self, creature_id):
+        hero = self.game_state.hero
+        hero_room_data = self.game_state.rooms[hero.location]
+        if creature_id not in hero_room_data.creatures:
+            hero_room_data.creatures.append(creature_id)
+
     def _spawn_item(self, item_id):
         hero_room_data = self.game_state.rooms[self.game_state.hero.location]
         if item_id not in hero_room_data.items:
@@ -247,6 +259,8 @@ class InternalCommandHandler:
         hero = self.game_state.hero
 
         item_data = self.finder.get_data_by_id(item_id)
+        if item_data is None:
+            return
         target_item_alias = item_data.alias[0]
 
         if item_id in hero.inventory:
@@ -265,7 +279,7 @@ class InternalCommandHandler:
         hero = self.game_state.hero
         if item_id in hero.inventory:
             return True
-        print(f"You don't have a required item to do this action.")
+        print(f"You don't have a required item in you inventory to do this action.")
         return False
 
     def _consume_item(self, item_id):

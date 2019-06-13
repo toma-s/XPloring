@@ -49,7 +49,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih.handle_user_input("unlock door")
         result_output = stdout.getvalue()
-        expected_output = f"You don't have a required item to do this action.\n"
+        expected_output = f"You don't have a required item in you inventory to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
     # -- game1 --
@@ -96,7 +96,7 @@ class TestInput(unittest.TestCase):
         with contextlib.redirect_stdout(stdout):
             self.ih1.handle_user_input("unlock armory door")
         result_output = stdout.getvalue()
-        expected_output = f"You don't have a required item to do this action.\n"
+        expected_output = f"You don't have a required item in you inventory to do this action.\n"
         self.assertEqual(expected_output, result_output)
 
     def test_unlock_armory_door_has_key(self):

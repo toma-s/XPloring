@@ -113,7 +113,7 @@ class TestGameStateLoader(unittest.TestCase):
                 },
                 "take": {
                     "command_add_items_to_inventory": None,
-                    "command_despawn_items": None
+                    'command_despawn_items': None
                 },
                 "use": {
                     "command_required_items": ["#item1"],
