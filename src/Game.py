@@ -45,7 +45,7 @@ class Game:
         with redirect_stdout(buffer):
             self._on_load_introduction_print()
 
-            print(">>> ")
+            # print(">>> ")
 
             output = buffer.getvalue()
             self.GUI.setOutput(output)

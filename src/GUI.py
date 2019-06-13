@@ -40,12 +40,20 @@ class GUI:
     def setOutput(self, text):
         self.text_output.configure(state='normal')
         self.text_output.insert(tkinter.INSERT, text)
+        self.text_output.insert(tkinter.INSERT, ">>> ")
         self.text_output.configure(state='disabled')
         self.text_output.see("end")
 
+    def setInputToOutput(self, text):
+        self.text_output.configure(state='normal')
+        self.text_output.insert(tkinter.END, text)
+        self.text_output.configure(state='disabled')
+        self.text_output.see("end")
 
     def enterPressed(self, e):
-        self.game.react_to_input(self.getInput())
+        input = self.getInput()
+        self.setInputToOutput(input)
+        self.game.react_to_input(input)
 
 class GamePickerGUI:
     def __init__(self,choices_arr,width=850, height=600):
