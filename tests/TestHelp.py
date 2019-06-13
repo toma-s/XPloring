@@ -10,7 +10,7 @@ class TestHelp(unittest.TestCase):
     def test_help(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
-            Game.print_help()
+            Game._print_help()
         result_output = stdout.getvalue()
         expected_output = "Basic commands:\n" \
                           "Type LOOK for more information about the environment.\n" \

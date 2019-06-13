@@ -392,7 +392,13 @@ class InternalCommandHandler:
         print(f"{self._capitalize_first(room.description)}.")
         print()
 
-        # items in room
+        self._show_items_in_room(equipment, items, room)
+
+        self._show_creatures_in_room(room, creatures)
+
+        self._show_directions_from_room(room)
+
+    def _show_items_in_room(self, equipment, items, room):
         for item_id in room.items:
             item_data = self.finder.get_data_by_id(item_id)
             if item_id in items:
@@ -400,7 +406,7 @@ class InternalCommandHandler:
             elif item_id in equipment:
                 print(f"There is a {item_data.alias[0]}. {self._capitalize_first(item_data.description)}.")
 
-        # entities in room
+    def _show_creatures_in_room(self, room, creatures):
         if not room.creatures:
             print("There are no enemies around.")
         else:
@@ -408,7 +414,7 @@ class InternalCommandHandler:
                 print(f"There is a hostile {creatures[c].alias[0]}. "
                       f"{self._capitalize_first(creatures[c].description)}.")
 
-        # direction from room
+    def _show_directions_from_room(self, room):
         for direction_name, direction_data in room.directions.items():
             if "trans_obj_id" in direction_data.keys():
                 trans_obj_data: TransitionObject = self.finder.get_data_by_id(direction_data["trans_obj_id"])
@@ -418,6 +424,22 @@ class InternalCommandHandler:
                 print(f"The {room_in_dir} is to the {direction_name.upper()}.")
 
     def _show_hero_status(self):
+        self._print_hero_stats()
+        self._print_hero_equipment()
+
+    def _print_hero_stats(self):
+        hero: Hero = self.game_state.hero
+        hero_damage = hero.base_damage
+        if hero.weapon_slot is not None:
+            weapon_data: Weapon = self.game_state.equipment[hero.weapon_slot]
+            hero_damage = weapon_data.damage
+        print(f"----- HERO STATUS -----")
+        print(f"Health: {hero.health} HP")
+        print(f"Attack Power: {hero_damage} ATK")
+
+    def _print_hero_equipment(self):
+
+        hero: Hero = self.game_state.hero
 
         def _print_weapon(slot_id: str, slot_name):
             weapon_id = getattr(hero, slot_id)
@@ -438,15 +460,6 @@ class InternalCommandHandler:
                 info_print += f" {armour_data.durability} Durability"
             print(f"{slot_name}: {info_print}")
 
-        hero: Hero = self.game_state.hero
-        hero_damage = hero.base_damage
-        if hero.weapon_slot is not None:
-            weapon_data: Weapon = self.game_state.equipment[hero.weapon_slot]
-            hero_damage = weapon_data.damage
-
-        print(f"----- HERO STATUS -----")
-        print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero_damage} ATK")
         _print_weapon("weapon_slot", "Weapon")
         _print_armour("head_slot", "Head")
         _print_armour("chest_slot", "Chest")
