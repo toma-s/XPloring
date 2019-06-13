@@ -1,8 +1,8 @@
 from os import listdir
 from os.path import isfile, join
 
+from GameConsole import GameConsole
 from exceptions.GameStateFileException import GameStateFileException
-from src.Game import Game
 from src.GameState import GameState
 
 parent_path = '..\\game_states'
@@ -13,7 +13,7 @@ def run():
         config_files = _get_config_files()
         game_config = _select(config_files, "the game")
         game_state = GameState(join(parent_path, game_config))
-        game = Game(game_state)
+        game = GameConsole(game_state)
         game.run_console()
     except GameStateFileException as e:
         print(f"Failed to read game configuration file: {e}")

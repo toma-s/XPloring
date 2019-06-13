@@ -1,7 +1,7 @@
 from os import listdir
 from os.path import isfile, join
 
-from src.Game import Game
+from GameGUI import GameGUI
 from src.GameState import GameState
 from src.GUI import GamePickerGUI
 
@@ -9,7 +9,7 @@ parent_path = '..\\game_states'
 
 def init_game(game_path):
     game_state = GameState(game_path)
-    return Game(game_state)
+    return GameGUI(game_state)
 
 
 def _run_by_environment(game):
