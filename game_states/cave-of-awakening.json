@@ -371,6 +371,7 @@
   },
   "hero": {
     "health": 100,
+    "max_health": 100,
     "base_damage": 5,
     "location": "#room_cave_entrance",
     "weapon_slot": null,

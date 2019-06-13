@@ -4,7 +4,7 @@ import unittest
 
 from InputHandler import InputHandler
 from GameState import GameState
-from game_item.Room import Room
+from game_items.Room import Room
 
 
 class TestConsume(unittest.TestCase):

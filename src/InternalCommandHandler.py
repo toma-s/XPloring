@@ -1,13 +1,13 @@
 from Finder import Finder
 from GameState import GameState
-from game_item.Armour import Armour
-from game_item.Consumable import Consumable
-from game_item.Creature import Creature
-from game_item.Equipment import Equipment
-from game_item.Hero import Hero
-from game_item.Room import Room
-from game_item.TransitionObject import TransitionObject
-from game_item.Weapon import Weapon
+from game_items.Armour import Armour
+from game_items.Consumable import Consumable
+from game_items.Creature import Creature
+from game_items.Equipment import Equipment
+from game_items.Hero import Hero
+from game_items.Room import Room
+from game_items.TransitionObject import TransitionObject
+from game_items.Weapon import Weapon
 
 
 class InternalCommandHandler:
@@ -318,12 +318,12 @@ class InternalCommandHandler:
 
     def _consume_item_healing_effect(self, consumable_data) -> bool:
         hero = self.game_state.hero
-        if hero.health == 100:
-            print(f"Your health is already at 100 HP, you don't need healing.")
+        if hero.health == hero.max_health:
+            print(f"Your health is already at {hero.max_health} HP, you don't need healing.")
             return False
 
         heal_amount = consumable_data.value
-        missing_hp = 100 - hero.health
+        missing_hp = hero.max_health - hero.health
         if heal_amount > missing_hp:
             heal_amount = missing_hp
 

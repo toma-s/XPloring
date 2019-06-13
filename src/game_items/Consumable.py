@@ -1,4 +1,4 @@
-from game_item.Item import Item
+from game_items.Item import Item
 
 
 class Consumable(Item):

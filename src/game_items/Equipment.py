@@ -1,4 +1,4 @@
-from game_item.Item import Item
+from game_items.Item import Item
 
 
 class Equipment(Item):
@@ -13,5 +13,5 @@ class Equipment(Item):
 
     def __init__(self, data: dict):
         super().__init__(data)
-        self.slot = data['slot']  # what equipment slot does this game_item fit
+        self.slot = data['slot']  # what equipment slot does this game_items fit
         self.actions.update(self.equipment_actions)

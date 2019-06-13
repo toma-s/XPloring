@@ -1,8 +1,8 @@
 from Finder import Finder
 from InternalCommandHandler import InternalCommandHandler
 from commands import commands_directions, commands_actions
-from game_item.Hero import Hero
-from game_item.Room import Room
+from game_items.Hero import Hero
+from game_items.Room import Room
 from src.GameState import GameState
 
 
