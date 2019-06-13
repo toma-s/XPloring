@@ -1,30 +1,18 @@
-from os import listdir
-from os.path import isfile, join
-
+import MainUtils
+from GameConsole import GameConsole
 from exceptions.GameStateFileException import GameStateFileException
-from src.Game import Game
 from src.GameState import GameState
-
-parent_path = '..\\game_states'
 
 
 def run():
     try:
-        config_files = _get_config_files()
-        game_config = _select(config_files, "the game")
-        game_state = GameState(join(parent_path, game_config))
-        game = Game(game_state)
+        config_files = MainUtils.get_config_files()
+        game_state_file = _select(config_files, "the game")
+        game_state = GameState(MainUtils.get_game_state_path(game_state_file))
+        game = GameConsole(game_state)
         game.run_console()
     except GameStateFileException as e:
         print(f"Failed to read game configuration file: {e}")
-
-
-def _get_config_files():
-    files = []
-    for file in listdir(parent_path):
-        if isfile(join(parent_path, file)):
-            files.append(file)
-    return files
 
 
 def _select(options, item_name):
