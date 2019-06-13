@@ -23,9 +23,14 @@ class GUI:
         self.text_output.configure(state='disabled')
         self.text_output.grid(column=0, row=0)
 
-        self.text_input = tkinter.Text(self.main_frame, height=1, width=80)
+        self.text_input = tkinter.Text(self.main_frame, height=1, width=80, fg='grey')
         self.text_input.insert(tkinter.END, "Input here!")
         self.text_input.grid(column=0, row=1)
+        self.text_input.bind("<FocusIn>", self.handle_focus_in)
+
+    def handle_focus_in(self,e):
+        self.text_input.delete('1.0', tkinter.END)
+        self.text_input.config(fg='black')
 
     def getInput(self):
         input_text = self.text_input.get("1.0", "end-1c")
