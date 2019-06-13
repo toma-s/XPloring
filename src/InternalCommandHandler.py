@@ -394,7 +394,7 @@ class InternalCommandHandler:
 
         self._show_items_in_room(equipment, items, room)
 
-        self._show_entities_in_room(room, creatures)
+        self._show_creatures_in_room(room, creatures)
 
         self._show_directions_from_room(room)
 
@@ -406,7 +406,7 @@ class InternalCommandHandler:
             elif item_id in equipment:
                 print(f"There is a {item_data.alias[0]}. {self._capitalize_first(item_data.description)}.")
 
-    def _show_entities_in_room(self, room, creatures):
+    def _show_creatures_in_room(self, room, creatures):
         if not room.creatures:
             print("There are no enemies around.")
         else:
