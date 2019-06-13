@@ -23,7 +23,7 @@ class GameGUI(Game):
             print(">>> ")
 
             output = buffer.getvalue()
-            self.GUI.set_output(output)
+            self.GUI.setOutput(output)
 
     def react_to_input(self, user_input):
         buffer = io.StringIO()
@@ -43,4 +43,4 @@ class GameGUI(Game):
                 self.input_handler.handle_user_input(user_input)
 
             output = buffer.getvalue()
-            self.GUI.set_output(output)
+            self.GUI.setOutput(output)
