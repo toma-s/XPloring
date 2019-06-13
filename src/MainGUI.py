@@ -12,6 +12,7 @@ def _get_options():
     return array
 
 
+
 def init_game(game_path):
     game_state = GameState(game_path)
     return GameGUI(game_state)
@@ -26,6 +27,7 @@ if __name__ == '__main__':
     options = _get_options()
     g = GamePickerGUI(options)
     g.window.mainloop()
-    game_state_file = g.retun_val
-    inited_game = init_game(MainUtils.get_game_state_path(game_state_file))
-    _run_by_environment(inited_game)
+    game_config = g.retun_val
+    if (game_config is not None):
+        inited_game = init_game(MainUtils.get_game_state_path(game_state_file))
+        _run_by_environment(inited_game)
