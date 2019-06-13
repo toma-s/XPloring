@@ -28,7 +28,7 @@ class GUI:
         self.text_input.grid(column=0, row=1)
         self.text_input.bind("<FocusIn>", self.handle_focus_in)
 
-    def handle_focus_in(self,e):
+    def handle_focus_in(self, e):
         self.text_input.delete('1.0', tkinter.END)
         self.text_input.config(fg='black')
 
@@ -55,8 +55,9 @@ class GUI:
         self.set_input_to_output(input)
         self.game.react_to_input(input)
 
+
 class GamePickerGUI:
-    def __init__(self,choices_arr,width=850, height=600):
+    def __init__(self, choices_arr, width=850, height=600):
         self.retun_val = None
         self.window_width = width
         self.window_height = height
@@ -69,7 +70,7 @@ class GamePickerGUI:
         self.main_frame = tkinter.Frame(self.window)
         self.main_frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
-        self.label = tkinter.Label(self.main_frame, text = "Select map and press enter to commit.")
+        self.label = tkinter.Label(self.main_frame, text="Select map and press enter to commit.")
         self.label.grid(column=0, row=0)
 
         # Create a Tkinter variable
@@ -84,9 +85,8 @@ class GamePickerGUI:
 
     def enter_pressed(self, e):
         try:
-            GameState(join(parent_path,self.tkvar.get()))
+            GameState(join(parent_path, self.tkvar.get()))
             self.retun_val = self.tkvar.get()
             self.window.destroy()
         except Exception as e:
-            self.label.config(text=''+str(e))
-
+            self.label.config(text='' + str(e))
