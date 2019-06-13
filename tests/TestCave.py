@@ -5,9 +5,9 @@ from sys import stdout
 
 from InputHandler import InputHandler
 from GameState import GameState
-from game_item.Creature import Creature
-from game_item.Hero import Hero
-from game_item.Room import Room
+from game_items.Creature import Creature
+from game_items.Hero import Hero
+from game_items.Room import Room
 
 
 class TestCave(unittest.TestCase):

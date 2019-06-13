@@ -13,6 +13,7 @@ class Hero:
 
     def __init__(self, data: dict):
         self.health = data['health']
+        self.max_health = data['max_health']
         self.base_damage = data['base_damage']
         self.location = data['location']
         self.weapon_slot = data['weapon_slot']

@@ -79,6 +79,7 @@
   "transition_objects": {},
   "hero": {
     "health": 100,
+    "max_health": 100,
     "base_damage": 1,
     "location": "#room",
     "weapon_slot": null,

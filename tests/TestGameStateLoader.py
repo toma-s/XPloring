@@ -1,13 +1,13 @@
 import unittest
 
 from GameStateLoader import GameStateLoader
-from game_item.Armour import Armour
-from game_item.Consumable import Consumable
-from game_item.Creature import Creature
-from game_item.Hero import Hero
-from game_item.Item import Item
-from game_item.Room import Room
-from game_item.Weapon import Weapon
+from game_items.Armour import Armour
+from game_items.Consumable import Consumable
+from game_items.Creature import Creature
+from game_items.Hero import Hero
+from game_items.Item import Item
+from game_items.Room import Room
+from game_items.Weapon import Weapon
 
 
 class TestGameStateLoader(unittest.TestCase):
@@ -147,6 +147,7 @@ class TestGameStateLoader(unittest.TestCase):
         hero = self.loader.create_hero()
         self.assertIsInstance(hero, Hero)
         self.assertEqual(100, hero.health)
+        self.assertEqual(100, hero.max_health)
         self.assertEqual("#room1", hero.location)
         self.assertEqual("#weapon1", hero.weapon_slot)
         self.assertEqual("#armour1", hero.head_slot)

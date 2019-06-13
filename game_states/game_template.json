@@ -123,6 +123,7 @@
   },
   "hero": {
     "health": 0,
+    "max_health": 0,
     "base_damage": 1,
     "location": "#",
     "weapon_slot": "#",

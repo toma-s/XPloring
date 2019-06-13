@@ -3,15 +3,15 @@ from datetime import datetime
 from typing import Dict
 
 from GameState import GameState
-from game_item.Armour import Armour
-from game_item.Consumable import Consumable
-from game_item.Creature import Creature
-from game_item.Equipment import Equipment
-from game_item.Hero import Hero
-from game_item.Item import Item
-from game_item.Room import Room
-from game_item.TransitionObject import TransitionObject
-from game_item.Weapon import Weapon
+from game_items.Armour import Armour
+from game_items.Consumable import Consumable
+from game_items.Creature import Creature
+from game_items.Equipment import Equipment
+from game_items.Hero import Hero
+from game_items.Item import Item
+from game_items.Room import Room
+from game_items.TransitionObject import TransitionObject
+from game_items.Weapon import Weapon
 
 
 class GameStateSaver:
@@ -136,6 +136,7 @@ class GameStateSaver:
         hero = dict()
         hero_data = self.game_state.hero
         hero["health"] = hero_data.health
+        hero["max_health"] = hero_data.max_health
         hero["base_damage"] = hero_data.base_damage
         hero["location"] = hero_data.location
         hero["weapon_slot"] = hero_data.weapon_slot
