@@ -77,16 +77,14 @@
           "room_id": "#room_passage_level_2"
         }
       },
-      "items": [
-        "#item_dead_body"
-      ],
+      "items": [],
       "creatures": [],
       "actions": {},
       "auto_commands": {}
     },
     "#room_ancient_temple": {
       "alias": "ancient temple",
-      "description": "From carvings in the wall you guess, you have entered an ancient temple.\nThere is an empty stand, on which the artifact rested for ages.",
+      "description": "You have entered an ancient temple hidden deep inside a mountain.\nThere is an empty stand, on which the artifact rested for ages.",
       "directions": {
         "east": {
           "room_id": "#room_darkroom"
@@ -109,7 +107,7 @@
       "alias": [
         "dead adventurer", "adventurer", "dead body", "zombie", "zombie adventurer"
       ],
-      "health": 30,
+      "health": 20,
       "damage": 10,
       "drops": [
         "#item_lantern_extinguished"
@@ -117,7 +115,7 @@
       "actions": {}
     },
     "#creature_temple_demon": {
-      "description": "A demon holding the 'Staff of Awakening'.\nHe is ready to drain life from you.",
+      "description": "A demon holding the 'Staff of Awakening'.\nIt is ready to drain life from you.",
       "alias": [
         "guardian of the artifact", "demon"
       ],
@@ -147,7 +145,7 @@
         "alias": [
           "whip"
         ],
-        "description": "It is made of braided leather.",
+        "description": "WHIP is especially good for pulling things from a distance",
         "actions": {}
       },
       "#item_tent": {
@@ -236,23 +234,23 @@
       "#item_dead_body": {
         "description": "A body of a dead man lies on a cave floor. Probably an adventurer.",
         "alias": [
-          "dead man", "body", "dead body"
+          "dead body", "body", "dead man"
         ],
         "actions": {
           "take": {
-            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes.\nIt tries to hit, but you step aside, and avoid the attack.\nKILL IT!",
+            "command_show_message": "You move closer to the dead body but suddenly it starts moving and making strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit you, but you step aside, and avoid the attack.",
             "command_despawn_items": ["#item_dead_body"],
             "command_spawn_creatures": ["#creature_zombie_adventurer"]
           },
           "examine": {
-            "command_show_message": "You move closer to the dead body but suddenly it starts to move and make strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit you, but you step aside, and avoid the attack.",
+            "command_show_message": "You move closer to the dead body but suddenly it starts moving and making strange noises.\nIt turns its head to your direction, revealing a face with a pair of lifeless eyes\nIt tries to hit you, but you step aside, and avoid the attack.",
             "command_despawn_items": ["#item_dead_body"],
             "command_spawn_creatures": ["#creature_zombie_adventurer"]
           }
         }
       },
       "#item_lantern_extinguished": {
-        "description": "The lantern is extinguished.",
+        "description": "It has a metal frame with 4 sides and a candle inside",
         "alias": [
           "extinguished lantern", "lantern"
         ],
@@ -284,7 +282,7 @@
         ],
         "actions": {
           "read": {
-            "command_good_end": "If you are reading this, it means you have solved my puzzles\nand collected the artifact.\nThank you for your time, it means a lot to me"
+            "command_good_end": "If you are reading this, it means you have solved my puzzles and collected the artifact.\nThank you for your time, it means a lot to me"
           }
         }
       }
@@ -338,8 +336,8 @@
           },
           "whip": {
             "command_required_items": ["#item_whip"],
-            "command_show_message": "You strike your whip and the whip wraps around the artifact.\nThe artifact is pulled straight to you.",
-            "command_set_description": "The artifact is mine now.",
+            "command_show_message": "You strike your whip and the whip wraps around the artifact.\nThe artifact is pulled from demon's hands straight to you.",
+            "command_set_description": "The artifact is yours now.",
             "command_despawn_items": ["#equipment_artifact_staff_of_awakening"],
             "command_add_items_to_inventory": ["#equipment_artifact_staff_of_awakening"]
           },
@@ -356,15 +354,16 @@
     "#trans_darkness": {
       "alias": [
         "dark cave passage",
+        "dark passage",
         "darkness"
       ],
       "locked": true,
-      "description": "All you can see is darkness. You can't go any deeper without a proper source of LIGHT",
+      "description": "All you can see is darkness. You must LIGHT the DARKNESS with a source of LIGHT",
       "actions": {
         "light": {
           "command_required_items": ["#item_lantern_lit"],
           "command_set_locked": false,
-          "command_show_message": "The lantern lightens the darkness",
+          "command_show_message": "The lantern lightens the darkness.\nYou may now continue deeper into the cave",
           "command_set_description": "The lantern lightens the darkness"
         }
       }

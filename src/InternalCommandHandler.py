@@ -195,8 +195,10 @@ class InternalCommandHandler:
     def _on_creature_death(self, creature_data: Creature):
         creature_alias = creature_data.alias[0]
         print(f"{self._capitalize_first(creature_alias)} is dead!")
-        for loot in creature_data.drops:
-            self._spawn_item(loot)
+        if creature_data.drops:
+            print("You have searched the corpse and found some items.")
+        for item_id in creature_data.drops:
+            self._spawn_item(item_id)
 
     def _creature_attack_turn(self, creature_data: Creature):
         creature_alias = creature_data.alias[0]

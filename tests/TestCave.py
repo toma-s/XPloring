@@ -44,7 +44,7 @@ class TestCave(unittest.TestCase):
         self.ih.handle_user_input("go west")
         self.ih.handle_user_input("go north")
         self.ih.handle_user_input("examine dead body")
-        for i in range(6):
+        for i in range(4):
             self.ih.handle_user_input("attack dead adventurer")
         self.ih.handle_user_input("take lantern")
         self.ih.handle_user_input("light lantern")
@@ -95,7 +95,7 @@ class TestCave(unittest.TestCase):
         self.assertNotIn("#item_dead_body", room2.items)
         self.assertIn("#creature_zombie_adventurer", room2.creatures)
 
-        for i in range(6):
+        for i in range(4):
             self.ih.handle_user_input("attack dead adventurer")
 
         self.assertEqual(0, self.game_state.creatures["#creature_zombie_adventurer"].health)
@@ -150,7 +150,7 @@ class TestCave(unittest.TestCase):
         with contextlib.redirect_stdout(stdout), self.assertRaises(SystemExit) as e:
             self.ih.handle_user_input("read letter")
         result_output = stdout.getvalue()
-        expected_output = "If you are reading this, it means you have solved my puzzles\nand collected the artifact.\nThank you for your time, it means a lot to me.\n"
+        expected_output = "If you are reading this, it means you have solved my puzzles and collected the artifact.\nThank you for your time, it means a lot to me.\n"
         self.assertEqual(expected_output, result_output)
         self.assertEqual('0', str(e.exception))
 
