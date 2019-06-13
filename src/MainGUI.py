@@ -26,6 +26,6 @@ if __name__ == '__main__':
     options = _get_options()
     g = GamePickerGUI(options)
     g.window.mainloop()
-    game_state_file = g.return_val
+    game_state_file = g.retun_val
     inited_game = init_game(MainUtils.get_game_state_path(game_state_file))
     _run_by_environment(inited_game)
