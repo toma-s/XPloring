@@ -31,7 +31,7 @@ if __name__ == '__main__':
         conf_arr.append(f"{element}")
     g = GamePickerGUI(conf_arr)
     g.window.mainloop()
-    game_config = g.retun_val
+    game_config = g.return_val
     inited_game = init_game(join(parent_path, game_config))
     _run_by_environment(inited_game)
 

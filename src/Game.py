@@ -48,7 +48,7 @@ class Game:
             print(">>> ")
 
             output = buffer.getvalue()
-            self.GUI.setOutput(output)
+            self.GUI.set_output(output)
 
     def react_to_input(self, user_input):
         buffer = io.StringIO()
@@ -68,7 +68,7 @@ class Game:
                 self.input_handler.handle_user_input(user_input)
 
             output = buffer.getvalue()
-            self.GUI.setOutput(output)
+            self.GUI.set_output(output)
 
     def _on_load_introduction_print(self):
         hero = self.game_state.hero
