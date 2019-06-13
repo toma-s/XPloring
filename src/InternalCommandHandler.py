@@ -424,15 +424,22 @@ class InternalCommandHandler:
                 print(f"The {room_in_dir} is to the {direction_name.upper()}.")
 
     def _show_hero_status(self):
+        self._print_hero_stats()
+        self._print_hero_equipment()
+
+    def _print_hero_stats(self):
         hero: Hero = self.game_state.hero
         hero_damage = hero.base_damage
         if hero.weapon_slot is not None:
             weapon_data: Weapon = self.game_state.equipment[hero.weapon_slot]
             hero_damage = weapon_data.damage
+        print(f"----- HERO STATUS -----")
+        print(f"Health: {hero.health} HP")
+        print(f"Attack Power: {hero_damage} ATK")
 
-        self._print_status(hero, hero_damage)
+    def _print_hero_equipment(self):
 
-    def _print_status(self, hero, hero_damage):
+        hero: Hero = self.game_state.hero
 
         def _print_weapon(slot_id: str, slot_name):
             weapon_id = getattr(hero, slot_id)
@@ -453,9 +460,6 @@ class InternalCommandHandler:
                 info_print += f" {armour_data.durability} Durability"
             print(f"{slot_name}: {info_print}")
 
-        print(f"----- HERO STATUS -----")
-        print(f"Health: {hero.health} HP")
-        print(f"Attack Power: {hero_damage} ATK")
         _print_weapon("weapon_slot", "Weapon")
         _print_armour("head_slot", "Head")
         _print_armour("chest_slot", "Chest")
